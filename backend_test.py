@@ -139,7 +139,7 @@ class NexusBackendTester:
                     if not missing_fields:
                         self.log_test("Trending products endpoint", True, 
                                     f"Got {len(data)} products. Top product: {product['name']} (score: {product['total_score']})", 
-                                    [p['id'] for p in data[:3]])  # Return first 3 IDs for further testing
+                                    data)  # Return full data for further testing
                         return data
                     else:
                         self.log_test("Trending products endpoint", False, 
