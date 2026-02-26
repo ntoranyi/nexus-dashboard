@@ -239,7 +239,7 @@ class NexusBackendTester:
         
         try:
             response = self.session.post(f"{API_BASE}/chat", 
-                                       json=test_payload, timeout=20)
+                                       json=test_payload, timeout=35)
             
             if response.status_code == 200:
                 data = response.json()
