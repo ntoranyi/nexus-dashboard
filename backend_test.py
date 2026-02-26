@@ -315,7 +315,9 @@ class NexusBackendTester:
         # Test 5: Single product (if we have product IDs)
         single_product_ok = False
         if products_data and len(products_data) > 0:
-            single_product_ok = self.test_single_product(products_data[0])
+            # Get just the ID from the first product
+            product_id = products_data[0]['id']
+            single_product_ok = self.test_single_product(product_id)
         else:
             self.log_test("Single product endpoint", False, "No product IDs available from trending products")
         
