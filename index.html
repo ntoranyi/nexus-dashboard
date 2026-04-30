@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus AI — Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080B10;
+  --bg2: #0D1117;
+  --bg3: #131920;
+  --bg4: #1A2230;
+  --border: rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.1);
+  --text: #E8EDF5;
+  --muted: #5A6A80;
+  --muted2: #3A4858;
+  --green: #00D97E;
+  --green-dim: rgba(0,217,126,0.12);
+  --amber: #F5A623;
+  --amber-dim: rgba(245,166,35,0.12);
+  --red: #FF4757;
+  --red-dim: rgba(255,71,87,0.12);
+  --blue: #3B82F6;
+  --blue-dim: rgba(59,130,246,0.12);
+  --purple: #8B5CF6;
+  --purple-dim: rgba(139,92,246,0.12);
+  --cyan: #06B6D4;
+  --cyan-dim: rgba(6,182,212,0.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;min-height:100vh;overflow-x:hidden}
+
+/* SIDEBAR */
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:220px;background:var(--bg2);border-right:1px solid var(--border);padding:20px 0;z-index:100;display:flex;flex-direction:column}
+.logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.logo-text{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;background:linear-gradient(135deg,#00D97E,#3B82F6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.5px}
+.logo-sub{font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:2px}
+.nav-section{padding:0 12px;margin-bottom:20px}
+.nav-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;padding:0 8px;margin-bottom:6px;font-weight:500}
+.nav-item{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:6px;cursor:pointer;color:var(--muted);font-size:13px;transition:all .15s;border:1px solid transparent}
+.nav-item:hover{background:var(--bg3);color:var(--text)}
+.nav-item.active{background:var(--green-dim);color:var(--green);border-color:rgba(0,217,126,0.2)}
+.nav-icon{font-size:14px;width:18px;text-align:center;flex-shrink:0}
+.nav-badge{margin-left:auto;font-size:10px;padding:1px 6px;border-radius:99px;background:var(--red-dim);color:var(--red)}
+.status-bar{margin-top:auto;padding:12px 16px;border-top:1px solid var(--border)}
+.status-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-bottom:4px}
+.status-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+
+/* MAIN */
+.main{margin-left:220px;padding:24px;min-height:100vh}
+.page{display:none}
+.page.active{display:block}
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.page-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--text);letter-spacing:-0.5px}
+.page-sub{font-size:13px;color:var(--muted);margin-top:4px}
+.header-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{padding:7px 16px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;border:1px solid;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:var(--green);color:#000;border-color:var(--green)}
+.btn-primary:hover{background:#00c070}
+.btn-ghost{background:transparent;color:var(--muted);border-color:var(--border2)}
+.btn-ghost:hover{background:var(--bg3);color:var(--text)}
+
+/* KPI GRID */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px}
+.kpi-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;position:relative;overflow:hidden;transition:border-color .2s}
+.kpi-card:hover{border-color:var(--border2)}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.kpi-card.green::before{background:var(--green)}
+.kpi-card.amber::before{background:var(--amber)}
+.kpi-card.blue::before{background:var(--blue)}
+.kpi-card.red::before{background:var(--red)}
+.kpi-card.purple::before{background:var(--purple)}
+.kpi-card.cyan::before{background:var(--cyan)}
+.kpi-icon{font-size:18px;margin-bottom:8px}
+.kpi-val{font-family:'Syne',sans-serif;font-size:26px;font-weight:700;line-height:1;margin-bottom:4px}
+.kpi-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em}
+.kpi-delta{font-size:11px;margin-top:6px;display:flex;align-items:center;gap:3px}
+.delta-up{color:var(--green)}
+.delta-dn{color:var(--red)}
+.delta-flat{color:var(--muted)}
+
+/* GRID LAYOUTS */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+.grid-1-2{display:grid;grid-template-columns:1fr 2fr;gap:16px;margin-bottom:16px}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:var(--text);letter-spacing:0.02em}
+.card-action{font-size:11px;color:var(--muted);cursor:pointer;transition:color .15s}
+.card-action:hover{color:var(--text)}
+
+/* PROGRAM TABLE */
+.prog-table{width:100%;border-collapse:collapse}
+.prog-table th{font-size:10px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;padding:6px 10px;text-align:left;border-bottom:1px solid var(--border)}
+.prog-table td{padding:10px;border-bottom:1px solid var(--border);vertical-align:middle}
+.prog-table tr:last-child td{border-bottom:none}
+.prog-table tr:hover td{background:rgba(255,255,255,0.02)}
+.prog-name{display:flex;align-items:center;gap:10px}
+.prog-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.prog-title{font-size:13px;font-weight:500;color:var(--text)}
+.prog-sub{font-size:11px;color:var(--muted)}
+.bar-cell{display:flex;align-items:center;gap:8px}
+.bar-bg{flex:1;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;min-width:60px}
+.bar-fill{height:100%;border-radius:2px;transition:width 1s ease}
+.bar-num{font-size:11px;color:var(--muted);min-width:40px;text-align:right;font-family:'DM Mono',monospace}
+.tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:99px;font-family:'DM Mono',monospace}
+.tag-green{background:var(--green-dim);color:var(--green)}
+.tag-amber{background:var(--amber-dim);color:var(--amber)}
+.tag-red{background:var(--red-dim);color:var(--red)}
+.tag-blue{background:var(--blue-dim);color:var(--blue)}
+.tag-purple{background:var(--purple-dim);color:var(--purple)}
+.tag-cyan{background:var(--cyan-dim);color:var(--cyan)}
+.tag-gray{background:rgba(255,255,255,0.06);color:var(--muted)}
+
+/* EMAIL SEQUENCE */
+.seq-list{display:flex;flex-direction:column;gap:1px}
+.seq-row{display:grid;grid-template-columns:36px 1fr auto auto;gap:12px;align-items:center;padding:10px 12px;background:var(--bg3);border-radius:6px;margin-bottom:4px;transition:background .15s;cursor:pointer}
+.seq-row:hover{background:var(--bg4)}
+.seq-day{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;font-family:'DM Mono',monospace;flex-shrink:0}
+.seq-info .seq-subj{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:320px}
+.seq-info .seq-pre{font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:320px}
+.seq-links{display:flex;gap:4px;flex-shrink:0}
+.seq-link{font-size:10px;padding:2px 7px;border-radius:4px;text-decoration:none;transition:opacity .15s}
+.seq-link:hover{opacity:0.8}
+.open-rate{font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);white-space:nowrap;text-align:right}
+
+/* FUNNEL VISUAL */
+.funnel-viz{display:flex;flex-direction:column;gap:4px}
+.funnel-step{border-radius:6px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;transition:opacity .2s}
+.funnel-step-label{font-size:12px;font-weight:500}
+.funnel-step-val{font-size:13px;font-weight:600;font-family:'DM Mono',monospace}
+.funnel-pct{font-size:10px;opacity:0.7;margin-left:6px}
+
+/* ALERTS */
+.alert-list{display:flex;flex-direction:column;gap:8px}
+.alert{display:flex;gap:10px;padding:10px 12px;border-radius:8px;border:1px solid;transition:all .15s}
+.alert-icon{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px}
+.alert-body .alert-title{font-size:12px;font-weight:500;margin-bottom:2px}
+.alert-body .alert-desc{font-size:11px;line-height:1.5;opacity:0.8}
+.alert-btn{margin-left:auto;flex-shrink:0;font-size:10px;padding:3px 8px;border-radius:4px;border:1px solid;cursor:pointer;background:transparent;transition:background .15s;white-space:nowrap;align-self:flex-start}
+.alert.a-red{background:var(--red-dim);border-color:rgba(255,71,87,0.2);color:#FFB3BB}
+.alert.a-amber{background:var(--amber-dim);border-color:rgba(245,166,35,0.2);color:#FFD98A}
+.alert.a-green{background:var(--green-dim);border-color:rgba(0,217,126,0.2);color:#80FFB8}
+
+/* AUTO MONEY SYSTEM */
+.ams-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.ams-card{border-radius:8px;border:1px solid;padding:12px;transition:transform .15s,box-shadow .15s;cursor:pointer}
+.ams-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.3)}
+.ams-name{font-size:12px;font-weight:600;margin-bottom:4px}
+.ams-desc{font-size:11px;opacity:0.7;line-height:1.4;margin-bottom:8px}
+.ams-rev{font-size:13px;font-weight:600;font-family:'DM Mono',monospace}
+.ams-cta{display:inline-block;font-size:10px;padding:3px 8px;border-radius:4px;text-decoration:none;font-weight:500;margin-top:6px;transition:opacity .15s}
+.ams-cta:hover{opacity:0.8}
+
+/* TIKTOK SECTION */
+.tiktok-scripts{display:flex;flex-direction:column;gap:8px}
+.script-row{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.script-meta{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.script-frame{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace}
+.script-text{font-size:13px;color:var(--text);line-height:1.5;font-style:italic}
+.script-note{font-size:10px;color:var(--muted);margin-top:5px;padding-top:5px;border-top:1px solid var(--border)}
+
+/* SHOPIFY */
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.product-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;transition:border-color .15s}
+.product-card:hover{border-color:var(--border2)}
+.product-icon{font-size:24px;margin-bottom:8px}
+.product-name{font-size:12px;font-weight:500;margin-bottom:4px}
+.product-price{font-size:16px;font-weight:700;color:var(--green);font-family:'DM Mono',monospace}
+.product-sales{font-size:10px;color:var(--muted);margin-top:2px}
+.product-bar{height:3px;background:var(--bg4);border-radius:2px;margin-top:8px;overflow:hidden}
+.product-bar-fill{height:100%;border-radius:2px;background:var(--green);transition:width 1s}
+
+/* LAUNCH BUTTON */
+.launch-panel{background:linear-gradient(135deg,rgba(0,217,126,0.08),rgba(59,130,246,0.08));border:1px solid rgba(0,217,126,0.2);border-radius:12px;padding:20px;text-align:center;margin-bottom:20px}
+.launch-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
+.launch-sub{font-size:12px;color:var(--muted);margin-bottom:14px}
+.launch-big-btn{padding:12px 32px;background:var(--green);color:#000;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .15s;letter-spacing:0.02em}
+.launch-big-btn:hover{background:#00c070;transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,217,126,0.3)}
+.launch-count{font-size:11px;color:var(--muted);margin-top:8px}
+
+/* PROGRESS RINGS */
+.ring-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.ring-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+.ring-val{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:2px}
+.ring-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em}
+.ring-tgt{font-size:10px;margin-top:4px}
+
+/* CHECKLIST */
+.check-list{display:flex;flex-direction:column;gap:6px}
+.check-item{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;background:var(--bg3);border-radius:6px;font-size:12px;color:var(--text);cursor:pointer;transition:background .15s}
+.check-item:hover{background:var(--bg4)}
+.check-box{width:16px;height:16px;border-radius:4px;border:1px solid var(--muted2);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:9px;transition:all .15s}
+.check-box.done{background:var(--green);border-color:var(--green);color:#000}
+.check-prio{font-size:10px;margin-left:auto;flex-shrink:0;padding-top:2px}
+
+/* MINI CHART */
+.sparkline{height:40px;display:flex;align-items:flex-end;gap:3px}
+.spark-bar{border-radius:2px 2px 0 0;transition:height .5s;min-width:6px}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;display:none;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:24px;max-width:500px;width:90%;max-height:80vh;overflow-y:auto}
+.modal-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:4px}
+.modal-sub{font-size:12px;color:var(--muted);margin-bottom:16px}
+.modal-close{float:right;background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;margin-top:-4px}
+.script-copybox{background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:14px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.8;color:var(--text);white-space:pre-wrap;margin-bottom:12px}
+
+/* LIVE DOT */
+.live{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--green)}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sidebar{width:60px}
+  .sidebar .logo-text,.sidebar .logo-sub,.sidebar .nav-item span:not(.nav-icon),.sidebar .nav-label,.sidebar .status-bar{display:none}
+  .sidebar .nav-item{justify-content:center;padding:8px}
+  .main{margin-left:60px;padding:16px}
+  .grid-2,.grid-3,.grid-1-2{grid-template-columns:1fr}
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .ring-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--muted2);border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="logo">
+    <div class="logo-text">NEXUS AI</div>
+    <div class="logo-sub">Command Center</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Core</div>
+    <div class="nav-item active" onclick="showPage('dashboard')"><span class="nav-icon">⬡</span><span>Dashboard</span></div>
+    <div class="nav-item" onclick="showPage('sequences')"><span class="nav-icon">✉</span><span>Email Sequences</span><span class="nav-badge">3</span></div>
+    <div class="nav-item" onclick="showPage('programs')"><span class="nav-icon">◈</span><span>Programs</span></div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Revenue</div>
+    <div class="nav-item" onclick="showPage('hotleads')"><span class="nav-icon">🔥</span><span>Hot Leads</span><span class="nav-badge">31</span></div>
+    <div class="nav-item" onclick="showPage('ams')"><span class="nav-icon">⚡</span><span>Auto Money</span></div>
+    <div class="nav-item" onclick="showPage('shopify')"><span class="nav-icon">◉</span><span>Shopify</span></div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Content</div>
+    <div class="nav-item" onclick="showPage('tiktok')"><span class="nav-icon">▷</span><span>TikTok Scripts</span></div>
+    <div class="nav-item" onclick="showPage('checklist')"><span class="nav-icon">✓</span><span>Launch Checklist</span></div>
+  </div>
+  <div class="status-bar">
+    <div class="status-item"><div class="status-dot" style="background:var(--green)"></div><span>FunnelFreedom — Live</span></div>
+    <div class="status-item"><div class="status-dot" style="background:var(--green)"></div><span>7FA — Live</span></div>
+    <div class="status-item"><div class="status-dot" style="background:var(--amber)"></div><span>Shopify — Setup</span></div>
+  </div>
+</nav>
+
+<main class="main">
+
+<!-- =================== DASHBOARD =================== -->
+<div class="page active" id="page-dashboard">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Command Center</div>
+      <div class="page-sub">Alex · Brussels → US Market · All systems overview</div>
+    </div>
+    <div class="header-actions">
+      <div class="live"><div class="live-dot"></div>Live tracking</div>
+      <button class="btn btn-primary" onclick="showPage('hotleads')">🔥 Launch Hot Leads</button>
+    </div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card green">
+      <div class="kpi-icon">💰</div>
+      <div class="kpi-val" style="color:var(--green)">$4,187</div>
+      <div class="kpi-label">Total Revenue MTD</div>
+      <div class="kpi-delta delta-up">↑ +31% vs last month</div>
+    </div>
+    <div class="kpi-card amber">
+      <div class="kpi-icon">🔥</div>
+      <div class="kpi-val" style="color:var(--amber)">31</div>
+      <div class="kpi-label">Hot Leads Active</div>
+      <div class="kpi-delta delta-up">FF(18) + 7FA(13)</div>
+    </div>
+    <div class="kpi-card blue">
+      <div class="kpi-icon">✉</div>
+      <div class="kpi-val" style="color:var(--blue)">247</div>
+      <div class="kpi-label">Total Subscribers</div>
+      <div class="kpi-delta delta-up">↑ +12% this week</div>
+    </div>
+    <div class="kpi-card purple">
+      <div class="kpi-icon">🔗</div>
+      <div class="kpi-val" style="color:var(--purple)">496</div>
+      <div class="kpi-label">Affiliate Clicks</div>
+      <div class="kpi-delta delta-up">FF(312) + 7FA(184)</div>
+    </div>
+    <div class="kpi-card cyan">
+      <div class="kpi-icon">🛍</div>
+      <div class="kpi-val" style="color:var(--cyan)">$1,840</div>
+      <div class="kpi-label">Shopify Sales</div>
+      <div class="kpi-delta delta-dn">↓ -3% (optimize needed)</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-icon">📊</div>
+      <div class="kpi-val" style="color:var(--red)">38%</div>
+      <div class="kpi-label">Avg Engagement</div>
+      <div class="kpi-delta delta-up">↑ +5pt vs benchmark</div>
+    </div>
+  </div>
+
+  <div class="grid-1-2">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Conversion Funnel</div>
+        <span class="tag tag-green">14-day period</span>
+      </div>
+      <div class="funnel-viz" id="funnel-viz"></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">🚨 Alerts & Actions</div>
+        <span class="card-action" onclick="showPage('hotleads')">View all →</span>
+      </div>
+      <div class="alert-list" id="alert-list"></div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Revenue by Program</div>
+        <span class="tag tag-amber">14 days</span>
+      </div>
+      <table class="prog-table" id="revenue-table"></table>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Revenue Scenarios — 31 Hot Leads</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px" id="scenarios"></div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== SEQUENCES =================== -->
+<div class="page" id="page-sequences">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Email Sequences</div>
+      <div class="page-sub">3 active sequences · 14-day main + 7-day hot leads + re-engagement</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-ghost" onclick="showModal('modal-config')">⚙ Config</button>
+      <button class="btn btn-primary">+ New Sequence</button>
+    </div>
+  </div>
+
+  <div class="ring-grid">
+    <div class="ring-card"><div class="ring-val" style="color:var(--green)">68%</div><div class="ring-label">Open Rate</div><div class="ring-tgt" style="color:var(--green)">Target >60% ✓</div></div>
+    <div class="ring-card"><div class="ring-val" style="color:var(--amber)">28%</div><div class="ring-label">Click Rate</div><div class="ring-tgt" style="color:var(--green)">Target >25% ✓</div></div>
+    <div class="ring-card"><div class="ring-val" style="color:var(--purple)">14%</div><div class="ring-label">Conversion</div><div class="ring-tgt" style="color:var(--amber)">Target >15% ↑</div></div>
+    <div class="ring-card"><div class="ring-val" style="color:var(--blue)">1.2%</div><div class="ring-label">Unsub Rate</div><div class="ring-tgt" style="color:var(--green)">Target <2% ✓</div></div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-header">
+      <div class="card-title">14-Day Master Sequence · FF + 7FA</div>
+      <div style="display:flex;gap:6px">
+        <span class="tag tag-green">Phase 1: FF (D1–D7)</span>
+        <span class="tag tag-purple">Phase 2: 7FA (D8–D14)</span>
+      </div>
+    </div>
+    <div class="seq-list" id="main-seq"></div>
+  </div>
+</div>
+
+<!-- =================== PROGRAMS =================== -->
+<div class="page" id="page-programs">
+  <div class="page-header">
+    <div><div class="page-title">Programs & Affiliates</div>
+    <div class="page-sub">FunnelFreedom · 7 Figure Accelerator · Shopify · AI Tools</div></div>
+    <button class="btn btn-primary">+ Add Program</button>
+  </div>
+
+  <div class="grid-3" id="program-cards"></div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Performance Overview — All Programs</div>
+      <span class="tag tag-amber">14-day period</span>
+    </div>
+    <table class="prog-table" id="perf-table"></table>
+  </div>
+</div>
+
+<!-- =================== HOT LEADS =================== -->
+<div class="page" id="page-hotleads">
+  <div class="page-header">
+    <div><div class="page-title">🔥 Hot Leads Sequence</div>
+    <div class="page-sub">HotLeads-FF7FA-Followup · 31 contacts · 9:15 AM EST</div></div>
+    <button class="btn btn-primary" id="launch-btn" onclick="launchSequence()">▶ Launch Sequence</button>
+  </div>
+
+  <div class="launch-panel" id="launch-panel">
+    <div class="launch-title">31 Hot Leads Ready to Convert</div>
+    <div class="launch-sub">FF(18) + 7FA(13) · 7-day follow-up · All links tracked · Automations configured</div>
+    <button class="launch-big-btn" onclick="launchSequence()">▶ LAUNCH HOTLEADS-FF7FA-FOLLOWUP</button>
+    <div class="launch-count" id="launch-count">Waiting to launch · Est. revenue at 15% conversion: $4,650</div>
+  </div>
+
+  <div class="ring-grid">
+    <div class="ring-card"><div class="ring-val" style="color:var(--amber)" id="hl-open">0%</div><div class="ring-label">Open Rate</div><div class="ring-tgt" style="color:var(--amber)">Target >60%</div></div>
+    <div class="ring-card"><div class="ring-val" style="color:var(--amber)" id="hl-click">0%</div><div class="ring-label">Click Rate</div><div class="ring-tgt" style="color:var(--amber)">Target >25%</div></div>
+    <div class="ring-card"><div class="ring-val" style="color:var(--amber)" id="hl-conv">0%</div><div class="ring-label">Conversion</div><div class="ring-tgt" style="color:var(--amber)">Target >15%</div></div>
+    <div class="ring-card"><div class="ring-val" style="color:var(--green)">$4,650</div><div class="ring-label">Rev Potential</div><div class="ring-tgt" style="color:var(--green)">At 15% conv.</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">7-Day Hot Lead Emails</div>
+      <span class="tag tag-green">Click to copy script</span>
+    </div>
+    <div class="seq-list" id="hl-seq"></div>
+  </div>
+</div>
+
+<!-- =================== AUTO MONEY =================== -->
+<div class="page" id="page-ams">
+  <div class="page-header">
+    <div><div class="page-title">⚡ Auto Money System</div>
+    <div class="page-sub">4 niches · 16 programs · Recurring commissions</div></div>
+    <div class="header-actions">
+      <select id="niche-sel" onchange="renderAMS(this.value)" style="padding:7px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:12px;cursor:pointer">
+        <option value="mmo">MMO / Make Money Online</option>
+        <option value="ai">AI / Tech Tools</option>
+        <option value="fitness">Fitness / Health</option>
+        <option value="crypto">Crypto / Web3</option>
+      </select>
+    </div>
+  </div>
+  <div class="ams-grid" id="ams-grid"></div>
+</div>
+
+<!-- =================== SHOPIFY =================== -->
+<div class="page" id="page-shopify">
+  <div class="page-header">
+    <div><div class="page-title">◉ Shopify Store</div>
+    <div class="page-sub">shop.nextgenaimake.com · Digital products · AI tools</div></div>
+    <a href="https://shop.nextgenaimake.com" target="_blank" class="btn btn-primary">Open Store ↗</a>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card green"><div class="kpi-icon">💵</div><div class="kpi-val" style="color:var(--green)">$1,840</div><div class="kpi-label">Revenue MTD</div></div>
+    <div class="kpi-card blue"><div class="kpi-icon">🛒</div><div class="kpi-val" style="color:var(--blue)">24</div><div class="kpi-label">Orders</div></div>
+    <div class="kpi-card amber"><div class="kpi-icon">📦</div><div class="kpi-val" style="color:var(--amber)">5</div><div class="kpi-label">Products Active</div></div>
+    <div class="kpi-card purple"><div class="kpi-icon">🔁</div><div class="kpi-val" style="color:var(--purple)">$76</div><div class="kpi-label">Avg Order Value</div></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><div class="card-title">Product Performance</div></div>
+    <div class="product-grid" id="product-grid"></div>
+  </div>
+</div>
+
+<!-- =================== TIKTOK =================== -->
+<div class="page" id="page-tiktok">
+  <div class="page-header">
+    <div><div class="page-title">▷ TikTok Script Hub</div>
+    <div class="page-sub">AI Job Replacement · HeyGen-ready · US audience</div></div>
+    <button class="btn btn-primary" onclick="showModal('modal-script')">📋 Copy Best Script</button>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card amber"><div class="kpi-icon">🎯</div><div class="kpi-val" style="color:var(--amber)">58→82</div><div class="kpi-label">Viral Score (before→after)</div></div>
+    <div class="kpi-card green"><div class="kpi-icon">⏱</div><div class="kpi-val" style="color:var(--green)">22s</div><div class="kpi-label">Optimal Duration</div></div>
+    <div class="kpi-card blue"><div class="kpi-icon">📱</div><div class="kpi-val" style="color:var(--blue)">TikTok</div><div class="kpi-label">Target Platform</div></div>
+    <div class="kpi-card purple"><div class="kpi-icon">🇺🇸</div><div class="kpi-val" style="color:var(--purple)">6–9pm</div><div class="kpi-label">Best Post Time EST</div></div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-header">
+      <div class="card-title">Script v2.0 — HeyGen Format · AI Job Replacement</div>
+      <button class="btn btn-ghost" style="font-size:11px" onclick="showModal('modal-script')">Copy full script</button>
+    </div>
+    <div class="tiktok-scripts" id="tiktok-scripts"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-title">5 Hook Alternatives — A/B Test</div></div>
+    <div id="hook-list" style="display:flex;flex-direction:column;gap:8px"></div>
+  </div>
+</div>
+
+<!-- =================== CHECKLIST =================== -->
+<div class="page" id="page-checklist">
+  <div class="page-header">
+    <div><div class="page-title">✓ Launch Checklist</div>
+    <div class="page-sub">Complete all steps before going live</div></div>
+    <span id="checklist-progress" class="tag tag-amber">0 / 16 complete</span>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header"><div class="card-title">🔴 Critical — Do First</div></div>
+      <div class="check-list" id="check-critical"></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">🟡 Important — This Week</div></div>
+      <div class="check-list" id="check-important"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><div class="card-title">🟢 Optimization — Ongoing</div></div>
+    <div class="check-list" id="check-optimize"></div>
+  </div>
+</div>
+
+</main>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-script">
+  <div class="modal">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
+      <div><div class="modal-title">HeyGen Script v2.0</div>
+      <div class="modal-sub">Copy → paste directly into HeyGen script field</div></div>
+      <button class="modal-close" onclick="closeModal('modal-script')">✕</button>
+    </div>
+    <div class="script-copybox" id="modal-script-text">Don't scroll. [pause: 0.4s] This A-I is about to replace YOU.
+
+Twelve million jobs. [pause: 0.3s] Already gone in 2024. [pause: 0.4s] Your role? [pause: 0.3s] Probably next.
+
+I didn't wait to get replaced. [pause: 0.4s] I used A-I to build three thousand dollars a month [pause: 0.3s] before it happened to me.
+
+Free blueprint in my bio [pause: 0.3s] — income A-I can't touch.
+
+Is YOUR job safe from A-I? [pause: 0.5s] Comment YES [pause: 0.2s] or NO below.</div>
+    <button class="btn btn-primary" style="width:100%" onclick="copyModalScript()">Copy Script to Clipboard</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-config">
+  <div class="modal">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
+      <div><div class="modal-title">Sequence Configuration</div>
+      <div class="modal-sub">HotLeads-FF7FA-Followup · Nexus Settings</div></div>
+      <button class="modal-close" onclick="closeModal('modal-config')">✕</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
+        <div style="background:var(--bg3);padding:10px;border-radius:6px"><div style="color:var(--muted);margin-bottom:3px;font-size:10px">TRIGGER</div><div>hot-lead-ff OR hot-lead-7fa</div></div>
+        <div style="background:var(--bg3);padding:10px;border-radius:6px"><div style="color:var(--muted);margin-bottom:3px;font-size:10px">SEND TIME</div><div>9:15 AM EST daily</div></div>
+        <div style="background:var(--bg3);padding:10px;border-radius:6px"><div style="color:var(--muted);margin-bottom:3px;font-size:10px">FROM NAME</div><div>Alex</div></div>
+        <div style="background:var(--bg3);padding:10px;border-radius:6px"><div style="color:var(--muted);margin-bottom:3px;font-size:10px">EXCLUSIONS</div><div>buyer-ff, buyer-7fa, buyer-shopify</div></div>
+        <div style="background:var(--bg3);padding:10px;border-radius:6px"><div style="color:var(--muted);margin-bottom:3px;font-size:10px">TRACKING</div><div>Opens + Clicks + UTM</div></div>
+        <div style="background:var(--bg3);padding:10px;border-radius:6px"><div style="color:var(--muted);margin-bottom:3px;font-size:10px">DOUBLE OPT-IN</div><div>Disabled (already opt-in)</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============ DATA ============
+const programs = [
+  {name:'FunnelFreedom',cat:'Affiliate',color:'var(--green)',dotColor:'#00D97E',rev:1640,clicks:312,conv:8.2,tag:'top',tagClass:'tag-green',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75'},
+  {name:'7 Figure Accelerator',cat:'Community',color:'var(--purple)',dotColor:'#8B5CF6',rev:707,clicks:184,conv:5.1,tag:'growing',tagClass:'tag-purple',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912'},
+  {name:'AI Toolkit Bundle',cat:'Shopify',color:'var(--blue)',dotColor:'#3B82F6',rev:840,clicks:89,conv:3.4,tag:'stable',tagClass:'tag-blue',link:'https://shop.nextgenaimake.com'},
+  {name:'Funnel Templates',cat:'Shopify',color:'var(--amber)',dotColor:'#F5A623',rev:620,clicks:60,conv:2.1,tag:'optimize',tagClass:'tag-amber',link:'https://shop.nextgenaimake.com'},
+  {name:'Email Swipe Files',cat:'Shopify',color:'var(--red)',dotColor:'#FF4757',rev:380,clicks:28,conv:1.8,tag:'low CTR',tagClass:'tag-red',link:'https://shop.nextgenaimake.com'},
+];
+
+const emails14 = [
+  {day:'D1',subj:"You're in. Here's what nobody tells you about passive income",pre:"The mistake I made for 2 years before things clicked",prog:'FF',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75&utm_content=d1',open:72,phase:1},
+  {day:'D2',subj:"I failed for 2 years. Then I stopped doing this one thing.",pre:"The real reason most people never make money online",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d2',open:68,phase:1},
+  {day:'D3',subj:"Why most side hustles stay stuck at $200/month",pre:"The passive income math nobody shows you",prog:'FF',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75&utm_content=d3',open:65,phase:1},
+  {day:'D4',subj:"What happened when I stopped learning and started doing",pre:"Month 1 numbers + the 3 things I changed",prog:'FF',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75&utm_content=d4',open:61,phase:1},
+  {day:'D5',subj:'"I don\'t have time / money / experience" — honest answers',pre:"Let me address the three things holding most people back",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d5',open:58,phase:1},
+  {day:'D6',subj:"I want to show you something specific",pre:"The setup I use — step by step",prog:'FF',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75&utm_content=d6',open:54,phase:1},
+  {day:'D7',subj:"Last call on FunnelFreedom — moving to Phase 2 tomorrow",pre:"One question before we shift gears",prog:'FF',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75&utm_content=d7',open:51,phase:1},
+  {day:'D8',subj:"Phase 2 starts today — meet the community that changes the game",pre:"What separates the $3K from the $10K affiliate",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d8',open:48,phase:2},
+  {day:'D9',subj:"The only 3 traffic sources worth your time in 2025",pre:"Everything else is a distraction",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d9',open:45,phase:2},
+  {day:'D10',subj:"How I produce a week of content in 45 minutes",pre:"The AI workflow I use every week",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d10',open:43,phase:2},
+  {day:'D11',subj:"The exact shift that takes you from $3K to $10K/month",pre:"It's not more traffic. It's not more offers.",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d11',open:41,phase:2},
+  {day:'D12',subj:"From $0 to first $500 — here's what actually happened",pre:"The unglamorous version nobody posts on Instagram",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d12',open:39,phase:2},
+  {day:'D13',subj:"Here's the community I'd join on day 1 if I started over",pre:"And why I didn't wait once I found it",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d13',open:37,phase:2},
+  {day:'D14',subj:"Day 14. Here's everything in one place.",pre:"The complete roadmap — and one final question",prog:'BOTH',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75&utm_content=d14',open:35,phase:2},
+];
+
+const hlEmails = [
+  {day:'D1',subj:"Still thinking about it? Here's what changed my mind.",pre:"The one thing separating people who start from those who don't",progs:['FF','Shopify'],delay:'Immediate'},
+  {day:'D2',subj:"3 people who were exactly where you are — what happened next",pre:"A government worker, a side hustler, a beginner. Same system.",progs:['FF','7FA','Shopify'],delay:'+1 day'},
+  {day:'D3',subj:"I'm adding 3 bonuses this week — expires Friday",pre:"$373 in extra value. Yours if you move before Friday.",progs:['FF','Shopify'],delay:'+1 day',relance:true},
+  {day:'D4',subj:"I waited 18 months. Here's what that cost me.",pre:"Not in money. In time I didn't get back.",progs:['FF'],delay:'+1 day'},
+  {day:'D5',subj:"The difference between $3K/month and $10K/month isn't what you think",pre:"It's not traffic. It's not a better funnel. It's this.",progs:['7FA','FF'],delay:'+1 day'},
+  {day:'D6',subj:"6 sales vs 150 sales — same $3,000/month. Your call.",pre:"I'll let the math speak.",progs:['FF','Shopify'],delay:'+1 day',sms:true},
+  {day:'D7',subj:"{{first_name}}, this is the last email. One question.",pre:"After today I'm closing this out.",progs:['FF','7FA','Shopify'],delay:'+1 day',hardclose:true},
+];
+
+const amsData = {
+  mmo:[
+    {name:'FunnelFreedom',desc:'High-ticket commissions. Pre-built funnels. #1 in your stack.',rev:'$500–$2,000/mo',c:'#00D97E',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75'},
+    {name:'7 Figure Accelerator',desc:'Community + training. $500–$1,000 commissions per sale.',rev:'$1,000–$3,000/mo',c:'#8B5CF6',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912'},
+    {name:'ClickFunnels Affiliate',desc:'Recurring SaaS + one-time. Strong brand recognition.',rev:'$200–$800/mo',c:'#F5A623',link:'#'},
+    {name:'Systeme.io Affiliate',desc:'Free-to-start funnel tool. 40% lifetime commissions.',rev:'$100–$500/mo',c:'#3B82F6',link:'#'},
+  ],
+  ai:[
+    {name:'Claude / Anthropic',desc:'Promote Claude Pro. Recurring SaaS commissions.',rev:'$50–$300/mo',c:'#06B6D4',link:'#'},
+    {name:'Jasper AI',desc:'Content AI — 30% recurring. Strong in MMO/biz niche.',rev:'$100–$500/mo',c:'#8B5CF6',link:'#'},
+    {name:'Bolt.new',desc:'AI web builder. Promote via tutorials. Growing fast.',rev:'$80–$400/mo',c:'#F5A623',link:'#'},
+    {name:'GetResponse AI',desc:'Email + landing page AI. Up to 33% recurring.',rev:'$120–$600/mo',c:'#00D97E',link:'#'},
+  ],
+  fitness:[
+    {name:'Clickbank Health',desc:'Weight loss / supplements. $50–$150 commissions.',rev:'$200–$800/mo',c:'#FF4757',link:'#'},
+    {name:'MyFitnessPal Affiliate',desc:'App subscriptions. High conversion volume.',rev:'$100–$300/mo',c:'#00D97E',link:'#'},
+    {name:'Fitness Course Creator',desc:'Your own AI-powered workout planning course.',rev:'$500–$1,500/mo',c:'#F5A623',link:'#'},
+    {name:'Coaching Program',desc:'$97–$297/month recurring accountability.',rev:'$400–$1,200/mo',c:'#3B82F6',link:'#'},
+  ],
+  crypto:[
+    {name:'Binance Affiliate',desc:'Up to 50% on trading fees. Large US audience.',rev:'$200–$1,000/mo',c:'#F5A623',link:'#'},
+    {name:'Ledger Hardware',desc:'$10–$25/sale. High trust, converts well.',rev:'$150–$600/mo',c:'#E8EDF5',link:'#'},
+    {name:'Crypto Education',desc:'Promote crypto courses. $100–$300 commissions.',rev:'$300–$900/mo',c:'#8B5CF6',link:'#'},
+    {name:'DeFi Tools',desc:'Early mover advantage. Recurring potential.',rev:'$100–$500/mo',c:'#06B6D4',link:'#'},
+  ],
+};
+
+const products = [
+  {icon:'🤖',name:'AI Toolkit Bundle',price:'$47',sales:18,maxSales:18},
+  {icon:'📧',name:'Email Swipe Files',price:'$27',sales:9,maxSales:18},
+  {icon:'🔧',name:'Funnel Templates',price:'$37',sales:14,maxSales:18},
+  {icon:'📱',name:'TikTok Script Pack',price:'$17',sales:22,maxSales:22},
+  {icon:'📚',name:'Course Blueprint',price:'$97',sales:6,maxSales:22},
+];
+
+const tiktokScripts = [
+  {time:'0 – 3s',type:'HOOK',typeColor:'var(--red)',script:"Don't scroll. [pause: 0.4s] This A-I is about to replace YOU.",note:"Tone: Urgent/Alarming · Speed: 1.1x · 🚨 DON'T SCROLL on screen · Pop-in animation"},
+  {time:'3 – 8s',type:'PROOF',typeColor:'var(--amber)',script:"Twelve million jobs. [pause: 0.3s] Already gone in 2024. [pause: 0.4s] Your role? [pause: 0.3s] Probably next.",note:'Tone: Serious/Direct · Stat on screen: "12,000,000 jobs gone in 2024" · Source visible'},
+  {time:'8 – 15s',type:'PIVOT',typeColor:'var(--purple)',script:"I didn't wait to get replaced. [pause: 0.4s] I used A-I to build three thousand dollars a month before it happened.",note:'Tone: Confident/Personal · "$3,000/month → built with AI 🤖" on screen · Slide-in animation'},
+  {time:'15 – 19s',type:'CTA',typeColor:'var(--blue)',script:"Free blueprint in my bio [pause: 0.3s] — income A-I can't touch.",note:"Tone: Helpful/Friendly · '🔗 Free blueprint → link in bio' · Arrow pointing down"},
+  {time:'19 – 22s',type:'ENGAGE',typeColor:'var(--green)',script:"Is YOUR job safe from A-I? [pause: 0.5s] Comment YES [pause: 0.2s] or NO below.",note:'Tone: Direct/Engaging · "Is YOUR job safe? 👇 YES or NO" · Max size · Stay 3s'},
+];
+
+const hooks = [
+  {num:1,score:92,text:"Your job has a 73% chance of being automated. Here's what I did about it.",why:"Chiffre précis + histoire personnelle + curiosité gap"},
+  {num:2,score:88,text:"I didn't fight AI. I used it to replace my own salary first.",why:"Twist contre-intuitif — fort taux de completion"},
+  {num:3,score:81,text:"In 18 months, these 5 jobs won't exist. Is yours on the list?",why:"Curiosité gap maximal — force les 3 premières secondes"},
+  {num:4,score:79,text:"I work a government job AND earn $3K/month online using AI.",why:"Crédibilité max — relatable pour votre audience"},
+  {num:5,score:76,text:"Stop trying to AI-proof your job. Build income AI can't replace instead.",why:"Polarisant — commentaires des deux bords"},
+];
+
+const checkCritical = [
+  'Créer les 10 tags CRM (hot-lead-ff, hot-lead-7fa, buyer-ff, buyer-7fa, clicked-ff, clicked-7fa, clicked-shopify-hl, cold-hotlead, hot-hot, no-open-hot-d3)',
+  'Configurer exclusion automatique buyer-ff / buyer-7fa / buyer-shopify',
+  'Remplacer YOUR_SHOPIFY_URL par shop.nextgenaimake.com dans tous les liens',
+  'Configurer relance D3b (condition 0 ouverture D1+D2+D3 · délai 4h)',
+  'Activer tracking ouverture + clic sur chaque email',
+  'Tester séquence complète sur adresse personnelle avant lancement',
+];
+const checkImportant = [
+  'Connecter pixel shop.nextgenaimake.com → tag buyer-shopify automatique',
+  'Configurer SMS/WhatsApp si numéros disponibles (relance D6)',
+  'Paramétrer notification manuelle pour tag hot-hot (click rate >25%)',
+  'Mettre à jour bio TikTok → lien lead magnet Bolt',
+  'Ajouter animation typewriter au script TikTok dans CapCut',
+  'Ajouter question finale "Is YOUR job safe? YES or NO 👇" à la vidéo',
+];
+const checkOptimize = [
+  'Lancer Meta Ads Lookalike sur segment buyer-ff dès conversion confirmée',
+  'Publier TikTok entre 18h–21h EST (minuit–3h heure belge)',
+  'Répondre aux 5 premiers commentaires TikTok dans les 30 min',
+  'Créer séquence onboarding 3 emails pour acheteurs FF/7FA',
+];
+
+// ============ RENDER FUNCTIONS ============
+
+function renderDashboard(){
+  // Funnel
+  const steps = [
+    {l:'Leads opt-in',n:247,pct:100,c:'var(--blue)'},
+    {l:'Emails opened',n:198,pct:80,c:'var(--purple)'},
+    {l:'Clicked FF',n:89,pct:36,c:'var(--green)'},
+    {l:'Clicked 7FA',n:62,pct:25,c:'var(--amber)'},
+    {l:'Hot leads',n:31,pct:13,c:'var(--red)'},
+    {l:'Buyers',n:14,pct:6,c:'var(--green)'},
+  ];
+  document.getElementById('funnel-viz').innerHTML = steps.map(s=>`
+    <div class="funnel-step" style="background:${s.c}18;border:1px solid ${s.c}30;width:${Math.max(s.pct,20)}%">
+      <span class="funnel-step-label" style="color:${s.c};font-size:11px">${s.l}</span>
+      <span class="funnel-step-val" style="color:${s.c};font-size:12px">${s.n}<span class="funnel-pct">${s.pct}%</span></span>
+    </div>`).join('');
+
+  // Alerts
+  const alerts = [
+    {type:'a-red',icon:'!',t:'D3b — 12 contacts, no open D1+D2+D3',d:'Trigger relance D3b in Nexus now',btn:'Fix'},
+    {type:'a-amber',icon:'!',t:'31 hot leads — no purchase yet',d:'Launch HotLeads-FF7FA-Followup sequence',btn:'Launch'},
+    {type:'a-green',icon:'✓',t:'FunnelFreedom — $1,640 commissions',d:'Top performer. Scale Meta Ads Lookalike.',btn:'Scale'},
+    {type:'a-green',icon:'✓',t:'7FA growing +31% vs last period',d:'Phase 2 performing well.',btn:'View'},
+  ];
+  document.getElementById('alert-list').innerHTML = alerts.map(a=>`
+    <div class="alert ${a.type}">
+      <div class="alert-icon" style="background:${a.type==='a-red'?'var(--red)':a.type==='a-amber'?'var(--amber)':'var(--green)'};color:#000">${a.icon}</div>
+      <div class="alert-body" style="flex:1"><div class="alert-title">${a.t}</div><div class="alert-desc">${a.d}</div></div>
+      <button class="alert-btn" style="color:${a.type==='a-red'?'var(--red)':a.type==='a-amber'?'var(--amber)':'var(--green)'};border-color:${a.type==='a-red'?'var(--red)':a.type==='a-amber'?'var(--amber)':'var(--green)'}" onclick="showPage('hotleads')">${a.btn} →</button>
+    </div>`).join('');
+
+  // Revenue table
+  document.getElementById('revenue-table').innerHTML = `<thead><tr><th>Program</th><th>Revenue</th><th>Clicks</th><th>Conv.</th><th>Status</th></tr></thead><tbody>`
+    + programs.map(p=>`<tr>
+      <td><div class="prog-name"><div class="prog-dot" style="background:${p.dotColor}"></div><div><div class="prog-title">${p.name}</div><div class="prog-sub">${p.cat}</div></div></div></td>
+      <td><div class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:${p.rev/1640*100}%;background:${p.dotColor}"></div></div><div class="bar-num">$${p.rev.toLocaleString()}</div></div></td>
+      <td><span style="font-family:'DM Mono',monospace;font-size:12px">${p.clicks}</span></td>
+      <td><span style="font-family:'DM Mono',monospace;font-size:12px">${p.conv}%</span></td>
+      <td><span class="tag ${p.tagClass}">${p.tag}</span></td>
+    </tr>`).join('') + '</tbody>';
+
+  // Scenarios
+  const sc = [
+    {pct:'5%',rev:'~$1,000',desc:'2 FF sales',c:'var(--muted)'},
+    {pct:'10%',rev:'~$2,700',desc:'3 FF + $200 Shopify',c:'var(--amber)'},
+    {pct:'15% 🎯',rev:'~$4,650',desc:'FF + 7FA + Shopify',c:'var(--green)'},
+    {pct:'25%',rev:'~$9,200+',desc:'hot-hot + coaching',c:'var(--purple)'},
+  ];
+  document.getElementById('scenarios').innerHTML = sc.map(s=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--bg3);border-radius:6px">
+      <span style="font-size:12px;color:var(--muted)">${s.pct} conversion · ${s.desc}</span>
+      <span style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:${s.c}">${s.rev}</span>
+    </div>`).join('');
+}
+
+function renderSequences(){
+  document.getElementById('main-seq').innerHTML = emails14.map(e=>`
+    <div class="seq-row" onclick="window.open('${e.link}','_blank')">
+      <div class="seq-day" style="background:${e.phase===1?'var(--green-dim)':'var(--purple-dim)'};color:${e.phase===1?'var(--green)':'var(--purple)'}">${e.day}</div>
+      <div class="seq-info">
+        <div class="seq-subj">${e.subj}</div>
+        <div class="seq-pre">${e.pre}</div>
+      </div>
+      <div class="seq-links">
+        <a class="seq-link ${e.prog==='FF'?'tag-green':e.prog==='7FA'?'tag-purple':'tag-gray'}" href="${e.link}" target="_blank" style="text-decoration:none" onclick="event.stopPropagation()">${e.prog} →</a>
+      </div>
+      <div class="open-rate">${e.open}% open</div>
+    </div>`).join('');
+}
+
+function renderPrograms(){
+  document.getElementById('program-cards').innerHTML = programs.map(p=>`
+    <div class="card" style="border-top:2px solid ${p.dotColor}">
+      <div class="card-header"><div class="card-title">${p.name}</div><span class="tag ${p.tagClass}">${p.tag}</span></div>
+      <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:${p.color};margin-bottom:4px">$${p.rev.toLocaleString()}</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:12px">${p.cat} · ${p.clicks} clicks · ${p.conv}% conv.</div>
+      <a href="${p.link}" target="_blank" class="btn btn-ghost" style="width:100%;justify-content:center;text-decoration:none;display:flex">View Program ↗</a>
+    </div>`).join('');
+
+  document.getElementById('perf-table').innerHTML = `<thead><tr><th>Program</th><th>Email Clicks</th><th>Ad Clicks</th><th>Shopify</th><th>Affil. Rev</th><th>Engagement</th></tr></thead><tbody>`
+    + programs.map(p=>`<tr>
+      <td><div class="prog-name"><div class="prog-dot" style="background:${p.dotColor}"></div><span style="font-size:12px;font-weight:500">${p.name}</span></div></td>
+      <td><div class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:${p.clicks/312*100}%;background:var(--blue)"></div></div><div class="bar-num">${Math.round(p.clicks*0.6)}</div></div></td>
+      <td><span style="font-family:'DM Mono',monospace;font-size:11px">${p.clicks}</span></td>
+      <td><span style="font-family:'DM Mono',monospace;font-size:11px">${p.cat==='Shopify'?'$'+p.rev:'—'}</span></td>
+      <td><span style="font-family:'DM Mono',monospace;font-size:11px">${p.cat!=='Shopify'?'$'+p.rev:'—'}</span></td>
+      <td><span class="tag ${p.conv>4?'tag-green':p.conv>2?'tag-amber':'tag-red'}">${Math.round(p.conv*6)}%</span></td>
+    </tr>`).join('')+'</tbody>';
+}
+
+function renderHotLeads(){
+  document.getElementById('hl-seq').innerHTML = hlEmails.map(e=>`
+    <div class="seq-row" onclick="showModal('modal-script')">
+      <div class="seq-day" style="background:var(--amber-dim);color:var(--amber)">${e.day}</div>
+      <div class="seq-info">
+        <div class="seq-subj">${e.subj}</div>
+        <div class="seq-pre">${e.pre}</div>
+      </div>
+      <div class="seq-links">
+        ${e.progs.map(p=>`<span class="tag ${p==='FF'?'tag-green':p==='7FA'?'tag-purple':'tag-blue'}">${p}</span>`).join('')}
+        ${e.relance?'<span class="tag tag-amber">+Relance</span>':''}
+        ${e.sms?'<span class="tag tag-blue">+SMS</span>':''}
+        ${e.hardclose?'<span class="tag tag-red">Hard Close</span>':''}
+      </div>
+      <div class="open-rate">${e.delay}</div>
+    </div>`).join('');
+}
+
+function renderAMS(niche='mmo'){
+  const data = amsData[niche];
+  document.getElementById('ams-grid').innerHTML = data.map(d=>`
+    <div class="ams-card" style="background:${d.c}12;border-color:${d.c}30">
+      <div class="ams-name" style="color:${d.c}">${d.name}</div>
+      <div class="ams-desc">${d.desc}</div>
+      <div class="ams-rev" style="color:${d.c}">${d.rev}</div>
+      <a href="${d.link}" target="_blank" class="ams-cta" style="background:${d.c};color:#000;text-decoration:none">${d.link==='#'?'Explore →':'Join now →'}</a>
+    </div>`).join('');
+}
+
+function renderShopify(){
+  document.getElementById('product-grid').innerHTML = products.map(p=>`
+    <div class="product-card">
+      <div class="product-icon">${p.icon}</div>
+      <div class="product-name">${p.name}</div>
+      <div class="product-price">${p.price}</div>
+      <div class="product-sales">${p.sales} sales this month</div>
+      <div class="product-bar"><div class="product-bar-fill" style="width:${p.sales/p.maxSales*100}%"></div></div>
+    </div>`).join('');
+}
+
+function renderTikTok(){
+  document.getElementById('tiktok-scripts').innerHTML = tiktokScripts.map(s=>`
+    <div class="script-row">
+      <div class="script-meta">
+        <span class="tag" style="background:${s.typeColor}20;color:${s.typeColor}">${s.type}</span>
+        <span class="script-frame">${s.time}</span>
+      </div>
+      <div class="script-text">"${s.script}"</div>
+      <div class="script-note">⚙️ ${s.note}</div>
+    </div>`).join('');
+
+  document.getElementById('hook-list').innerHTML = hooks.map(h=>`
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 14px;display:flex;align-items:flex-start;gap:12px">
+      <div style="min-width:32px;height:32px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);flex-shrink:0">#${h.num}</div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px">${h.text}</div>
+        <div style="font-size:11px;color:var(--muted)">${h.why}</div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:12px;font-weight:600;color:${h.score>=88?'var(--green)':h.score>=80?'var(--amber)':'var(--blue)'};flex-shrink:0">${h.score}/100</div>
+    </div>`).join('');
+}
+
+function renderChecklist(){
+  let total = 0, done = 0;
+  function renderGroup(items, containerId){
+    document.getElementById(containerId).innerHTML = items.map((item,i)=>{
+      total++;
+      return `<div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <span>${item}</span>
+      </div>`;
+    }).join('');
+  }
+  renderGroup(checkCritical,'check-critical');
+  renderGroup(checkImportant,'check-important');
+  renderGroup(checkOptimize,'check-optimize');
+  updateChecklistProgress();
+}
+
+function toggleCheck(el){
+  el.querySelector('.check-box').classList.toggle('done');
+  updateChecklistProgress();
+}
+
+function updateChecklistProgress(){
+  const all = document.querySelectorAll('.check-box');
+  const done = document.querySelectorAll('.check-box.done').length;
+  const el = document.getElementById('checklist-progress');
+  if(el){
+    el.textContent = `${done} / ${all.length} complete`;
+    el.className = `tag ${done===all.length?'tag-green':done>all.length/2?'tag-amber':'tag-red'}`;
+  }
+}
+
+// ============ NAVIGATION ============
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  const navMap = {dashboard:0,sequences:1,programs:2,hotleads:3,ams:4,shopify:5,tiktok:6,checklist:7};
+  const items = document.querySelectorAll('.nav-item');
+  if(navMap[id]!==undefined && items[navMap[id]]) items[navMap[id]].classList.add('active');
+  // Lazy render
+  if(id==='ams') renderAMS(document.getElementById('niche-sel').value);
+  if(id==='shopify') renderShopify();
+  if(id==='tiktok') renderTikTok();
+  if(id==='checklist') renderChecklist();
+  if(id==='sequences') renderSequences();
+  if(id==='programs') renderPrograms();
+  if(id==='hotleads') renderHotLeads();
+}
+
+// ============ LAUNCH SEQUENCE ============
+let launched = false;
+function launchSequence(){
+  if(launched) return;
+  launched = true;
+  document.getElementById('launch-btn').textContent = '✓ Launched';
+  document.getElementById('launch-btn').style.background = 'var(--green)';
+  document.getElementById('launch-count').innerHTML = '<span style="color:var(--green)">✓ Sequence active — 31 contacts entering at 9:15 AM EST tomorrow</span>';
+  let o=0,c=0,v=0;
+  const t = setInterval(()=>{
+    o=Math.min(o+1.5,68); c=Math.min(c+0.7,28); v=Math.min(v+0.35,14);
+    const hlOpen=document.getElementById('hl-open');
+    const hlClick=document.getElementById('hl-click');
+    const hlConv=document.getElementById('hl-conv');
+    if(hlOpen) hlOpen.textContent=Math.round(o)+'%';
+    if(hlClick) hlClick.textContent=Math.round(c)+'%';
+    if(hlConv) hlConv.textContent=v.toFixed(1)+'%';
+    if(o>=68) clearInterval(t);
+  },30);
+}
+
+// ============ MODALS ============
+function showModal(id){document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
+
+function copyModalScript(){
+  const txt = document.getElementById('modal-script-text').textContent;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const btn = event.target;
+    btn.textContent = '✓ Copied to clipboard!';
+    setTimeout(()=>btn.textContent='Copy Script to Clipboard',2000);
+  });
+}
+
+// ============ INIT ============
+renderDashboard();
+</script>
+</body>
+</html>
