@@ -1,0 +1,296 @@
+.content-page {
+  padding: 16px;
+}
+
+.content-page .header {
+  margin-bottom: 24px;
+}
+
+.content-page .header h1 {
+  font-size: 24px;
+}
+
+.content-page .header p {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.section-title h2 {
+  font-size: 18px;
+}
+
+.youtube-section {
+  margin-bottom: 24px;
+}
+
+.youtube-card {
+  background: var(--bg-secondary);
+  border: 1px solid rgba(255, 0, 0, 0.2);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.yt-stat {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+}
+
+.yt-stat:last-of-type {
+  border-bottom: none;
+}
+
+.yt-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--bg-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.yt-content {
+  flex: 1;
+}
+
+.yt-content small {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.yt-content strong {
+  display: block;
+  font-size: 18px;
+}
+
+.editable {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.editable svg {
+  color: var(--text-muted);
+}
+
+.edit-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.edit-row input {
+  flex: 1;
+  background: var(--bg-tertiary);
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.yt-studio-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  background: #ff0000;
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  margin-top: 16px;
+}
+
+.calendar-section {
+  margin-bottom: 24px;
+}
+
+.calendar-subtitle {
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+
+.week-grid {
+  display: flex;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 8px;
+}
+
+.day-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 4px;
+  border-radius: 10px;
+  transition: background 0.2s;
+}
+
+.day-column.selected {
+  background: rgba(0, 212, 170, 0.15);
+}
+
+.day-label {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.day-column.selected .day-label {
+  color: var(--accent-primary);
+}
+
+.day-dots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3px;
+  min-height: 20px;
+}
+
+.event-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.event-dot.empty {
+  background: var(--border-color);
+}
+
+.more {
+  font-size: 8px;
+  color: var(--text-muted);
+}
+
+.event-count {
+  font-size: 10px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.selected-day {
+  background: var(--bg-secondary);
+  border: 1px solid rgba(0, 212, 170, 0.3);
+  border-radius: 16px;
+  padding: 16px;
+  margin-top: 12px;
+}
+
+.selected-day h3 {
+  color: var(--accent-primary);
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.event-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-tertiary);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+
+.event-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.event-title {
+  flex: 1;
+  font-size: 14px;
+}
+
+.add-event-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.add-event-form input {
+  flex: 1;
+  background: var(--bg-tertiary);
+  border: none;
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: white;
+  font-size: 14px;
+}
+
+.type-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.type-buttons button {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--accent-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+}
+
+.add-btn:disabled {
+  background: var(--border-color);
+  color: var(--text-muted);
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
