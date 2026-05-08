@@ -30,6 +30,24 @@ api_router = APIRouter(prefix="/api")
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
+def _parse_allowed_origins() -> List[str]:
+    """Read ALLOWED_ORIGINS env var (comma-separated) with sensible defaults.
+
+    Examples:
+      ALLOWED_ORIGINS=https://nexus-ai.vercel.app,https://nexus-ai-git-main.vercel.app
+    """
+    raw = os.environ.get("ALLOWED_ORIGINS", "").strip()
+    defaults = [
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "http://127.0.0.1:3000",
+    ]
+    if not raw:
+        return defaults
+    custom = [o.strip().rstrip("/") for o in raw.split(",") if o.strip()]
+    return list(dict.fromkeys(defaults + custom))  # dedupe, keep order
+
 # ======================= MODELS =======================
 
 class Product(BaseModel):
@@ -220,6 +238,15 @@ async def root():
 @api_router.get("/health")
 async def health():
     return {"status": "healthy", "timestamp": datetime.utcnow().isoformat()}
+
+@api_router.get("/ping")
+async def ping():
+    """Lightweight keep-alive endpoint for UptimeRobot (no DB call).
+
+    Configure UptimeRobot to ping this every 5 min to prevent Render free
+    tier from sleeping after 15 min of inactivity.
+    """
+    return {"pong": True}
 
 # Dashboard Endpoints
 @api_router.get("/dashboard/stats", response_model=DashboardStats)
@@ -525,8 +552,9 @@ app.include_router(api_router)
 
 app.add_middleware(
     CORSMiddleware,
+    allow_origins=_parse_allowed_origins(),
+    allow_origin_regex=r"https://.*\.vercel\.app",  # any *.vercel.app preview URL
     allow_credentials=True,
-    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )

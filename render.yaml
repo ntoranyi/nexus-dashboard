@@ -1,0 +1,27 @@
+# Render.com Infrastructure-as-Code config
+# Deploy with: https://render.com/deploy?repo=<YOUR_GITHUB_REPO_URL>
+# Or: dashboard → New + → Blueprint → connect repo (auto-detects this file)
+
+services:
+  - type: web
+    name: nexus-ai-backend
+    runtime: python
+    plan: free            # upgrade to 'starter' ($7/mo) for always-on (no cold starts)
+    region: frankfurt     # change to oregon / singapore / ohio if closer to your users
+    rootDir: backend
+    branch: main
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn server:app --host 0.0.0.0 --port $PORT"
+    healthCheckPath: /api/health
+    autoDeploy: true      # auto-redeploy on every push to main
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.10
+      - key: MONGO_URL
+        sync: false       # set manually in Render dashboard (sensitive)
+      - key: ANTHROPIC_API_KEY
+        sync: false       # set manually in Render dashboard (sensitive)
+      - key: DB_NAME
+        value: nexus_ai
+      - key: ALLOWED_ORIGINS
+        sync: false       # comma-separated, e.g. https://nexus-ai.vercel.app
