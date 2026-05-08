@@ -20,8 +20,8 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ.get('DB_NAME', 'nexus_ai')]
 
-# LLM Key
-EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY', '')
+# LLM Key - Using Anthropic Claude
+ANTHROPIC_API_KEY = os.environ.get('ANTHROPIC_API_KEY', '')
 
 app = FastAPI(title="NEXUS AI - 7 Figure Ecommerce Intelligence")
 api_router = APIRouter(prefix="/api")
@@ -342,12 +342,12 @@ async def generate_ad_script(request: GenerateScriptRequest):
     prompt = concept_prompts.get(request.concept_type, concept_prompts["Problem Solution"])
     
     try:
-        if EMERGENT_LLM_KEY:
+        if ANTHROPIC_API_KEY:
             chat = LlmChat(
-                api_key=EMERGENT_LLM_KEY,
+                api_key=ANTHROPIC_API_KEY,
                 session_id=f"nexus-ads-{uuid.uuid4()}",
                 system_message="Tu es un expert en publicité ecommerce. Tu crées des scripts viraux pour TikTok et Meta. Réponds uniquement en JSON valide."
-            ).with_model("openai", "gpt-5.2")
+            ).with_model("anthropic", "claude-sonnet-4-5-20250929")
             
             user_message = UserMessage(text=prompt)
             response = await chat.send_message(user_message)
@@ -359,10 +359,36 @@ async def generate_ad_script(request: GenerateScriptRequest):
                 json_start = response.find('{')
                 json_end = response.rfind('}') + 1
                 if json_start != -1 and json_end > json_start:
-                    ai_data = json.loads(response[json_start:json_end])
+                    raw_data = json.loads(response[json_start:json_end])
+                    
+                    # Helper to convert complex objects to strings
+                    def to_string(val):
+                        if isinstance(val, str):
+                            return val
+                        elif isinstance(val, dict):
+                            return json.dumps(val, ensure_ascii=False) if len(val) > 3 else " - ".join(str(v) for v in val.values())
+                        elif isinstance(val, list):
+                            return [to_string(item) for item in val]
+                        return str(val)
+                    
+                    def to_string_list(val):
+                        if isinstance(val, list):
+                            return [to_string(item) if isinstance(item, (dict, list)) else str(item) for item in val]
+                        return [str(val)]
+                    
+                    ai_data = {
+                        "hook": to_string(raw_data.get("hook", "")) if isinstance(raw_data.get("hook"), str) else str(raw_data.get("hook", "")),
+                        "script": to_string(raw_data.get("script", "")) if isinstance(raw_data.get("script"), str) else json.dumps(raw_data.get("script", {}), ensure_ascii=False),
+                        "voiceover": to_string(raw_data.get("voiceover", "")) if isinstance(raw_data.get("voiceover"), str) else " | ".join([v.get("text", str(v)) if isinstance(v, dict) else str(v) for v in raw_data.get("voiceover", [])]),
+                        "scenes": to_string_list(raw_data.get("scenes", [])),
+                        "captions": to_string_list(raw_data.get("captions", [])),
+                        "hashtags": to_string_list(raw_data.get("hashtags", [])),
+                        "cta": to_string(raw_data.get("cta", "")) if isinstance(raw_data.get("cta"), str) else raw_data.get("cta", {}).get("primary", str(raw_data.get("cta", "")))
+                    }
                 else:
                     raise ValueError("No JSON found")
-            except:
+            except Exception as parse_err:
+                logger.warning(f"JSON parse warning: {parse_err}")
                 ai_data = {
                     "hook": "Ce produit a changé ma vie!",
                     "script": response[:500] if response else "Script généré",
@@ -452,12 +478,12 @@ async def chat_with_nexus(request: ChatRequest):
     Réponds toujours en français de manière actionnable et concise."""
     
     try:
-        if EMERGENT_LLM_KEY:
+        if ANTHROPIC_API_KEY:
             chat = LlmChat(
-                api_key=EMERGENT_LLM_KEY,
+                api_key=ANTHROPIC_API_KEY,
                 session_id=request.session_id,
                 system_message=system_prompt
-            ).with_model("openai", "gpt-5.2")
+            ).with_model("anthropic", "claude-sonnet-4-5-20250929")
             
             user_message = UserMessage(text=request.message)
             response = await chat.send_message(user_message)
