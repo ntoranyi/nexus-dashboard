@@ -7,6 +7,10 @@ import {
   TouchableOpacity,
   RefreshControl,
   ActivityIndicator,
+  TextInput,
+  Modal,
+  Alert,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -15,6 +19,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
 const CHECKLIST_STORAGE_KEY = 'nexus_launch_checklist';
+const KPI_STORAGE_KEY = 'nexus_kpi_data';
+const REVENUE_LOG_STORAGE_KEY = 'nexus_revenue_log';
+const MONTHLY_TARGET_KEY = 'nexus_monthly_target';
 
 const LAUNCH_CHECKLIST_ITEMS = [
   { id: 1, text: 'Créer compte Shopify', category: 'Setup' },
@@ -35,15 +42,22 @@ const LAUNCH_CHECKLIST_ITEMS = [
   { id: 16, text: 'Lancer première campagne', category: 'Launch' },
 ];
 
-interface DashboardStats {
-  total_sales: number;
-  conversion_rate: number;
-  active_products: number;
-  winning_ads: number;
-  daily_revenue: number;
-  monthly_revenue: number;
-  top_product: string;
-  alerts: string[];
+const AFFILIATE_PROGRAMS = ['FF', '7FA', 'Shopify', 'Other'];
+
+interface KPIData {
+  revenue: number;
+  leads: number;
+  subscribers: number;
+  clicks: number;
+  shopifyRevenue: number;
+}
+
+interface RevenueEntry {
+  id: string;
+  date: string;
+  program: string;
+  amount: number;
+  notes: string;
 }
 
 interface DailyAction {
@@ -56,27 +70,87 @@ interface DailyAction {
   recommended_budget: number | null;
 }
 
+const DEFAULT_KPI: KPIData = {
+  revenue: 4187,
+  leads: 31,
+  subscribers: 247,
+  clicks: 496,
+  shopifyRevenue: 1840,
+};
+
 export default function DashboardScreen() {
-  const [stats, setStats] = useState<DashboardStats | null>(null);
   const [actions, setActions] = useState<DailyAction[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
   const [showAllChecklist, setShowAllChecklist] = useState(false);
+  
+  // Editable KPIs
+  const [kpiData, setKpiData] = useState<KPIData>(DEFAULT_KPI);
+  const [editingKPI, setEditingKPI] = useState<string | null>(null);
+  const [tempKPIValue, setTempKPIValue] = useState('');
+  
+  // Revenue Logger
+  const [revenueEntries, setRevenueEntries] = useState<RevenueEntry[]>([]);
+  const [monthlyTarget, setMonthlyTarget] = useState(10000);
+  const [showRevenueModal, setShowRevenueModal] = useState(false);
+  const [showRevenueList, setShowRevenueList] = useState(false);
+  const [newRevenue, setNewRevenue] = useState({
+    date: new Date().toISOString().split('T')[0],
+    program: 'FF',
+    amount: '',
+    notes: '',
+  });
+  const [editingTarget, setEditingTarget] = useState(false);
+  const [tempTarget, setTempTarget] = useState('');
 
-  // Load checklist state from AsyncStorage
+  // Load all data from AsyncStorage
   useEffect(() => {
-    loadChecklistState();
+    loadAllData();
   }, []);
 
-  const loadChecklistState = async () => {
+  const loadAllData = async () => {
     try {
-      const saved = await AsyncStorage.getItem(CHECKLIST_STORAGE_KEY);
-      if (saved) {
-        setCheckedItems(JSON.parse(saved));
-      }
+      const [checklistData, kpiDataStored, revenueData, targetData] = await Promise.all([
+        AsyncStorage.getItem(CHECKLIST_STORAGE_KEY),
+        AsyncStorage.getItem(KPI_STORAGE_KEY),
+        AsyncStorage.getItem(REVENUE_LOG_STORAGE_KEY),
+        AsyncStorage.getItem(MONTHLY_TARGET_KEY),
+      ]);
+      
+      if (checklistData) setCheckedItems(JSON.parse(checklistData));
+      if (kpiDataStored) setKpiData(JSON.parse(kpiDataStored));
+      if (revenueData) setRevenueEntries(JSON.parse(revenueData));
+      if (targetData) setMonthlyTarget(JSON.parse(targetData));
     } catch (error) {
-      console.error('Error loading checklist:', error);
+      console.error('Error loading data:', error);
+    }
+  };
+
+  const saveKPIData = async (data: KPIData) => {
+    try {
+      await AsyncStorage.setItem(KPI_STORAGE_KEY, JSON.stringify(data));
+      setKpiData(data);
+    } catch (error) {
+      console.error('Error saving KPI data:', error);
+    }
+  };
+
+  const saveRevenueEntries = async (entries: RevenueEntry[]) => {
+    try {
+      await AsyncStorage.setItem(REVENUE_LOG_STORAGE_KEY, JSON.stringify(entries));
+      setRevenueEntries(entries);
+    } catch (error) {
+      console.error('Error saving revenue entries:', error);
+    }
+  };
+
+  const saveMonthlyTarget = async (target: number) => {
+    try {
+      await AsyncStorage.setItem(MONTHLY_TARGET_KEY, JSON.stringify(target));
+      setMonthlyTarget(target);
+    } catch (error) {
+      console.error('Error saving monthly target:', error);
     }
   };
 
@@ -99,17 +173,74 @@ export default function DashboardScreen() {
 
   const checklistProgress = Math.round((checkedItems.length / LAUNCH_CHECKLIST_ITEMS.length) * 100);
 
+  // KPI Editing
+  const startEditingKPI = (key: string, value: number) => {
+    setEditingKPI(key);
+    setTempKPIValue(value.toString());
+  };
+
+  const saveKPIEdit = () => {
+    if (!editingKPI) return;
+    
+    const newValue = parseFloat(tempKPIValue) || 0;
+    const newData = { ...kpiData, [editingKPI]: newValue };
+    saveKPIData(newData);
+    setEditingKPI(null);
+    setTempKPIValue('');
+  };
+
+  // Revenue Logger
+  const addRevenueEntry = () => {
+    if (!newRevenue.amount || parseFloat(newRevenue.amount) <= 0) {
+      Alert.alert('Erreur', 'Veuillez entrer un montant valide');
+      return;
+    }
+
+    const entry: RevenueEntry = {
+      id: Date.now().toString(),
+      date: newRevenue.date,
+      program: newRevenue.program,
+      amount: parseFloat(newRevenue.amount),
+      notes: newRevenue.notes,
+    };
+
+    const updatedEntries = [entry, ...revenueEntries];
+    saveRevenueEntries(updatedEntries);
+    
+    setNewRevenue({
+      date: new Date().toISOString().split('T')[0],
+      program: 'FF',
+      amount: '',
+      notes: '',
+    });
+    setShowRevenueModal(false);
+  };
+
+  const deleteRevenueEntry = (id: string) => {
+    Alert.alert(
+      'Supprimer',
+      'Voulez-vous supprimer cette entrée?',
+      [
+        { text: 'Annuler', style: 'cancel' },
+        {
+          text: 'Supprimer',
+          style: 'destructive',
+          onPress: () => {
+            const updatedEntries = revenueEntries.filter(e => e.id !== id);
+            saveRevenueEntries(updatedEntries);
+          },
+        },
+      ]
+    );
+  };
+
+  const totalLoggedRevenue = revenueEntries.reduce((sum, entry) => sum + entry.amount, 0);
+  const revenueProgress = Math.min((totalLoggedRevenue / monthlyTarget) * 100, 100);
+
   const fetchData = async () => {
     try {
-      const [statsRes, actionsRes] = await Promise.all([
-        fetch(`${API_URL}/api/dashboard/stats`),
-        fetch(`${API_URL}/api/dashboard/actions`),
-      ]);
-      
-      const statsData = await statsRes.json();
+      const actionsRes = await fetch(`${API_URL}/api/dashboard/actions`);
       const actionsData = await actionsRes.json();
-      
-      setStats(statsData);
       setActions(actionsData);
     } catch (error) {
       console.error('Error fetching dashboard:', error);
@@ -125,15 +256,21 @@ export default function DashboardScreen() {
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     await fetchData();
+    await loadAllData();
     setRefreshing(false);
   }, []);
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('fr-FR', {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'EUR',
+      currency: 'USD',
       minimumFractionDigits: 0,
     }).format(value);
+  };
+
+  const formatNumber = (value: number) => {
+    if (value >= 1000) return `${(value / 1000).toFixed(1)}K`;
+    return value.toString();
   };
 
   const getActionIcon = (type: string) => {
@@ -177,6 +314,16 @@ export default function DashboardScreen() {
     }
   };
 
+  const getProgramColor = (program: string) => {
+    switch (program) {
+      case 'FF': return '#ef4444';
+      case '7FA': return '#8b5cf6';
+      case 'Shopify': return '#00d4aa';
+      case 'Other': return '#f59e0b';
+      default: return '#6b7280';
+    }
+  };
+
   const displayedChecklistItems = showAllChecklist 
     ? LAUNCH_CHECKLIST_ITEMS 
     : LAUNCH_CHECKLIST_ITEMS.slice(0, 6);
@@ -191,6 +338,54 @@ export default function DashboardScreen() {
       </SafeAreaView>
     );
   }
+
+  const renderEditableKPI = (
+    key: keyof KPIData,
+    label: string,
+    icon: string,
+    iconColor: string,
+    prefix: string = '',
+    suffix: string = ''
+  ) => {
+    const isEditing = editingKPI === key;
+    const value = kpiData[key];
+
+    return (
+      <View style={styles.statCard}>
+        <View style={styles.statHeader}>
+          <Ionicons name={icon as any} size={22} color={iconColor} />
+          <TouchableOpacity
+            style={styles.editIconButton}
+            onPress={() => startEditingKPI(key, value)}
+          >
+            <Ionicons name="pencil" size={12} color="#6b7280" />
+          </TouchableOpacity>
+        </View>
+        {isEditing ? (
+          <View style={styles.editKPIContainer}>
+            <TextInput
+              style={styles.editKPIInput}
+              value={tempKPIValue}
+              onChangeText={setTempKPIValue}
+              keyboardType="numeric"
+              autoFocus
+              selectTextOnFocus
+            />
+            <TouchableOpacity onPress={saveKPIEdit} style={styles.saveKPIButton}>
+              <Ionicons name="checkmark" size={18} color="#000" />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <TouchableOpacity onPress={() => startEditingKPI(key, value)}>
+            <Text style={styles.statValue}>
+              {prefix}{formatNumber(value)}{suffix}
+            </Text>
+          </TouchableOpacity>
+        )}
+        <Text style={styles.statLabel}>{label}</Text>
+      </View>
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -212,28 +407,157 @@ export default function DashboardScreen() {
           </View>
         </View>
 
-        {/* Stats Grid */}
+        {/* Editable KPI Stats Grid */}
         <View style={styles.statsGrid}>
-          <View style={[styles.statCard, styles.statCardPrimary]}>
-            <Ionicons name="cash" size={24} color="#00d4aa" />
-            <Text style={styles.statValue}>{formatCurrency(stats?.monthly_revenue || 0)}</Text>
-            <Text style={styles.statLabel}>Revenu Mensuel</Text>
+          {renderEditableKPI('revenue', 'Revenue Total', 'cash', '#00d4aa', '$')}
+          {renderEditableKPI('leads', 'Leads', 'people', '#3b82f6')}
+          {renderEditableKPI('subscribers', 'Subscribers', 'mail', '#8b5cf6')}
+          {renderEditableKPI('clicks', 'Clicks', 'finger-print', '#f59e0b')}
+        </View>
+
+        {/* Shopify Revenue - Editable */}
+        <View style={styles.shopifyCard}>
+          <View style={styles.shopifyHeader}>
+            <Ionicons name="bag-handle" size={20} color="#00d4aa" />
+            <Text style={styles.shopifyTitle}>Shopify Revenue</Text>
+            <TouchableOpacity
+              style={styles.editIconButton}
+              onPress={() => startEditingKPI('shopifyRevenue', kpiData.shopifyRevenue)}
+            >
+              <Ionicons name="pencil" size={12} color="#6b7280" />
+            </TouchableOpacity>
           </View>
-          <View style={styles.statCard}>
-            <Ionicons name="trending-up" size={24} color="#3b82f6" />
-            <Text style={styles.statValue}>{stats?.conversion_rate || 0}%</Text>
-            <Text style={styles.statLabel}>Taux Conversion</Text>
+          {editingKPI === 'shopifyRevenue' ? (
+            <View style={styles.editKPIContainer}>
+              <TextInput
+                style={styles.editKPIInputLarge}
+                value={tempKPIValue}
+                onChangeText={setTempKPIValue}
+                keyboardType="numeric"
+                autoFocus
+                selectTextOnFocus
+              />
+              <TouchableOpacity onPress={saveKPIEdit} style={styles.saveKPIButton}>
+                <Ionicons name="checkmark" size={18} color="#000" />
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <TouchableOpacity onPress={() => startEditingKPI('shopifyRevenue', kpiData.shopifyRevenue)}>
+              <Text style={styles.shopifyValue}>{formatCurrency(kpiData.shopifyRevenue)}</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+
+        {/* Revenue Logger Section */}
+        <View style={styles.revenueSection}>
+          <View style={styles.revenueTitleRow}>
+            <Ionicons name="wallet" size={22} color="#00d4aa" />
+            <Text style={styles.sectionTitle}>Revenue Logger</Text>
+            <TouchableOpacity
+              style={styles.addRevenueButton}
+              onPress={() => setShowRevenueModal(true)}
+            >
+              <Ionicons name="add" size={20} color="#000" />
+            </TouchableOpacity>
           </View>
-          <View style={styles.statCard}>
-            <Ionicons name="cube" size={24} color="#f59e0b" />
-            <Text style={styles.statValue}>{stats?.active_products || 0}</Text>
-            <Text style={styles.statLabel}>Produits Actifs</Text>
+
+          {/* Progress towards target */}
+          <View style={styles.targetContainer}>
+            <View style={styles.targetHeader}>
+              <Text style={styles.targetLabel}>Monthly Target</Text>
+              {editingTarget ? (
+                <View style={styles.editTargetRow}>
+                  <TextInput
+                    style={styles.editTargetInput}
+                    value={tempTarget}
+                    onChangeText={setTempTarget}
+                    keyboardType="numeric"
+                    autoFocus
+                  />
+                  <TouchableOpacity
+                    onPress={() => {
+                      saveMonthlyTarget(parseFloat(tempTarget) || 10000);
+                      setEditingTarget(false);
+                    }}
+                  >
+                    <Ionicons name="checkmark-circle" size={22} color="#00d4aa" />
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <TouchableOpacity
+                  style={styles.targetValueRow}
+                  onPress={() => {
+                    setTempTarget(monthlyTarget.toString());
+                    setEditingTarget(true);
+                  }}
+                >
+                  <Text style={styles.targetValue}>{formatCurrency(monthlyTarget)}</Text>
+                  <Ionicons name="pencil" size={12} color="#6b7280" />
+                </TouchableOpacity>
+              )}
+            </View>
+            
+            <View style={styles.revenueProgressContainer}>
+              <View style={styles.revenueProgressBar}>
+                <View style={[styles.revenueProgressFill, { width: `${revenueProgress}%` }]} />
+              </View>
+              <Text style={styles.revenueProgressText}>{revenueProgress.toFixed(0)}%</Text>
+            </View>
+
+            <View style={styles.revenueStats}>
+              <View style={styles.revenueStat}>
+                <Text style={styles.revenueStatLabel}>Logged</Text>
+                <Text style={styles.revenueStatValue}>{formatCurrency(totalLoggedRevenue)}</Text>
+              </View>
+              <View style={styles.revenueStat}>
+                <Text style={styles.revenueStatLabel}>Remaining</Text>
+                <Text style={[styles.revenueStatValue, { color: '#f59e0b' }]}>
+                  {formatCurrency(Math.max(0, monthlyTarget - totalLoggedRevenue))}
+                </Text>
+              </View>
+            </View>
           </View>
-          <View style={styles.statCard}>
-            <Ionicons name="flame" size={24} color="#ef4444" />
-            <Text style={styles.statValue}>{stats?.winning_ads || 0}</Text>
-            <Text style={styles.statLabel}>Winning Ads</Text>
-          </View>
+
+          {/* Recent Entries */}
+          {revenueEntries.length > 0 && (
+            <View style={styles.recentEntriesContainer}>
+              <TouchableOpacity
+                style={styles.recentEntriesHeader}
+                onPress={() => setShowRevenueList(!showRevenueList)}
+              >
+                <Text style={styles.recentEntriesTitle}>
+                  Recent Entries ({revenueEntries.length})
+                </Text>
+                <Ionicons
+                  name={showRevenueList ? 'chevron-up' : 'chevron-down'}
+                  size={16}
+                  color="#6b7280"
+                />
+              </TouchableOpacity>
+
+              {showRevenueList && (
+                <View style={styles.entriesList}>
+                  {revenueEntries.slice(0, 10).map((entry) => (
+                    <View key={entry.id} style={styles.entryItem}>
+                      <View style={[styles.entryProgram, { backgroundColor: `${getProgramColor(entry.program)}20` }]}>
+                        <Text style={[styles.entryProgramText, { color: getProgramColor(entry.program) }]}>
+                          {entry.program}
+                        </Text>
+                      </View>
+                      <View style={styles.entryDetails}>
+                        <Text style={styles.entryAmount}>{formatCurrency(entry.amount)}</Text>
+                        <Text style={styles.entryDate}>{entry.date}</Text>
+                        {entry.notes ? <Text style={styles.entryNotes}>{entry.notes}</Text> : null}
+                      </View>
+                      <TouchableOpacity onPress={() => deleteRevenueEntry(entry.id)}>
+                        <Ionicons name="trash-outline" size={18} color="#ef4444" />
+                      </TouchableOpacity>
+                    </View>
+                  ))}
+                </View>
+              )}
+            </View>
+          )}
         </View>
 
         {/* Launch Checklist */}
@@ -312,36 +636,9 @@ export default function DashboardScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Top Product */}
-        {stats?.top_product && (
-          <View style={styles.topProductCard}>
-            <View style={styles.topProductHeader}>
-              <Ionicons name="trophy" size={20} color="#f59e0b" />
-              <Text style={styles.topProductTitle}>Top Produit</Text>
-            </View>
-            <Text style={styles.topProductName}>{stats.top_product}</Text>
-            <Text style={styles.topProductRevenue}>
-              Revenu Jour: {formatCurrency(stats.daily_revenue)}
-            </Text>
-          </View>
-        )}
-
-        {/* Alerts */}
-        {stats?.alerts && stats.alerts.length > 0 && (
-          <View style={styles.alertsSection}>
-            <Text style={styles.sectionTitle}>Alertes</Text>
-            {stats.alerts.map((alert, index) => (
-              <View key={index} style={styles.alertCard}>
-                <Ionicons name="warning" size={18} color="#f59e0b" />
-                <Text style={styles.alertText}>{alert}</Text>
-              </View>
-            ))}
-          </View>
-        )}
-
         {/* Daily Actions */}
         <View style={styles.actionsSection}>
-          <Text style={styles.sectionTitle}>Actions Prioritaires du Jour</Text>
+          <Text style={styles.sectionTitle}>Actions Prioritaires</Text>
           {actions.map((action) => (
             <TouchableOpacity key={action.id} style={styles.actionCard}>
               <View style={styles.actionHeader}>
@@ -362,18 +659,99 @@ export default function DashboardScreen() {
                   </Text>
                 </View>
               </View>
-              {action.recommended_budget && (
-                <View style={styles.actionFooter}>
-                  <Ionicons name="wallet" size={14} color="#6b7280" />
-                  <Text style={styles.budgetText}>Budget recommandé: {formatCurrency(action.recommended_budget)}</Text>
-                </View>
-              )}
             </TouchableOpacity>
           ))}
         </View>
 
         <View style={styles.bottomPadding} />
       </ScrollView>
+
+      {/* Add Revenue Modal */}
+      <Modal visible={showRevenueModal} animationType="slide" transparent>
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Log Affiliate Commission</Text>
+              <TouchableOpacity onPress={() => setShowRevenueModal(false)}>
+                <Ionicons name="close" size={24} color="#ffffff" />
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView style={styles.modalBody}>
+              {/* Date */}
+              <View style={styles.formGroup}>
+                <Text style={styles.formLabel}>Date</Text>
+                <TextInput
+                  style={styles.formInput}
+                  value={newRevenue.date}
+                  onChangeText={(text) => setNewRevenue({ ...newRevenue, date: text })}
+                  placeholder="YYYY-MM-DD"
+                  placeholderTextColor="#6b7280"
+                />
+              </View>
+
+              {/* Program */}
+              <View style={styles.formGroup}>
+                <Text style={styles.formLabel}>Program</Text>
+                <View style={styles.programButtons}>
+                  {AFFILIATE_PROGRAMS.map((program) => (
+                    <TouchableOpacity
+                      key={program}
+                      style={[
+                        styles.programButton,
+                        newRevenue.program === program && {
+                          backgroundColor: `${getProgramColor(program)}30`,
+                          borderColor: getProgramColor(program),
+                        }
+                      ]}
+                      onPress={() => setNewRevenue({ ...newRevenue, program })}
+                    >
+                      <Text style={[
+                        styles.programButtonText,
+                        newRevenue.program === program && { color: getProgramColor(program) }
+                      ]}>
+                        {program}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+
+              {/* Amount */}
+              <View style={styles.formGroup}>
+                <Text style={styles.formLabel}>Amount ($)</Text>
+                <TextInput
+                  style={styles.formInput}
+                  value={newRevenue.amount}
+                  onChangeText={(text) => setNewRevenue({ ...newRevenue, amount: text })}
+                  placeholder="0.00"
+                  placeholderTextColor="#6b7280"
+                  keyboardType="numeric"
+                />
+              </View>
+
+              {/* Notes */}
+              <View style={styles.formGroup}>
+                <Text style={styles.formLabel}>Notes (optional)</Text>
+                <TextInput
+                  style={[styles.formInput, styles.formTextarea]}
+                  value={newRevenue.notes}
+                  onChangeText={(text) => setNewRevenue({ ...newRevenue, notes: text })}
+                  placeholder="Add notes..."
+                  placeholderTextColor="#6b7280"
+                  multiline
+                  numberOfLines={3}
+                />
+              </View>
+
+              <TouchableOpacity style={styles.submitButton} onPress={addRevenueEntry}>
+                <Ionicons name="add-circle" size={20} color="#000" />
+                <Text style={styles.submitButtonText}>Log Commission</Text>
+              </TouchableOpacity>
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -433,6 +811,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
   },
+  // Stats Grid
   statsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -444,26 +823,97 @@ const styles = StyleSheet.create({
     minWidth: '45%',
     backgroundColor: '#12121a',
     borderRadius: 16,
-    padding: 16,
+    padding: 14,
     borderWidth: 1,
     borderColor: '#1f1f2e',
   },
-  statCardPrimary: {
-    borderColor: '#00d4aa40',
+  statHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  editIconButton: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#1f1f2e',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   statValue: {
     color: '#ffffff',
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
     marginTop: 8,
   },
   statLabel: {
     color: '#6b7280',
-    fontSize: 12,
+    fontSize: 11,
     marginTop: 4,
   },
-  // Launch Checklist Styles
-  checklistSection: {
+  editKPIContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+    gap: 8,
+  },
+  editKPIInput: {
+    flex: 1,
+    backgroundColor: '#1f1f2e',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    color: '#ffffff',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  editKPIInputLarge: {
+    flex: 1,
+    backgroundColor: '#1f1f2e',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    color: '#ffffff',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  saveKPIButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#00d4aa',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  // Shopify Card
+  shopifyCard: {
+    marginHorizontal: 20,
+    marginTop: 12,
+    backgroundColor: '#12121a',
+    borderRadius: 16,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#00d4aa30',
+  },
+  shopifyHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  shopifyTitle: {
+    color: '#00d4aa',
+    fontSize: 14,
+    fontWeight: '600',
+    flex: 1,
+  },
+  shopifyValue: {
+    color: '#ffffff',
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginTop: 8,
+  },
+  // Revenue Logger
+  revenueSection: {
     marginTop: 20,
     marginHorizontal: 20,
     backgroundColor: '#12121a',
@@ -471,6 +921,164 @@ const styles = StyleSheet.create({
     padding: 16,
     borderWidth: 1,
     borderColor: '#00d4aa30',
+  },
+  revenueTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    color: '#ffffff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    flex: 1,
+  },
+  addRevenueButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#00d4aa',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  targetContainer: {
+    marginBottom: 16,
+  },
+  targetHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  targetLabel: {
+    color: '#6b7280',
+    fontSize: 12,
+  },
+  targetValueRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  targetValue: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  editTargetRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  editTargetInput: {
+    backgroundColor: '#1f1f2e',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    color: '#ffffff',
+    fontSize: 14,
+    width: 100,
+  },
+  revenueProgressContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  revenueProgressBar: {
+    flex: 1,
+    height: 12,
+    backgroundColor: '#1f1f2e',
+    borderRadius: 6,
+    overflow: 'hidden',
+  },
+  revenueProgressFill: {
+    height: '100%',
+    backgroundColor: '#00d4aa',
+    borderRadius: 6,
+  },
+  revenueProgressText: {
+    color: '#00d4aa',
+    fontSize: 14,
+    fontWeight: 'bold',
+    width: 45,
+    textAlign: 'right',
+  },
+  revenueStats: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 12,
+  },
+  revenueStat: {},
+  revenueStatLabel: {
+    color: '#6b7280',
+    fontSize: 11,
+  },
+  revenueStatValue: {
+    color: '#00d4aa',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  recentEntriesContainer: {
+    borderTopWidth: 1,
+    borderTopColor: '#1f1f2e',
+    paddingTop: 12,
+  },
+  recentEntriesHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  recentEntriesTitle: {
+    color: '#9ca3af',
+    fontSize: 13,
+  },
+  entriesList: {
+    marginTop: 12,
+    gap: 8,
+  },
+  entryItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#1a1a24',
+    borderRadius: 10,
+    padding: 10,
+    gap: 10,
+  },
+  entryProgram: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+  },
+  entryProgramText: {
+    fontSize: 11,
+    fontWeight: 'bold',
+  },
+  entryDetails: {
+    flex: 1,
+  },
+  entryAmount: {
+    color: '#ffffff',
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  entryDate: {
+    color: '#6b7280',
+    fontSize: 11,
+  },
+  entryNotes: {
+    color: '#9ca3af',
+    fontSize: 11,
+    fontStyle: 'italic',
+  },
+  // Launch Checklist
+  checklistSection: {
+    marginTop: 20,
+    marginHorizontal: 20,
+    backgroundColor: '#12121a',
+    borderRadius: 16,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#1f1f2e',
   },
   checklistHeader: {
     flexDirection: 'row',
@@ -578,62 +1186,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '500',
   },
-  topProductCard: {
-    marginHorizontal: 20,
-    marginTop: 20,
-    backgroundColor: '#12121a',
-    borderRadius: 16,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: '#f59e0b40',
-  },
-  topProductHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  topProductTitle: {
-    color: '#f59e0b',
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  topProductName: {
-    color: '#ffffff',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginTop: 8,
-  },
-  topProductRevenue: {
-    color: '#9ca3af',
-    fontSize: 14,
-    marginTop: 4,
-  },
-  alertsSection: {
-    marginTop: 20,
-    paddingHorizontal: 20,
-  },
-  sectionTitle: {
-    color: '#ffffff',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 12,
-  },
-  alertCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#f59e0b10',
-    borderRadius: 12,
-    padding: 12,
-    marginBottom: 8,
-    borderWidth: 1,
-    borderColor: '#f59e0b30',
-    gap: 10,
-  },
-  alertText: {
-    color: '#f59e0b',
-    fontSize: 13,
-    flex: 1,
-  },
+  // Actions
   actionsSection: {
     marginTop: 20,
     paddingHorizontal: 20,
@@ -641,8 +1194,8 @@ const styles = StyleSheet.create({
   actionCard: {
     backgroundColor: '#12121a',
     borderRadius: 16,
-    padding: 16,
-    marginBottom: 12,
+    padding: 14,
+    marginBottom: 10,
     borderWidth: 1,
     borderColor: '#1f1f2e',
   },
@@ -651,9 +1204,9 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   actionIconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
+    width: 36,
+    height: 36,
+    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -663,14 +1216,14 @@ const styles = StyleSheet.create({
   },
   actionTitle: {
     color: '#ffffff',
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: '600',
   },
   actionDescription: {
     color: '#9ca3af',
-    fontSize: 13,
-    marginTop: 4,
-    lineHeight: 18,
+    fontSize: 12,
+    marginTop: 2,
+    lineHeight: 16,
   },
   priorityBadge: {
     paddingHorizontal: 8,
@@ -678,23 +1231,95 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   priorityText: {
-    fontSize: 10,
+    fontSize: 9,
     fontWeight: 'bold',
   },
-  actionFooter: {
+  bottomPadding: {
+    height: 30,
+  },
+  // Modal
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.85)',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: '#12121a',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    maxHeight: '80%',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#1f1f2e',
+  },
+  modalTitle: {
+    color: '#ffffff',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  modalBody: {
+    padding: 20,
+  },
+  formGroup: {
+    marginBottom: 20,
+  },
+  formLabel: {
+    color: '#9ca3af',
+    fontSize: 13,
+    marginBottom: 8,
+  },
+  formInput: {
+    backgroundColor: '#1a1a24',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    color: '#ffffff',
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: '#2d2d3d',
+  },
+  formTextarea: {
+    minHeight: 80,
+    textAlignVertical: 'top',
+  },
+  programButtons: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  programButton: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 10,
+    backgroundColor: '#1a1a24',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#2d2d3d',
+  },
+  programButtonText: {
+    color: '#9ca3af',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  submitButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 12,
-    paddingTop: 12,
-    borderTopWidth: 1,
-    borderTopColor: '#1f1f2e',
-    gap: 6,
+    justifyContent: 'center',
+    backgroundColor: '#00d4aa',
+    borderRadius: 12,
+    paddingVertical: 16,
+    gap: 8,
+    marginTop: 10,
+    marginBottom: 30,
   },
-  budgetText: {
-    color: '#6b7280',
-    fontSize: 12,
-  },
-  bottomPadding: {
-    height: 20,
+  submitButtonText: {
+    color: '#000000',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
