@@ -10,8 +10,30 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+
+const CHECKLIST_STORAGE_KEY = 'nexus_launch_checklist';
+
+const LAUNCH_CHECKLIST_ITEMS = [
+  { id: 1, text: 'Créer compte Shopify', category: 'Setup' },
+  { id: 2, text: 'Configurer domaine personnalisé', category: 'Setup' },
+  { id: 3, text: 'Installer thème optimisé', category: 'Setup' },
+  { id: 4, text: 'Configurer paiements (Stripe/PayPal)', category: 'Setup' },
+  { id: 5, text: 'Ajouter 5+ produits gagnants', category: 'Produits' },
+  { id: 6, text: 'Optimiser descriptions produits', category: 'Produits' },
+  { id: 7, text: 'Créer collections produits', category: 'Produits' },
+  { id: 8, text: 'Configurer prix et marges', category: 'Produits' },
+  { id: 9, text: 'Créer compte TikTok Business', category: 'Marketing' },
+  { id: 10, text: 'Créer compte Meta Business', category: 'Marketing' },
+  { id: 11, text: 'Installer pixels tracking', category: 'Marketing' },
+  { id: 12, text: 'Préparer 3 creatives vidéo', category: 'Marketing' },
+  { id: 13, text: 'Configurer email marketing', category: 'Automation' },
+  { id: 14, text: 'Créer séquence abandon panier', category: 'Automation' },
+  { id: 15, text: 'Tester processus commande', category: 'QA' },
+  { id: 16, text: 'Lancer première campagne', category: 'Launch' },
+];
 
 interface DashboardStats {
   total_sales: number;
@@ -39,6 +61,43 @@ export default function DashboardScreen() {
   const [actions, setActions] = useState<DailyAction[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [checkedItems, setCheckedItems] = useState<number[]>([]);
+  const [showAllChecklist, setShowAllChecklist] = useState(false);
+
+  // Load checklist state from AsyncStorage
+  useEffect(() => {
+    loadChecklistState();
+  }, []);
+
+  const loadChecklistState = async () => {
+    try {
+      const saved = await AsyncStorage.getItem(CHECKLIST_STORAGE_KEY);
+      if (saved) {
+        setCheckedItems(JSON.parse(saved));
+      }
+    } catch (error) {
+      console.error('Error loading checklist:', error);
+    }
+  };
+
+  const saveChecklistState = async (items: number[]) => {
+    try {
+      await AsyncStorage.setItem(CHECKLIST_STORAGE_KEY, JSON.stringify(items));
+    } catch (error) {
+      console.error('Error saving checklist:', error);
+    }
+  };
+
+  const toggleCheckItem = (id: number) => {
+    const newCheckedItems = checkedItems.includes(id)
+      ? checkedItems.filter(item => item !== id)
+      : [...checkedItems, id];
+    
+    setCheckedItems(newCheckedItems);
+    saveChecklistState(newCheckedItems);
+  };
+
+  const checklistProgress = Math.round((checkedItems.length / LAUNCH_CHECKLIST_ITEMS.length) * 100);
 
   const fetchData = async () => {
     try {
@@ -106,6 +165,22 @@ export default function DashboardScreen() {
     }
   };
 
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case 'Setup': return '#3b82f6';
+      case 'Produits': return '#8b5cf6';
+      case 'Marketing': return '#ec4899';
+      case 'Automation': return '#f59e0b';
+      case 'QA': return '#14b8a6';
+      case 'Launch': return '#00d4aa';
+      default: return '#6b7280';
+    }
+  };
+
+  const displayedChecklistItems = showAllChecklist 
+    ? LAUNCH_CHECKLIST_ITEMS 
+    : LAUNCH_CHECKLIST_ITEMS.slice(0, 6);
+
   if (loading) {
     return (
       <SafeAreaView style={styles.container}>
@@ -159,6 +234,82 @@ export default function DashboardScreen() {
             <Text style={styles.statValue}>{stats?.winning_ads || 0}</Text>
             <Text style={styles.statLabel}>Winning Ads</Text>
           </View>
+        </View>
+
+        {/* Launch Checklist */}
+        <View style={styles.checklistSection}>
+          <View style={styles.checklistHeader}>
+            <View style={styles.checklistTitleRow}>
+              <Ionicons name="checkbox" size={22} color="#00d4aa" />
+              <Text style={styles.sectionTitle}>Launch Checklist</Text>
+            </View>
+            <View style={styles.progressContainer}>
+              <View style={styles.progressBarBg}>
+                <View style={[styles.progressBarFill, { width: `${checklistProgress}%` }]} />
+              </View>
+              <Text style={styles.progressText}>{checklistProgress}%</Text>
+            </View>
+          </View>
+          <Text style={styles.checklistSubtitle}>
+            {checkedItems.length}/{LAUNCH_CHECKLIST_ITEMS.length} tâches complétées
+          </Text>
+          
+          <View style={styles.checklistContainer}>
+            {displayedChecklistItems.map((item) => {
+              const isChecked = checkedItems.includes(item.id);
+              return (
+                <TouchableOpacity
+                  key={item.id}
+                  style={[
+                    styles.checklistItem,
+                    isChecked && styles.checklistItemChecked
+                  ]}
+                  onPress={() => toggleCheckItem(item.id)}
+                  activeOpacity={0.7}
+                >
+                  <View style={[
+                    styles.checkbox,
+                    isChecked && styles.checkboxChecked
+                  ]}>
+                    {isChecked && <Ionicons name="checkmark" size={14} color="#000" />}
+                  </View>
+                  <View style={styles.checklistItemContent}>
+                    <Text style={[
+                      styles.checklistItemText,
+                      isChecked && styles.checklistItemTextChecked
+                    ]}>
+                      {item.text}
+                    </Text>
+                    <View style={[
+                      styles.categoryBadge,
+                      { backgroundColor: `${getCategoryColor(item.category)}20` }
+                    ]}>
+                      <Text style={[
+                        styles.categoryText,
+                        { color: getCategoryColor(item.category) }
+                      ]}>
+                        {item.category}
+                      </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+          
+          <TouchableOpacity
+            style={styles.showMoreButton}
+            onPress={() => setShowAllChecklist(!showAllChecklist)}
+          >
+            <Text style={styles.showMoreText}>
+              {showAllChecklist ? 'Voir moins' : `Voir tout (${LAUNCH_CHECKLIST_ITEMS.length})`}
+            </Text>
+            <Ionicons 
+              name={showAllChecklist ? 'chevron-up' : 'chevron-down'} 
+              size={16} 
+              color="#00d4aa" 
+            />
+          </TouchableOpacity>
         </View>
 
         {/* Top Product */}
@@ -310,6 +461,122 @@ const styles = StyleSheet.create({
     color: '#6b7280',
     fontSize: 12,
     marginTop: 4,
+  },
+  // Launch Checklist Styles
+  checklistSection: {
+    marginTop: 20,
+    marginHorizontal: 20,
+    backgroundColor: '#12121a',
+    borderRadius: 16,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#00d4aa30',
+  },
+  checklistHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  checklistTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  progressContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  progressBarBg: {
+    width: 60,
+    height: 8,
+    backgroundColor: '#1f1f2e',
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  progressBarFill: {
+    height: '100%',
+    backgroundColor: '#00d4aa',
+    borderRadius: 4,
+  },
+  progressText: {
+    color: '#00d4aa',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  checklistSubtitle: {
+    color: '#6b7280',
+    fontSize: 12,
+    marginBottom: 12,
+  },
+  checklistContainer: {
+    gap: 8,
+  },
+  checklistItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#1a1a24',
+    borderRadius: 10,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#2d2d3d',
+  },
+  checklistItemChecked: {
+    backgroundColor: '#00d4aa10',
+    borderColor: '#00d4aa30',
+  },
+  checkbox: {
+    width: 22,
+    height: 22,
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: '#4b5563',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  checkboxChecked: {
+    backgroundColor: '#00d4aa',
+    borderColor: '#00d4aa',
+  },
+  checklistItemContent: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  checklistItemText: {
+    color: '#e5e7eb',
+    fontSize: 13,
+    flex: 1,
+  },
+  checklistItemTextChecked: {
+    color: '#9ca3af',
+    textDecorationLine: 'line-through',
+  },
+  categoryBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 6,
+    marginLeft: 8,
+  },
+  categoryText: {
+    fontSize: 10,
+    fontWeight: '600',
+  },
+  showMoreButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 12,
+    paddingVertical: 8,
+    gap: 4,
+  },
+  showMoreText: {
+    color: '#00d4aa',
+    fontSize: 13,
+    fontWeight: '500',
   },
   topProductCard: {
     marginHorizontal: 20,
