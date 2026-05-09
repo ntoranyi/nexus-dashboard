@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NEXUS AI — Command Center</title>
-<script src="https://js.stripe.com/v3/"></script>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -1638,7 +1637,7 @@ Is YOUR job safe from A-I? [pause: 0.5s] Comment YES [pause: 0.2s] or NO below.<
               <div style="font-size:12px;font-weight:600;margin-bottom:3px">Page d'abonnement NEXUS</div>
               <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3)">nexus-dashboard-two-theta.vercel.app</div>
             </div>
-            <button class="copy-btn" onclick="navigator.clipboard.writeText('https://nexus-dashboard-two-theta.vercel.app/').then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',2000)})">Copy</button>
+            <button class="copy-btn" data-copy="https://nexus-dashboard-two-theta.vercel.app/" onclick="var t=this;navigator.clipboard.writeText(this.dataset.copy).then(function(){t.textContent='Copied!';setTimeout(function(){t.textContent='Copy'},2000)})">Copy</button>
           </div>
           <div style="background:var(--bg2);border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between">
             <div>
@@ -2321,27 +2320,43 @@ renderKlaviyo();
 const stripeKey = 'pk_live_51JZxOUCMxxQg3cdvjtQvk1bkJTUFjJYR2GPq4E35Cahp1Du6vgUB3yonuFDYUrMQSvUtISR75mKz197zmmcui7Ge00Xo3Y4XsE';
 const priceId = 'price_1TV9fnCMxxQg3cdvTOIGOSK6';
 
-async function startCheckout() {
+function startCheckout() {
+  // Load Stripe dynamically only when needed
+  if (typeof Stripe === 'undefined') {
+    var s = document.createElement('script');
+    s.src = 'https://js.stripe.com/v3/';
+    s.onload = function() { doCheckout(); };
+    s.onerror = function() { 
+      window.open('https://dashboard.stripe.com/acct_1JZxOUCMxxQg3cdv/payment-links', '_blank');
+    };
+    document.head.appendChild(s);
+  } else {
+    doCheckout();
+  }
+}
+
+function doCheckout() {
   try {
-    const stripe = Stripe(stripeKey);
-    const { error } = await stripe.redirectToCheckout({
+    var stripe = Stripe(stripeKey);
+    stripe.redirectToCheckout({
       lineItems: [{ price: priceId, quantity: 1 }],
       mode: 'subscription',
       successUrl: window.location.origin + '?payment=success',
       cancelUrl: window.location.origin + '?payment=cancelled',
+    }).then(function(result) {
+      if (result.error) {
+        alert('Erreur Stripe: ' + result.error.message);
+      }
     });
-    if (error) {
-      alert('Erreur: ' + error.message + '\nNote: En mode test, utilisez la clé pk_test_');
-    }
   } catch(e) {
-    alert('Stripe non initialisé. Vérifiez votre connexion internet.');
+    alert('Erreur: ' + e.message);
   }
 }
 
 let stripeSubsData = JSON.parse(localStorage.getItem('nx-stripe') || '{"subs":0}');
 
 function updateStripeStats() {
-  const n = prompt('Nombre d'abonnés actifs:', stripeSubsData.subs);
+  const n = prompt('Nombre abonnes actifs:', stripeSubsData.subs);
   if (n !== null) {
     stripeSubsData.subs = parseInt(n) || 0;
     localStorage.setItem('nx-stripe', JSON.stringify(stripeSubsData));
