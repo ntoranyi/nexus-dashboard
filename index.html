@@ -3,546 +3,1292 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nexus AI — Command Center</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>NEXUS AI — Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #080B10;
-  --bg2: #0D1117;
-  --bg3: #131920;
-  --bg4: #1A2230;
-  --border: rgba(255,255,255,0.06);
-  --border2: rgba(255,255,255,0.1);
-  --text: #E8EDF5;
-  --muted: #5A6A80;
-  --muted2: #3A4858;
-  --green: #00D97E;
-  --green-dim: rgba(0,217,126,0.12);
-  --amber: #F5A623;
-  --amber-dim: rgba(245,166,35,0.12);
-  --red: #FF4757;
-  --red-dim: rgba(255,71,87,0.12);
-  --blue: #3B82F6;
-  --blue-dim: rgba(59,130,246,0.12);
-  --purple: #8B5CF6;
-  --purple-dim: rgba(139,92,246,0.12);
-  --cyan: #06B6D4;
-  --cyan-dim: rgba(6,182,212,0.12);
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;min-height:100vh;overflow-x:hidden}
-
-/* SIDEBAR */
-.sidebar{position:fixed;left:0;top:0;bottom:0;width:220px;background:var(--bg2);border-right:1px solid var(--border);padding:20px 0;z-index:100;display:flex;flex-direction:column}
-.logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
-.logo-text{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;background:linear-gradient(135deg,#00D97E,#3B82F6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.5px}
-.logo-sub{font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:2px}
-.nav-section{padding:0 12px;margin-bottom:20px}
-.nav-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;padding:0 8px;margin-bottom:6px;font-weight:500}
-.nav-item{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:6px;cursor:pointer;color:var(--muted);font-size:13px;transition:all .15s;border:1px solid transparent}
-.nav-item:hover{background:var(--bg3);color:var(--text)}
-.nav-item.active{background:var(--green-dim);color:var(--green);border-color:rgba(0,217,126,0.2)}
-.nav-icon{font-size:14px;width:18px;text-align:center;flex-shrink:0}
-.nav-badge{margin-left:auto;font-size:10px;padding:1px 6px;border-radius:99px;background:var(--red-dim);color:var(--red)}
-.status-bar{margin-top:auto;padding:12px 16px;border-top:1px solid var(--border)}
-.status-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-bottom:4px}
-.status-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
-
-/* MAIN */
-.main{margin-left:220px;padding:24px;min-height:100vh}
-.page{display:none}
-.page.active{display:block}
-.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
-.page-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--text);letter-spacing:-0.5px}
-.page-sub{font-size:13px;color:var(--muted);margin-top:4px}
-.header-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.btn{padding:7px 16px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;border:1px solid;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:6px}
-.btn-primary{background:var(--green);color:#000;border-color:var(--green)}
-.btn-primary:hover{background:#00c070}
-.btn-ghost{background:transparent;color:var(--muted);border-color:var(--border2)}
-.btn-ghost:hover{background:var(--bg3);color:var(--text)}
-
-/* KPI GRID */
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px}
-.kpi-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;position:relative;overflow:hidden;transition:border-color .2s}
-.kpi-card:hover{border-color:var(--border2)}
-.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
-.kpi-card.green::before{background:var(--green)}
-.kpi-card.amber::before{background:var(--amber)}
-.kpi-card.blue::before{background:var(--blue)}
-.kpi-card.red::before{background:var(--red)}
-.kpi-card.purple::before{background:var(--purple)}
-.kpi-card.cyan::before{background:var(--cyan)}
-.kpi-icon{font-size:18px;margin-bottom:8px}
-.kpi-val{font-family:'Syne',sans-serif;font-size:26px;font-weight:700;line-height:1;margin-bottom:4px}
-.kpi-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em}
-.kpi-delta{font-size:11px;margin-top:6px;display:flex;align-items:center;gap:3px}
-.delta-up{color:var(--green)}
-.delta-dn{color:var(--red)}
-.delta-flat{color:var(--muted)}
-
-/* GRID LAYOUTS */
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
-.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
-.grid-1-2{display:grid;grid-template-columns:1fr 2fr;gap:16px;margin-bottom:16px}
-
-/* CARDS */
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px}
-.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.card-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:var(--text);letter-spacing:0.02em}
-.card-action{font-size:11px;color:var(--muted);cursor:pointer;transition:color .15s}
-.card-action:hover{color:var(--text)}
-
-/* PROGRAM TABLE */
-.prog-table{width:100%;border-collapse:collapse}
-.prog-table th{font-size:10px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;padding:6px 10px;text-align:left;border-bottom:1px solid var(--border)}
-.prog-table td{padding:10px;border-bottom:1px solid var(--border);vertical-align:middle}
-.prog-table tr:last-child td{border-bottom:none}
-.prog-table tr:hover td{background:rgba(255,255,255,0.02)}
-.prog-name{display:flex;align-items:center;gap:10px}
-.prog-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.prog-title{font-size:13px;font-weight:500;color:var(--text)}
-.prog-sub{font-size:11px;color:var(--muted)}
-.bar-cell{display:flex;align-items:center;gap:8px}
-.bar-bg{flex:1;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;min-width:60px}
-.bar-fill{height:100%;border-radius:2px;transition:width 1s ease}
-.bar-num{font-size:11px;color:var(--muted);min-width:40px;text-align:right;font-family:'DM Mono',monospace}
-.tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:99px;font-family:'DM Mono',monospace}
-.tag-green{background:var(--green-dim);color:var(--green)}
-.tag-amber{background:var(--amber-dim);color:var(--amber)}
-.tag-red{background:var(--red-dim);color:var(--red)}
-.tag-blue{background:var(--blue-dim);color:var(--blue)}
-.tag-purple{background:var(--purple-dim);color:var(--purple)}
-.tag-cyan{background:var(--cyan-dim);color:var(--cyan)}
-.tag-gray{background:rgba(255,255,255,0.06);color:var(--muted)}
-
-/* EMAIL SEQUENCE */
-.seq-list{display:flex;flex-direction:column;gap:1px}
-.seq-row{display:grid;grid-template-columns:36px 1fr auto auto;gap:12px;align-items:center;padding:10px 12px;background:var(--bg3);border-radius:6px;margin-bottom:4px;transition:background .15s;cursor:pointer}
-.seq-row:hover{background:var(--bg4)}
-.seq-day{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;font-family:'DM Mono',monospace;flex-shrink:0}
-.seq-info .seq-subj{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:320px}
-.seq-info .seq-pre{font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:320px}
-.seq-links{display:flex;gap:4px;flex-shrink:0}
-.seq-link{font-size:10px;padding:2px 7px;border-radius:4px;text-decoration:none;transition:opacity .15s}
-.seq-link:hover{opacity:0.8}
-.open-rate{font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);white-space:nowrap;text-align:right}
-
-/* FUNNEL VISUAL */
-.funnel-viz{display:flex;flex-direction:column;gap:4px}
-.funnel-step{border-radius:6px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;transition:opacity .2s}
-.funnel-step-label{font-size:12px;font-weight:500}
-.funnel-step-val{font-size:13px;font-weight:600;font-family:'DM Mono',monospace}
-.funnel-pct{font-size:10px;opacity:0.7;margin-left:6px}
-
-/* ALERTS */
-.alert-list{display:flex;flex-direction:column;gap:8px}
-.alert{display:flex;gap:10px;padding:10px 12px;border-radius:8px;border:1px solid;transition:all .15s}
-.alert-icon{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px}
-.alert-body .alert-title{font-size:12px;font-weight:500;margin-bottom:2px}
-.alert-body .alert-desc{font-size:11px;line-height:1.5;opacity:0.8}
-.alert-btn{margin-left:auto;flex-shrink:0;font-size:10px;padding:3px 8px;border-radius:4px;border:1px solid;cursor:pointer;background:transparent;transition:background .15s;white-space:nowrap;align-self:flex-start}
-.alert.a-red{background:var(--red-dim);border-color:rgba(255,71,87,0.2);color:#FFB3BB}
-.alert.a-amber{background:var(--amber-dim);border-color:rgba(245,166,35,0.2);color:#FFD98A}
-.alert.a-green{background:var(--green-dim);border-color:rgba(0,217,126,0.2);color:#80FFB8}
-
-/* AUTO MONEY SYSTEM */
-.ams-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
-.ams-card{border-radius:8px;border:1px solid;padding:12px;transition:transform .15s,box-shadow .15s;cursor:pointer}
-.ams-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.3)}
-.ams-name{font-size:12px;font-weight:600;margin-bottom:4px}
-.ams-desc{font-size:11px;opacity:0.7;line-height:1.4;margin-bottom:8px}
-.ams-rev{font-size:13px;font-weight:600;font-family:'DM Mono',monospace}
-.ams-cta{display:inline-block;font-size:10px;padding:3px 8px;border-radius:4px;text-decoration:none;font-weight:500;margin-top:6px;transition:opacity .15s}
-.ams-cta:hover{opacity:0.8}
-
-/* TIKTOK SECTION */
-.tiktok-scripts{display:flex;flex-direction:column;gap:8px}
-.script-row{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
-.script-meta{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.script-frame{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace}
-.script-text{font-size:13px;color:var(--text);line-height:1.5;font-style:italic}
-.script-note{font-size:10px;color:var(--muted);margin-top:5px;padding-top:5px;border-top:1px solid var(--border)}
-
-/* SHOPIFY */
-.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
-.product-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;transition:border-color .15s}
-.product-card:hover{border-color:var(--border2)}
-.product-icon{font-size:24px;margin-bottom:8px}
-.product-name{font-size:12px;font-weight:500;margin-bottom:4px}
-.product-price{font-size:16px;font-weight:700;color:var(--green);font-family:'DM Mono',monospace}
-.product-sales{font-size:10px;color:var(--muted);margin-top:2px}
-.product-bar{height:3px;background:var(--bg4);border-radius:2px;margin-top:8px;overflow:hidden}
-.product-bar-fill{height:100%;border-radius:2px;background:var(--green);transition:width 1s}
-
-/* LAUNCH BUTTON */
-.launch-panel{background:linear-gradient(135deg,rgba(0,217,126,0.08),rgba(59,130,246,0.08));border:1px solid rgba(0,217,126,0.2);border-radius:12px;padding:20px;text-align:center;margin-bottom:20px}
-.launch-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
-.launch-sub{font-size:12px;color:var(--muted);margin-bottom:14px}
-.launch-big-btn{padding:12px 32px;background:var(--green);color:#000;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .15s;letter-spacing:0.02em}
-.launch-big-btn:hover{background:#00c070;transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,217,126,0.3)}
-.launch-count{font-size:11px;color:var(--muted);margin-top:8px}
-
-/* PROGRESS RINGS */
-.ring-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
-.ring-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
-.ring-val{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:2px}
-.ring-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em}
-.ring-tgt{font-size:10px;margin-top:4px}
-
-/* CHECKLIST */
-.check-list{display:flex;flex-direction:column;gap:6px}
-.check-item{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;background:var(--bg3);border-radius:6px;font-size:12px;color:var(--text);cursor:pointer;transition:background .15s}
-.check-item:hover{background:var(--bg4)}
-.check-box{width:16px;height:16px;border-radius:4px;border:1px solid var(--muted2);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:9px;transition:all .15s}
-.check-box.done{background:var(--green);border-color:var(--green);color:#000}
-.check-prio{font-size:10px;margin-left:auto;flex-shrink:0;padding-top:2px}
-
-/* MINI CHART */
-.sparkline{height:40px;display:flex;align-items:flex-end;gap:3px}
-.spark-bar{border-radius:2px 2px 0 0;transition:height .5s;min-width:6px}
-
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;display:none;align-items:center;justify-content:center}
-.modal-overlay.open{display:flex}
-.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:24px;max-width:500px;width:90%;max-height:80vh;overflow-y:auto}
-.modal-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:4px}
-.modal-sub{font-size:12px;color:var(--muted);margin-bottom:16px}
-.modal-close{float:right;background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;margin-top:-4px}
-.script-copybox{background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:14px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.8;color:var(--text);white-space:pre-wrap;margin-bottom:12px}
-
-/* LIVE DOT */
-.live{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--green)}
-.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
-
-/* RESPONSIVE */
-@media(max-width:768px){
-  .sidebar{width:60px}
-  .sidebar .logo-text,.sidebar .logo-sub,.sidebar .nav-item span:not(.nav-icon),.sidebar .nav-label,.sidebar .status-bar{display:none}
-  .sidebar .nav-item{justify-content:center;padding:8px}
-  .main{margin-left:60px;padding:16px}
-  .grid-2,.grid-3,.grid-1-2{grid-template-columns:1fr}
-  .kpi-grid{grid-template-columns:repeat(2,1fr)}
-  .ring-grid{grid-template-columns:repeat(2,1fr)}
+  --bg: #050810;
+  --bg2: #080d18;
+  --bg3: #0c1220;
+  --border: rgba(99,179,255,0.1);
+  --border2: rgba(99,179,255,0.2);
+  --blue: #4fa8ff;
+  --blue2: #1a6bff;
+  --cyan: #00d4ff;
+  --gold: #ffb340;
+  --green: #00e5a0;
+  --red: #ff4d6d;
+  --purple: #a855f7;
+  --text: #e8f0ff;
+  --text2: rgba(232,240,255,0.55);
+  --text3: rgba(232,240,255,0.3);
+  --glow: 0 0 30px rgba(79,168,255,0.15);
+  --glow2: 0 0 60px rgba(79,168,255,0.1);
 }
 
-/* SCROLLBAR */
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--muted2);border-radius:2px}
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Syne', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── BACKGROUND ── */
+body::before {
+  content: '';
+  position: fixed; top:0; left:0; right:0; bottom:0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 10%, rgba(26,107,255,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 80% 80%, rgba(0,212,255,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 30% 30% at 60% 30%, rgba(168,85,247,0.04) 0%, transparent 50%);
+  pointer-events: none; z-index:0;
+}
+
+/* ── LAYOUT ── */
+.app { display:flex; min-height:100vh; position:relative; z-index:1; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 220px;
+  min-width: 220px;
+  background: rgba(8,13,24,0.95);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 100;
+  backdrop-filter: blur(20px);
+}
+
+.sidebar-logo {
+  padding: 28px 24px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.logo-mark {
+  display: flex; align-items: center; gap: 10px;
+}
+
+.logo-hex {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--blue2), var(--cyan));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; color: #fff;
+  box-shadow: 0 0 20px rgba(79,168,255,0.4);
+}
+
+.logo-text {
+  font-size: 15px; font-weight: 800; letter-spacing: 2px;
+  color: var(--text); text-transform: uppercase;
+}
+
+.logo-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--cyan); letter-spacing: 1.5px;
+  margin-top: 2px; opacity: 0.7;
+}
+
+.sidebar-nav {
+  padding: 16px 12px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.nav-section {
+  margin-bottom: 20px;
+}
+
+.nav-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--text3); padding: 0 12px; margin-bottom: 6px;
+}
+
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; border-radius: 10px;
+  cursor: pointer; transition: all 0.2s;
+  color: var(--text2); font-size: 13px; font-weight: 500;
+  position: relative; margin-bottom: 2px;
+}
+
+.nav-item:hover { background: rgba(79,168,255,0.08); color: var(--text); }
+
+.nav-item.active {
+  background: rgba(79,168,255,0.12);
+  color: var(--blue);
+}
+
+.nav-item.active::before {
+  content: '';
+  position: absolute; left: 0; top: 20%; bottom: 20%;
+  width: 2px; background: var(--blue);
+  border-radius: 1px;
+}
+
+.nav-icon { font-size: 15px; width: 18px; text-align: center; }
+
+.nav-badge {
+  margin-left: auto;
+  background: rgba(255,77,109,0.2);
+  color: var(--red);
+  font-size: 10px; font-weight: 600;
+  padding: 1px 6px; border-radius: 20px;
+}
+
+.nav-badge.blue { background: rgba(79,168,255,0.2); color: var(--blue); }
+.nav-badge.green { background: rgba(0,229,160,0.2); color: var(--green); }
+
+.sidebar-footer {
+  padding: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.status-dot {
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--text3);
+}
+
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green);
+  box-shadow: 0 0 8px var(--green); animation: pulse 2s infinite; }
+
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+/* ── MAIN ── */
+.main {
+  margin-left: 220px;
+  flex: 1;
+  min-height: 100vh;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  height: 60px;
+  background: rgba(8,13,24,0.8);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 32px;
+  gap: 16px;
+  backdrop-filter: blur(20px);
+  position: sticky; top: 0; z-index: 50;
+}
+
+.topbar-title {
+  font-size: 14px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--text);
+}
+
+.topbar-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--text3);
+  margin-left: 4px;
+}
+
+.topbar-right {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 12px;
+}
+
+.topbar-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--blue2), var(--cyan));
+  color: #fff; font-size: 12px; font-weight: 600;
+  cursor: pointer; border: none; font-family: 'Syne', sans-serif;
+  transition: all 0.2s;
+  box-shadow: 0 0 20px rgba(26,107,255,0.3);
+  text-decoration: none;
+}
+
+.topbar-btn:hover { transform: translateY(-1px); box-shadow: 0 0 30px rgba(26,107,255,0.5); }
+
+/* ── CONTENT ── */
+.content { padding: 28px 32px; }
+
+/* ── PANELS ── */
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* ── SECTION HEADER ── */
+.section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: 20px; font-weight: 800; letter-spacing: 0.5px;
+}
+
+.section-mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--text3); margin-top: 2px;
+}
+
+/* ── KPI GRID ── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.kpi-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.kpi-card:hover {
+  border-color: var(--border2);
+  box-shadow: var(--glow);
+  transform: translateY(-2px);
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+
+.kpi-card:hover::before { opacity: 1; }
+
+.kpi-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 10px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.kpi-edit-btn {
+  cursor: pointer; opacity: 0; transition: opacity 0.2s;
+  font-size: 11px; color: var(--blue); background: none; border: none;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.kpi-card:hover .kpi-edit-btn { opacity: 1; }
+
+.kpi-value {
+  font-size: 28px; font-weight: 800;
+  line-height: 1; margin-bottom: 8px;
+}
+
+.kpi-value.green { color: var(--green); }
+.kpi-value.gold { color: var(--gold); }
+.kpi-value.blue { color: var(--blue); }
+.kpi-value.red { color: var(--red); }
+
+.kpi-trend {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+}
+
+.trend-up { color: var(--green); }
+.trend-dn { color: var(--red); }
+
+.kpi-icon {
+  position: absolute; right: 16px; top: 16px;
+  font-size: 22px; opacity: 0.15;
+}
+
+.kpi-input {
+  background: var(--bg); border: 1px solid var(--border2);
+  color: var(--text); font-family: 'Syne', sans-serif;
+  font-size: 22px; font-weight: 800;
+  width: 100%; border-radius: 8px; padding: 4px 8px;
+  display: none;
+}
+
+/* ── GRID 2/3 ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+.grid-65 { display: grid; grid-template-columns: 1.6fr 1fr; gap: 20px; margin-bottom: 20px; }
+
+@media(max-width:1100px) { .grid-2,.grid-3,.grid-65 { grid-template-columns: 1fr; } }
+
+/* ── CARD ── */
+.card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 22px;
+  transition: border-color 0.3s;
+}
+
+.card:hover { border-color: var(--border2); }
+
+.card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.card-title {
+  font-size: 13px; font-weight: 700; letter-spacing: 0.5px;
+}
+
+.card-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; padding: 3px 8px; border-radius: 20px;
+  font-weight: 500;
+}
+
+.badge-green { background: rgba(0,229,160,0.15); color: var(--green); }
+.badge-blue { background: rgba(79,168,255,0.15); color: var(--blue); }
+.badge-gold { background: rgba(255,179,64,0.15); color: var(--gold); }
+.badge-red { background: rgba(255,77,109,0.15); color: var(--red); }
+.badge-purple { background: rgba(168,85,247,0.15); color: var(--purple); }
+
+/* ── METRICS ROW ── */
+.metrics-row {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 12px;
+  margin-bottom: 16px;
+}
+
+.metric {
+  background: var(--bg2); border-radius: 10px; padding: 12px 14px;
+  border: 1px solid var(--border);
+}
+
+.metric-val {
+  font-size: 20px; font-weight: 800; margin-bottom: 3px;
+}
+
+.metric-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--text3);
+}
+
+.metric-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; margin-top: 2px;
+}
+
+/* ── PROGRESS BAR ── */
+.progress-wrap { margin-bottom: 12px; }
+.progress-label {
+  display: flex; justify-content: space-between;
+  font-size: 11px; color: var(--text2); margin-bottom: 6px;
+}
+
+.progress-track {
+  height: 4px; background: var(--bg2); border-radius: 2px; overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%; border-radius: 2px;
+  background: linear-gradient(90deg, var(--blue2), var(--cyan));
+  transition: width 0.6s ease;
+}
+
+.progress-fill.gold { background: linear-gradient(90deg, #ff9500, var(--gold)); }
+.progress-fill.green { background: linear-gradient(90deg, #00b37a, var(--green)); }
+
+/* ── PROGRAM LIST ── */
+.program-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.program-item:last-child { border-bottom: none; }
+
+.program-dot {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 12px; color: #fff; flex-shrink: 0;
+}
+
+.program-name { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.program-stat { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text3); }
+.program-rev { margin-left: auto; font-size: 14px; font-weight: 700; }
+
+/* ── BTN ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 16px; border-radius: 10px;
+  font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 600;
+  cursor: pointer; border: none; transition: all 0.2s;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--blue2), var(--cyan));
+  color: #fff; box-shadow: 0 0 20px rgba(26,107,255,0.25);
+}
+
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 0 30px rgba(26,107,255,0.4); }
+
+.btn-outline {
+  background: transparent; border: 1px solid var(--border2);
+  color: var(--blue);
+}
+
+.btn-outline:hover { background: rgba(79,168,255,0.08); }
+
+.btn-danger {
+  background: rgba(255,77,109,0.15); border: 1px solid rgba(255,77,109,0.3);
+  color: var(--red);
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, #ff6b00, var(--gold));
+  color: #fff; box-shadow: 0 0 20px rgba(255,179,64,0.25);
+}
+
+.btn-green {
+  background: linear-gradient(135deg, #00a06b, var(--green));
+  color: #fff; box-shadow: 0 0 20px rgba(0,229,160,0.2);
+}
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; top:0;left:0;right:0;bottom:0;
+  background: rgba(5,8,16,0.85); backdrop-filter: blur(8px);
+  z-index: 999; display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+
+.modal-overlay.show { opacity: 1; pointer-events: all; }
+
+.modal {
+  background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: 20px; padding: 28px; width: 460px; max-width: 90vw;
+  transform: scale(0.95) translateY(10px); transition: transform 0.3s;
+  box-shadow: 0 0 80px rgba(79,168,255,0.1);
+}
+
+.modal-overlay.show .modal { transform: scale(1) translateY(0); }
+
+.modal-title {
+  font-size: 16px; font-weight: 800; margin-bottom: 20px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.modal-close {
+  cursor: pointer; color: var(--text3); font-size: 18px;
+  background: none; border: none; color: var(--text3);
+  transition: color 0.2s;
+}
+
+.modal-close:hover { color: var(--text); }
+
+/* ── FORM ── */
+.form-group { margin-bottom: 16px; }
+
+.form-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--text2); margin-bottom: 6px; display: block;
+}
+
+.form-input, .form-select {
+  width: 100%; background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: 10px; padding: 10px 14px;
+  color: var(--text); font-family: 'Syne', sans-serif; font-size: 13px;
+  transition: border-color 0.2s; outline: none;
+}
+
+.form-input:focus, .form-select:focus { border-color: var(--blue); }
+
+.form-select option { background: var(--bg3); }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* ── CHECKLIST ── */
+.checklist-section { margin-bottom: 16px; }
+
+.checklist-section-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  padding: 6px 0; margin-bottom: 6px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+.cl-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+.checklist-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 0; border-bottom: 1px solid var(--border);
+  cursor: pointer; transition: all 0.2s;
+}
+
+.checklist-item:last-child { border-bottom: none; }
+.checklist-item:hover { padding-left: 4px; }
+
+.cl-checkbox {
+  width: 18px; height: 18px; border-radius: 5px;
+  border: 1.5px solid var(--border2); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s; background: transparent;
+}
+
+.checklist-item.checked .cl-checkbox {
+  background: var(--green); border-color: var(--green);
+}
+
+.cl-text {
+  font-size: 12px; color: var(--text2); transition: all 0.2s;
+}
+
+.checklist-item.checked .cl-text {
+  color: var(--text3); text-decoration: line-through;
+}
+
+.cl-progress-bar {
+  height: 6px; background: var(--bg2); border-radius: 3px;
+  overflow: hidden; margin-bottom: 16px;
+}
+
+.cl-progress-fill {
+  height: 100%; background: linear-gradient(90deg, var(--green), #00ffbb);
+  border-radius: 3px; transition: width 0.5s ease;
+  box-shadow: 0 0 10px rgba(0,229,160,0.4);
+}
+
+/* ── CONTENT CALENDAR ── */
+.cal-grid {
+  display: grid; grid-template-columns: repeat(7,1fr); gap: 8px;
+}
+
+.cal-day {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 8px; min-height: 90px;
+  cursor: pointer; transition: all 0.2s;
+}
+
+.cal-day:hover { border-color: var(--border2); }
+
+.cal-day-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 8px;
+}
+
+.cal-event {
+  font-size: 10px; padding: 3px 6px; border-radius: 5px;
+  margin-bottom: 4px; cursor: pointer; line-height: 1.3;
+}
+
+.cal-yt { background: rgba(255,0,0,0.2); color: #ff6b6b; }
+.cal-tt { background: rgba(0,212,255,0.15); color: var(--cyan); }
+.cal-ig { background: rgba(168,85,247,0.2); color: var(--purple); }
+
+.cal-add {
+  font-size: 18px; color: var(--border2); text-align: center;
+  margin-top: 4px;
+}
+
+/* ── REVENUE LOGGER ── */
+.revenue-entry {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+
+.revenue-entry:last-child { border-bottom: none; }
+
+.rev-program {
+  font-size: 10px; padding: 2px 8px; border-radius: 20px;
+  font-weight: 600; min-width: 50px; text-align: center;
+}
+
+.rev-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--text3); min-width: 70px;
+}
+
+.rev-note { font-size: 11px; color: var(--text2); flex: 1; }
+
+.rev-amount {
+  font-size: 14px; font-weight: 700; color: var(--green);
+  min-width: 70px; text-align: right;
+}
+
+.rev-delete {
+  cursor: pointer; color: var(--text3); font-size: 13px;
+  background: none; border: none; transition: color 0.2s;
+}
+
+.rev-delete:hover { color: var(--red); }
+
+/* ── TOTAL TRACKER ── */
+.total-tracker {
+  background: linear-gradient(135deg, rgba(0,229,160,0.08), rgba(0,212,255,0.05));
+  border: 1px solid rgba(0,229,160,0.2);
+  border-radius: 12px; padding: 16px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.total-val { font-size: 28px; font-weight: 800; color: var(--green); }
+.total-lbl { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text3); letter-spacing: 1.5px; text-transform: uppercase; }
+
+/* ── ADS CREATOR ── */
+.ads-result {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px; margin-bottom: 12px;
+}
+
+.ads-result-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 8px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.ads-result-text {
+  font-size: 13px; color: var(--text); line-height: 1.7;
+  white-space: pre-line;
+}
+
+.copy-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; padding: 3px 8px; border-radius: 5px;
+  background: rgba(79,168,255,0.15); color: var(--blue);
+  border: none; cursor: pointer; transition: all 0.2s;
+}
+
+.copy-btn:hover { background: rgba(79,168,255,0.3); }
+.copy-btn.copied { background: rgba(0,229,160,0.2); color: var(--green); }
+
+/* ── AI LOADING ── */
+.ai-loading {
+  display: none; align-items: center; gap: 10px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--cyan);
+  padding: 16px 0;
+}
+
+.ai-loading.show { display: flex; }
+
+.ai-spinner {
+  width: 16px; height: 16px; border: 2px solid rgba(0,212,255,0.2);
+  border-top-color: var(--cyan); border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── HOT LEADS ── */
+.lead-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+
+.lead-item:last-child { border-bottom: none; }
+
+.lead-avatar {
+  width: 34px; height: 34px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--blue2), var(--purple));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; flex-shrink: 0;
+}
+
+.lead-name { font-size: 13px; font-weight: 600; }
+.lead-prog { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text3); }
+.lead-status { margin-left: auto; }
+
+/* ── YOUTUBE MODULE ── */
+.yt-stats {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 12px;
+  margin-bottom: 16px;
+}
+
+.yt-stat {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px; text-align: center; cursor: pointer;
+  transition: all 0.2s;
+}
+
+.yt-stat:hover { border-color: var(--border2); }
+
+.yt-stat-val {
+  font-size: 22px; font-weight: 800; color: var(--red);
+  margin-bottom: 4px;
+}
+
+.yt-stat-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text3);
+}
+
+/* ── ALERTS ── */
+.alert {
+  display: flex; gap: 12px; padding: 12px 16px;
+  border-radius: 10px; margin-bottom: 10px; font-size: 12px;
+}
+
+.alert-warn { background: rgba(255,179,64,0.1); border: 1px solid rgba(255,179,64,0.2); color: var(--gold); }
+.alert-info { background: rgba(79,168,255,0.1); border: 1px solid rgba(79,168,255,0.2); color: var(--blue); }
+.alert-success { background: rgba(0,229,160,0.1); border: 1px solid rgba(0,229,160,0.2); color: var(--green); }
+
+/* ── SEPARATOR ── */
+.sep { height: 1px; background: var(--border); margin: 20px 0; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(79,168,255,0.2); border-radius: 2px; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+.panel.active { animation: fadeIn 0.3s ease; }
+
+/* ── TAG ── */
+.tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; padding: 3px 10px; border-radius: 20px;
+  font-weight: 500;
+}
 </style>
 </head>
 <body>
 
 <!-- SIDEBAR -->
-<nav class="sidebar">
-  <div class="logo">
-    <div class="logo-text">NEXUS AI</div>
-    <div class="logo-sub">Command Center</div>
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <div class="logo-hex">NX</div>
+      <div>
+        <div class="logo-text">NEXUS AI</div>
+        <div class="logo-sub">// COMMAND CENTER</div>
+      </div>
+    </div>
   </div>
-  <div class="nav-section">
-    <div class="nav-label">Core</div>
-    <div class="nav-item active" onclick="showPage('dashboard')"><span class="nav-icon">⬡</span><span>Dashboard</span></div>
-    <div class="nav-item" onclick="showPage('sequences')"><span class="nav-icon">✉</span><span>Email Sequences</span><span class="nav-badge">3</span></div>
-    <div class="nav-item" onclick="showPage('programs')"><span class="nav-icon">◈</span><span>Programs</span></div>
-  </div>
-  <div class="nav-section">
-    <div class="nav-label">Revenue</div>
-    <div class="nav-item" onclick="showPage('hotleads')"><span class="nav-icon">🔥</span><span>Hot Leads</span><span class="nav-badge">31</span></div>
-    <div class="nav-item" onclick="showPage('ams')"><span class="nav-icon">⚡</span><span>Auto Money</span></div>
-    <div class="nav-item" onclick="showPage('shopify')"><span class="nav-icon">◉</span><span>Shopify</span></div>
-  </div>
-  <div class="nav-section">
-    <div class="nav-label">Content</div>
-    <div class="nav-item" onclick="showPage('tiktok')"><span class="nav-icon">▷</span><span>TikTok Scripts</span></div>
-    <div class="nav-item" onclick="showPage('checklist')"><span class="nav-icon">✓</span><span>Launch Checklist</span></div>
-  </div>
-  <div class="status-bar">
-    <div class="status-item"><div class="status-dot" style="background:var(--green)"></div><span>FunnelFreedom — Live</span></div>
-    <div class="status-item"><div class="status-dot" style="background:var(--green)"></div><span>7FA — Live</span></div>
-    <div class="status-item"><div class="status-dot" style="background:var(--amber)"></div><span>Shopify — Setup</span></div>
-  </div>
-</nav>
 
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <div class="nav-label">Core</div>
+      <div class="nav-item active" onclick="showPanel('dashboard',this)">
+        <span class="nav-icon">⬡</span> Dashboard
+      </div>
+      <div class="nav-item" onclick="showPanel('programs',this)">
+        <span class="nav-icon">◈</span> Programs
+        <span class="nav-badge blue">4</span>
+      </div>
+      <div class="nav-item" onclick="showPanel('leads',this)">
+        <span class="nav-icon">🔥</span> Hot Leads
+        <span class="nav-badge">31</span>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Revenue</div>
+      <div class="nav-item" onclick="showPanel('revenue',this)">
+        <span class="nav-icon">💰</span> Revenue Logger
+        <span class="nav-badge green">Live</span>
+      </div>
+      <div class="nav-item" onclick="showPanel('email',this)">
+        <span class="nav-icon">✉</span> Email Sequences
+        <span class="nav-badge blue">3</span>
+      </div>
+      <div class="nav-item" onclick="showPanel('shopify',this)">
+        <span class="nav-icon">◉</span> Shopify Store
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Content</div>
+      <div class="nav-item" onclick="showPanel('youtube',this)">
+        <span class="nav-icon">▶</span> YouTube
+      </div>
+      <div class="nav-item" onclick="showPanel('calendar',this)">
+        <span class="nav-icon">📅</span> Content Calendar
+      </div>
+      <div class="nav-item" onclick="showPanel('tiktok',this)">
+        <span class="nav-icon">▷</span> TikTok Scripts
+      </div>
+      <div class="nav-item" onclick="showPanel('ads',this)">
+        <span class="nav-icon">⚡</span> AI Ads Creator
+        <span class="nav-badge blue">AI</span>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">System</div>
+      <div class="nav-item" onclick="showPanel('checklist',this)">
+        <span class="nav-icon">✓</span> Launch Checklist
+        <span id="cl-nav-badge" class="nav-badge blue">0%</span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="status-dot">
+      <div class="dot"></div>
+      <span>ALL SYSTEMS ONLINE</span>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
 <main class="main">
-
-<!-- =================== DASHBOARD =================== -->
-<div class="page active" id="page-dashboard">
-  <div class="page-header">
+  <div class="topbar">
     <div>
-      <div class="page-title">Command Center</div>
-      <div class="page-sub">Alex · Brussels → US Market · All systems overview</div>
-      <div style="margin-top:15px">
-        <a href="https://www.systeme-4l.com/agent-tiktok" target="_blank"
-           style="display:inline-block;padding:12px 24px;background:#00D97E;color:#000;
-           font-weight:bold;border-radius:8px;text-decoration:none">
-           🚀 Start Making Money With AI
-        </a>
+      <span class="topbar-title" id="topbar-title">Dashboard</span>
+      <span class="topbar-sub">— Alex · Brussels → US Market</span>
+    </div>
+    <div class="topbar-right">
+      <a href="https://www.systeme-4l.com/agent-tiktok?sa=sa01050568776871bba42db33d6becbce23ce2bd1a" target="_blank" class="topbar-btn">
+        🚀 Start Making Money
+      </a>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ DASHBOARD ══ -->
+    <div id="panel-dashboard" class="panel active">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Command Center</div>
+          <div class="section-mono">// LIVE TRACKING · 14-DAY PERIOD</div>
+        </div>
+        <button class="btn btn-gold" onclick="openModal('hotleads-modal')">
+          🔥 Launch Hot Leads
+        </button>
+      </div>
+
+      <!-- KPI GRID -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Total Revenue MTD <button class="kpi-edit-btn" onclick="editKPI(this,'kpi-revenue')">edit</button></div>
+          <div class="kpi-value gold" id="kpi-revenue">$4,187</div>
+          <input class="kpi-input" id="kpi-revenue-input" placeholder="e.g. $4,187" onblur="saveKPI(this,'kpi-revenue')">
+          <div class="kpi-trend trend-up">↑ +31% vs last month</div>
+          <div class="kpi-icon">💰</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Hot Leads Active <button class="kpi-edit-btn" onclick="editKPI(this,'kpi-leads')">edit</button></div>
+          <div class="kpi-value red" id="kpi-leads">31</div>
+          <input class="kpi-input" id="kpi-leads-input" placeholder="e.g. 31" onblur="saveKPI(this,'kpi-leads')">
+          <div class="kpi-trend" style="color:var(--text3)">FF(18) + 7FA(13)</div>
+          <div class="kpi-icon">🔥</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Email Subscribers <button class="kpi-edit-btn" onclick="editKPI(this,'kpi-subs')">edit</button></div>
+          <div class="kpi-value blue" id="kpi-subs">247</div>
+          <input class="kpi-input" id="kpi-subs-input" placeholder="e.g. 247" onblur="saveKPI(this,'kpi-subs')">
+          <div class="kpi-trend trend-up">↑ +12% this week</div>
+          <div class="kpi-icon">✉</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Affiliate Clicks <button class="kpi-edit-btn" onclick="editKPI(this,'kpi-clicks')">edit</button></div>
+          <div class="kpi-value" id="kpi-clicks">496</div>
+          <input class="kpi-input" id="kpi-clicks-input" placeholder="e.g. 496" onblur="saveKPI(this,'kpi-clicks')">
+          <div class="kpi-trend" style="color:var(--text3)">FF(312) + 7FA(184)</div>
+          <div class="kpi-icon">🔗</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Shopify Sales MTD <button class="kpi-edit-btn" onclick="editKPI(this,'kpi-shopify')">edit</button></div>
+          <div class="kpi-value green" id="kpi-shopify">$1,840</div>
+          <input class="kpi-input" id="kpi-shopify-input" placeholder="e.g. $1,840" onblur="saveKPI(this,'kpi-shopify')">
+          <div class="kpi-trend trend-dn">↓ -3% (optimize needed)</div>
+          <div class="kpi-icon">🛍</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Avg Engagement <button class="kpi-edit-btn" onclick="editKPI(this,'kpi-eng')">edit</button></div>
+          <div class="kpi-value" id="kpi-eng">38%</div>
+          <input class="kpi-input" id="kpi-eng-input" placeholder="e.g. 38%" onblur="saveKPI(this,'kpi-eng')">
+          <div class="kpi-trend trend-up">↑ +5pt vs benchmark</div>
+          <div class="kpi-icon">📊</div>
+        </div>
+      </div>
+
+      <div class="grid-65">
+        <!-- Revenue by Program -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Revenue by Program</div>
+            <span class="card-badge badge-blue">14 days</span>
+          </div>
+          <div class="program-item">
+            <div class="program-dot" style="background:linear-gradient(135deg,#e74c3c,#c0392b)">FF</div>
+            <div>
+              <div class="program-name">FunnelFreedom</div>
+              <div class="program-stat">312 clicks · 18 hot leads</div>
+            </div>
+            <div class="program-rev" style="color:var(--gold)">$2,450</div>
+          </div>
+          <div class="program-item">
+            <div class="program-dot" style="background:linear-gradient(135deg,#9b59b6,#8e44ad)">7FA</div>
+            <div>
+              <div class="program-name">7 Figure Accelerator</div>
+              <div class="program-stat">184 clicks · 13 hot leads</div>
+            </div>
+            <div class="program-rev" style="color:var(--blue)">$897</div>
+          </div>
+          <div class="program-item">
+            <div class="program-dot" style="background:linear-gradient(135deg,#27ae60,#229954)">SH</div>
+            <div>
+              <div class="program-name">Shopify Digital</div>
+              <div class="program-stat">24 orders · $76 avg</div>
+            </div>
+            <div class="program-rev" style="color:var(--green)">$840</div>
+          </div>
+          <div class="sep"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:12px;color:var(--text2)">Total MTD</span>
+            <span style="font-size:18px;font-weight:800;color:var(--gold)">$4,187</span>
+          </div>
+        </div>
+
+        <!-- Alerts -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🚨 Alerts & Actions</div>
+          </div>
+          <div class="alert alert-warn">⚠ Shopify down -3% — optimize product listing</div>
+          <div class="alert alert-info">📧 3 email sequences active — open rate 68%</div>
+          <div class="alert alert-success">✅ 31 hot leads ready to convert ($4,650 potential)</div>
+          <div class="alert alert-info">🎬 YouTube @nexusai.system — 2 videos live</div>
+          <div style="margin-top:16px">
+            <button class="btn btn-primary" style="width:100%" onclick="showPanel('leads', document.querySelector('.nav-item:nth-child(3)'))">
+              🔥 View Hot Leads Pipeline →
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="header-actions">
-      <div class="live"><div class="live-dot"></div>Live tracking</div>
-      <button class="btn btn-primary" onclick="showPage('hotleads')">🔥 Launch Hot Leads</button>
-    </div>
-  </div>
 
-  <div class="kpi-grid">
-    <div class="kpi-card green">
-      <div class="kpi-icon">💰</div>
-      <div class="kpi-val" style="color:var(--green)">$4,187</div>
-      <div class="kpi-label">Total Revenue MTD</div>
-      <div class="kpi-delta delta-up">↑ +31% vs last month</div>
-    </div>
-    <div class="kpi-card amber">
-      <div class="kpi-icon">🔥</div>
-      <div class="kpi-val" style="color:var(--amber)">31</div>
-      <div class="kpi-label">Hot Leads Active</div>
-      <div class="kpi-delta delta-up">FF(18) + 7FA(13)</div>
-    </div>
-    <div class="kpi-card blue">
-      <div class="kpi-icon">✉</div>
-      <div class="kpi-val" style="color:var(--blue)">247</div>
-      <div class="kpi-label">Total Subscribers</div>
-      <div class="kpi-delta delta-up">↑ +12% this week</div>
-    </div>
-    <div class="kpi-card purple">
-      <div class="kpi-icon">🔗</div>
-      <div class="kpi-val" style="color:var(--purple)">496</div>
-      <div class="kpi-label">Affiliate Clicks</div>
-      <div class="kpi-delta delta-up">FF(312) + 7FA(184)</div>
-    </div>
-    <div class="kpi-card cyan">
-      <div class="kpi-icon">🛍</div>
-      <div class="kpi-val" style="color:var(--cyan)">$1,840</div>
-      <div class="kpi-label">Shopify Sales</div>
-      <div class="kpi-delta delta-dn">↓ -3% (optimize needed)</div>
-    </div>
-    <div class="kpi-card red">
-      <div class="kpi-icon">📊</div>
-      <div class="kpi-val" style="color:var(--red)">38%</div>
-      <div class="kpi-label">Avg Engagement</div>
-      <div class="kpi-delta delta-up">↑ +5pt vs benchmark</div>
-    </div>
-  </div>
-
-  <div class="grid-1-2">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">Conversion Funnel</div>
-        <span class="tag tag-green">14-day period</span>
+    <!-- ══ PROGRAMS ══ -->
+    <div id="panel-programs" class="panel">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Programs & Affiliates</div>
+          <div class="section-mono">// FUNNELFREEDOM · 7FA · SHOPIFY · AI TOOLS</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('add-program-modal')">+ Add Program</button>
       </div>
-      <div class="funnel-viz" id="funnel-viz"></div>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">🚨 Alerts & Actions</div>
-        <span class="card-action" onclick="showPage('hotleads')">View all →</span>
-      </div>
-      <div class="alert-list" id="alert-list"></div>
-    </div>
-  </div>
 
-  <div class="grid-2">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">Revenue by Program</div>
-        <span class="tag tag-amber">14 days</span>
-      </div>
-      <table class="prog-table" id="revenue-table"></table>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">Revenue Scenarios — 31 Hot Leads</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:8px" id="scenarios"></div>
-    </div>
-  </div>
-</div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">FunnelFreedom</div>
+            <span class="card-badge badge-green">Live</span>
+          </div>
+          <div class="metrics-row" style="grid-template-columns:1fr 1fr">
+            <div class="metric"><div class="metric-val" style="color:var(--gold)">312</div><div class="metric-lbl">Clicks</div></div>
+            <div class="metric"><div class="metric-val" style="color:var(--red)">18</div><div class="metric-lbl">Hot Leads</div></div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-label"><span>Conversion Rate</span><span style="color:var(--green)">5.8%</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width:58%"></div></div>
+          </div>
+          <a href="https://nexus-dashboard-two-theta.vercel.app/" target="_blank" class="btn btn-outline" style="font-size:11px">View Dashboard →</a>
+        </div>
 
-<!-- =================== SEQUENCES =================== -->
-<div class="page" id="page-sequences">
-  <div class="page-header">
-    <div>
-      <div class="page-title">Email Sequences</div>
-      <div class="page-sub">3 active sequences · 14-day main + 7-day hot leads + re-engagement</div>
-    </div>
-    <div class="header-actions">
-      <button class="btn btn-ghost" onclick="showModal('modal-config')">⚙ Config</button>
-      <button class="btn btn-primary">+ New Sequence</button>
-    </div>
-  </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">7 Figure Accelerator</div>
+            <span class="card-badge badge-green">Live</span>
+          </div>
+          <div class="metrics-row" style="grid-template-columns:1fr 1fr">
+            <div class="metric"><div class="metric-val" style="color:var(--blue)">184</div><div class="metric-lbl">Clicks</div></div>
+            <div class="metric"><div class="metric-val" style="color:var(--red)">13</div><div class="metric-lbl">Hot Leads</div></div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-label"><span>Conversion Rate</span><span style="color:var(--gold)">7.1%</span></div>
+            <div class="progress-track"><div class="progress-fill gold" style="width:71%"></div></div>
+          </div>
+          <a href="https://www.systeme-4l.com/agent-tiktok?sa=sa01050568776871bba42db33d6becbce23ce2bd1a" target="_blank" class="btn btn-outline" style="font-size:11px">View Funnel →</a>
+        </div>
 
-  <div class="ring-grid">
-    <div class="ring-card"><div class="ring-val" style="color:var(--green)">68%</div><div class="ring-label">Open Rate</div><div class="ring-tgt" style="color:var(--green)">Target >60% ✓</div></div>
-    <div class="ring-card"><div class="ring-val" style="color:var(--amber)">28%</div><div class="ring-label">Click Rate</div><div class="ring-tgt" style="color:var(--green)">Target >25% ✓</div></div>
-    <div class="ring-card"><div class="ring-val" style="color:var(--purple)">14%</div><div class="ring-label">Conversion</div><div class="ring-tgt" style="color:var(--amber)">Target >15% ↑</div></div>
-    <div class="ring-card"><div class="ring-val" style="color:var(--blue)">1.2%</div><div class="ring-label">Unsub Rate</div><div class="ring-tgt" style="color:var(--green)">Target <2% ✓</div></div>
-  </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Shopify Digital Store</div>
+            <span class="card-badge badge-gold">Setup</span>
+          </div>
+          <div class="metrics-row" style="grid-template-columns:repeat(3,1fr)">
+            <div class="metric"><div class="metric-val" style="color:var(--green)">$1,840</div><div class="metric-lbl">Revenue</div></div>
+            <div class="metric"><div class="metric-val">24</div><div class="metric-lbl">Orders</div></div>
+            <div class="metric"><div class="metric-val">5</div><div class="metric-lbl">Products</div></div>
+          </div>
+          <a href="https://shop.nextgenaimake.com" target="_blank" class="btn btn-green" style="font-size:11px">Open Store →</a>
+        </div>
 
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-header">
-      <div class="card-title">14-Day Master Sequence · FF + 7FA</div>
-      <div style="display:flex;gap:6px">
-        <span class="tag tag-green">Phase 1: FF (D1–D7)</span>
-        <span class="tag tag-purple">Phase 2: 7FA (D8–D14)</span>
+        <div class="card" id="extra-programs-container">
+          <div class="card-header">
+            <div class="card-title">Added Programs</div>
+            <span class="card-badge badge-blue">Custom</span>
+          </div>
+          <div id="extra-programs-list">
+            <div style="text-align:center;padding:24px 0;color:var(--text3);font-family:'JetBrains Mono',monospace;font-size:11px">
+              No programs added yet.<br>Click "+ Add Program" to start.
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="seq-list" id="main-seq"></div>
-  </div>
-</div>
 
-<!-- =================== PROGRAMS =================== -->
-<div class="page" id="page-programs">
-  <div class="page-header">
-    <div><div class="page-title">Programs & Affiliates</div>
-    <div class="page-sub">FunnelFreedom · 7 Figure Accelerator · Shopify · AI Tools</div></div>
-    <button class="btn btn-primary">+ Add Program</button>
-  </div>
+    <!-- ══ HOT LEADS ══ -->
+    <div id="panel-leads" class="panel">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Hot Leads Pipeline</div>
+          <div class="section-mono">// 31 CONTACTS · HOTLEADS-FF7FA-FOLLOWUP · 9:15AM EST</div>
+        </div>
+        <button class="btn btn-gold">▶ Launch Sequence</button>
+      </div>
 
-  <div class="grid-3" id="program-cards"></div>
+      <div class="alert alert-success" style="margin-bottom:20px">
+        ✅ 31 Hot Leads Ready · Est. revenue at 15% conversion: <strong>$4,650</strong>
+      </div>
 
-  <div class="card">
-    <div class="card-header">
-      <div class="card-title">Performance Overview — All Programs</div>
-      <span class="tag tag-amber">14-day period</span>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Sequence Performance</div>
+            <span class="card-badge badge-gold">Waiting to launch</span>
+          </div>
+          <div class="metrics-row">
+            <div class="metric"><div class="metric-val" style="color:var(--text3)">0%</div><div class="metric-lbl">Open Rate</div><div class="metric-sub" style="color:var(--text3)">Target >60%</div></div>
+            <div class="metric"><div class="metric-val" style="color:var(--text3)">0%</div><div class="metric-lbl">Click Rate</div><div class="metric-sub" style="color:var(--text3)">Target >25%</div></div>
+            <div class="metric"><div class="metric-val" style="color:var(--text3)">0%</div><div class="metric-lbl">Conversion</div><div class="metric-sub" style="color:var(--text3)">Target >15%</div></div>
+            <div class="metric"><div class="metric-val" style="color:var(--gold)">$4,650</div><div class="metric-lbl">Potential</div><div class="metric-sub" style="color:var(--gold)">At 15% conv.</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Lead Distribution</div>
+          </div>
+          <div style="display:flex;gap:12px;margin-bottom:16px">
+            <div class="metric" style="flex:1;text-align:center">
+              <div class="metric-val" style="color:var(--red);font-size:28px">18</div>
+              <div class="metric-lbl">FunnelFreedom</div>
+            </div>
+            <div class="metric" style="flex:1;text-align:center">
+              <div class="metric-val" style="color:var(--purple);font-size:28px">13</div>
+              <div class="metric-lbl">7FA</div>
+            </div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-label"><span>FF Distribution</span><span>58%</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width:58%"></div></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <table class="prog-table" id="perf-table"></table>
-  </div>
-</div>
 
-<!-- =================== HOT LEADS =================== -->
-<div class="page" id="page-hotleads">
-  <div class="page-header">
-    <div><div class="page-title">🔥 Hot Leads Sequence</div>
-    <div class="page-sub">HotLeads-FF7FA-Followup · 31 contacts · 9:15 AM EST</div></div>
-    <button class="btn btn-primary" id="launch-btn" onclick="launchSequence()">▶ Launch Sequence</button>
-  </div>
+    <!-- ══ REVENUE LOGGER ══ -->
+    <div id="panel-revenue" class="panel">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Revenue Logger</div>
+          <div class="section-mono">// LOG YOUR AFFILIATE COMMISSIONS</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('add-revenue-modal')">+ Log Commission</button>
+      </div>
 
-  <div class="launch-panel" id="launch-panel">
-    <div class="launch-title">31 Hot Leads Ready to Convert</div>
-    <div class="launch-sub">FF(18) + 7FA(13) · 7-day follow-up · All links tracked · Automations configured</div>
-    <button class="launch-big-btn" onclick="launchSequence()">▶ LAUNCH HOTLEADS-FF7FA-FOLLOWUP</button>
-    <div class="launch-count" id="launch-count">Waiting to launch · Est. revenue at 15% conversion: $4,650</div>
-  </div>
+      <div class="total-tracker">
+        <div>
+          <div class="total-lbl">Total Logged Revenue</div>
+          <div class="total-val" id="total-logged">$0</div>
+        </div>
+        <div style="text-align:right">
+          <div class="total-lbl">Monthly Target</div>
+          <div style="font-size:20px;font-weight:700;color:var(--text2)">$5,000</div>
+        </div>
+        <div style="min-width:140px">
+          <div class="total-lbl" style="margin-bottom:6px">Progress</div>
+          <div class="progress-track" style="height:8px">
+            <div class="progress-fill green" id="revenue-progress" style="width:0%"></div>
+          </div>
+          <div style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);margin-top:4px" id="revenue-pct">0%</div>
+        </div>
+      </div>
 
-  <div class="ring-grid">
-    <div class="ring-card"><div class="ring-val" style="color:var(--amber)" id="hl-open">0%</div><div class="ring-label">Open Rate</div><div class="ring-tgt" style="color:var(--amber)">Target >60%</div></div>
-    <div class="ring-card"><div class="ring-val" style="color:var(--amber)" id="hl-click">0%</div><div class="ring-label">Click Rate</div><div class="ring-tgt" style="color:var(--amber)">Target >25%</div></div>
-    <div class="ring-card"><div class="ring-val" style="color:var(--amber)" id="hl-conv">0%</div><div class="ring-label">Conversion</div><div class="ring-tgt" style="color:var(--amber)">Target >15%</div></div>
-    <div class="ring-card"><div class="ring-val" style="color:var(--green)">$4,650</div><div class="ring-label">Rev Potential</div><div class="ring-tgt" style="color:var(--green)">At 15% conv.</div></div>
-  </div>
-
-  <div class="card">
-    <div class="card-header">
-      <div class="card-title">7-Day Hot Lead Emails</div>
-      <span class="tag tag-green">Click to copy script</span>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Commission History</div>
+        </div>
+        <div id="revenue-list">
+          <div style="text-align:center;padding:32px;color:var(--text3);font-family:'JetBrains Mono',monospace;font-size:11px">
+            No commissions logged yet.<br>Click "+ Log Commission" to start tracking.
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="seq-list" id="hl-seq"></div>
-  </div>
-</div>
 
-<!-- =================== AUTO MONEY =================== -->
-<div class="page" id="page-ams">
-  <div class="page-header">
-    <div><div class="page-title">⚡ Auto Money System</div>
-    <div class="page-sub">4 niches · 16 programs · Recurring commissions</div></div>
-    <div class="header-actions">
-      <select id="niche-sel" onchange="renderAMS(this.value)" style="padding:7px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:12px;cursor:pointer">
-        <option value="mmo">MMO / Make Money Online</option>
-        <option value="ai">AI / Tech Tools</option>
-        <option value="fitness">Fitness / Health</option>
-        <option value="crypto">Crypto / Web3</option>
-      </select>
+    <!-- ══ EMAIL SEQUENCES ══ -->
+    <div id="panel-email" class="panel">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Email Sequences</div>
+          <div class="section-mono">// 3 ACTIVE SEQUENCES · SYSTEME.IO</div>
+        </div>
+        <span class="card-badge badge-green" style="padding:6px 14px;font-size:11px">All Systems Active</span>
+      </div>
+
+      <div class="metrics-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px">
+        <div class="metric"><div class="metric-val" style="color:var(--green)">68%</div><div class="metric-lbl">Open Rate</div><div class="metric-sub trend-up">Target >60% ✓</div></div>
+        <div class="metric"><div class="metric-val" style="color:var(--blue)">28%</div><div class="metric-lbl">Click Rate</div><div class="metric-sub trend-up">Target >25% ✓</div></div>
+        <div class="metric"><div class="metric-val" style="color:var(--gold)">14%</div><div class="metric-lbl">Conversion</div><div class="metric-sub" style="color:var(--gold)">Target >15% ↑</div></div>
+        <div class="metric"><div class="metric-val" style="color:var(--green)">1.2%</div><div class="metric-lbl">Unsub Rate</div><div class="metric-sub trend-up">Target &lt;2% ✓</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">14-Day Master Sequence · FF + 7FA</div>
+          <span class="card-badge badge-green">Active</span>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-label"><span>Phase 1: FF (D1–D7)</span><span>Phase 2: 7FA (D8–D14)</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:50%"></div></div>
+        </div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.7">Dual-program sequence targeting FunnelFreedom in the first week and 7 Figure Accelerator in the second week. All links tracked with UTM parameters.</p>
+      </div>
     </div>
-  </div>
-  <div class="ams-grid" id="ams-grid"></div>
-</div>
 
-<!-- =================== SHOPIFY =================== -->
-<div class="page" id="page-shopify">
-  <div class="page-header">
-    <div><div class="page-title">◉ Shopify Store</div>
-    <div class="page-sub">shop.nextgenaimake.com · Digital products · AI tools</div></div>
-    <a href="https://shop.nextgenaimake.com" target="_blank" class="btn btn-primary">Open Store ↗</a>
-  </div>
-  <div class="kpi-grid">
-    <div class="kpi-card green"><div class="kpi-icon">💵</div><div class="kpi-val" style="color:var(--green)">$1,840</div><div class="kpi-label">Revenue MTD</div></div>
-    <div class="kpi-card blue"><div class="kpi-icon">🛒</div><div class="kpi-val" style="color:var(--blue)">24</div><div class="kpi-label">Orders</div></div>
-    <div class="kpi-card amber"><div class="kpi-icon">📦</div><div class="kpi-val" style="color:var(--amber)">5</div><div class="kpi-label">Products Active</div></div>
-    <div class="kpi-card purple"><div class="kpi-icon">🔁</div><div class="kpi-val" style="color:var(--purple)">$76</div><div class="kpi-label">Avg Order Value</div></div>
-  </div>
-  <div class="card">
-    <div class="card-header"><div class="card-title">Product Performance</div></div>
-    <div class="product-grid" id="product-grid"></div>
-  </div>
-</div>
+    <!-- ══ SHOPIFY ══ -->
+    <div id="panel-shopify" class="panel">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Shopify Store</div>
+          <div class="section-mono">// SHOP.NEXTGENAIMAKE.COM · DIGITAL PRODUCTS</div>
+        </div>
+        <a href="https://shop.nextgenaimake.com" target="_blank" class="btn btn-green">Open Store ↗</a>
+      </div>
 
-<!-- =================== TIKTOK =================== -->
-<div class="page" id="page-tiktok">
-  <div class="page-header">
-    <div><div class="page-title">▷ TikTok Script Hub</div>
-    <div class="page-sub">AI Job Replacement · HeyGen-ready · US audience</div></div>
-    <button class="btn btn-primary" onclick="showModal('modal-script')">📋 Copy Best Script</button>
-  </div>
+      <div class="metrics-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px">
+        <div class="metric"><div class="metric-val" style="color:var(--green)">$1,840</div><div class="metric-lbl">Revenue MTD</div></div>
+        <div class="metric"><div class="metric-val">24</div><div class="metric-lbl">Orders</div></div>
+        <div class="metric"><div class="metric-val">5</div><div class="metric-lbl">Products</div></div>
+        <div class="metric"><div class="metric-val" style="color:var(--gold)">$76</div><div class="metric-lbl">Avg Order Value</div></div>
+      </div>
 
-  <div class="kpi-grid">
-    <div class="kpi-card amber"><div class="kpi-icon">🎯</div><div class="kpi-val" style="color:var(--amber)">58→82</div><div class="kpi-label">Viral Score (before→after)</div></div>
-    <div class="kpi-card green"><div class="kpi-icon">⏱</div><div class="kpi-val" style="color:var(--green)">22s</div><div class="kpi-label">Optimal Duration</div></div>
-    <div class="kpi-card blue"><div class="kpi-icon">📱</div><div class="kpi-val" style="color:var(--blue)">TikTok</div><div class="kpi-label">Target Platform</div></div>
-    <div class="kpi-card purple"><div class="kpi-icon">🇺🇸</div><div class="kpi-val" style="color:var(--purple)">6–9pm</div><div class="kpi-label">Best Post Time EST</div></div>
-  </div>
-
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-header">
-      <div class="card-title">Script v2.0 — HeyGen Format · AI Job Replacement</div>
-      <button class="btn btn-ghost" style="font-size:11px" onclick="showModal('modal-script')">Copy full script</button>
+      <div class="alert alert-warn">⚠ Revenue down -3% this week. Consider updating product descriptions or adding a limited-time offer.</div>
     </div>
-    <div class="tiktok-scripts" id="tiktok-scripts"></div>
-  </div>
 
-  <div class="card">
-    <div class="card-header"><div class="card-title">5 Hook Alternatives — A/B Test</div></div>
-    <div id="hook-list" style="display:flex;flex-direction:column;gap:8px"></div>
-  </div>
-</div>
+    <!-- ══ YOUTUBE ══ -->
+    <div id="panel-youtube" class="panel">
+      <div class="section-header">
+        <div>
+          <div class="section-title">YouTube Channel</div>
+          <div class="section-mono">// @NEXUSAI.SYSTEM · LIVE</div>
+        </div>
+        <a href="https://studio.youtube.com/channel/UCpaKX2Lw39z06NtJdldZmgQ" target="_blank" class="btn btn-danger">▶ Open YouTube Studio</a>
+      </div>
 
-<!-- =================== CHECKLIST =================== -->
-<div class="page" id="page-checklist">
-  <div class="page-header">
-    <div><div class="page-title">✓ Launch Checklist</div>
-    <div class="page-sub">Complete all steps before going live</div></div>
-    <span id="checklist-progress" class="tag tag-amber">0 / 16 complete</span>
-  </div>
+      <div class="alert alert-success" style="margin-bottom:20px">
+        ✅ Channel live at <strong>youtube.com/@nexusai.system</strong> — Created May 7, 2026
+      </div>
 
-  <div class="grid-2">
-    <div class="card">
-      <div class="card-header"><div class="card-title">🔴 Critical — Do First</div></div>
-      <div class="check-list" id="check-critical"></div>
+      <div class="yt-stats">
+        <div class="yt-stat" onclick="editYTStat('yt-subs','Subscribers')">
+          <div class="yt-stat-val" id="yt-subs">0</div>
+          <div class="yt-stat-lbl">Subscribers</div>
+          <div style="font-size:10px;color:var(--text3);margin-top:4px">click to edit</div>
+        </div>
+        <div class="yt-stat" onclick="editYTStat('yt-views','Total Views')">
+          <div class="yt-stat-val" id="yt-views">13</div>
+          <div class="yt-stat-lbl">Total Views</div>
+          <div style="font-size:10px;color:var(--text3);margin-top:4px">click to edit</div>
+        </div>
+        <div class="yt-stat" onclick="editYTStat('yt-videos','Videos Published')">
+          <div class="yt-stat-val" id="yt-videos">2</div>
+          <div class="yt-stat-lbl">Videos Published</div>
+          <div style="font-size:10px;color:var(--text3);margin-top:4px">click to edit</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Published Videos</div>
+            <span class="card-badge badge-green">2 Live</span>
+          </div>
+          <div class="program-item">
+            <div class="program-dot" style="background:#ff0000;font-size:10px">YT</div>
+            <div>
+              <div class="program-name" style="font-size:12px">I Built an AI System That Works While I Sleep</div>
+              <div class="program-stat">Trailer · 35s · May 7, 2026</div>
+            </div>
+            <a href="https://youtu.be/ObdKa5CmIzw" target="_blank" class="btn btn-outline" style="font-size:10px;padding:5px 10px">View</a>
+          </div>
+          <div class="program-item">
+            <div class="program-dot" style="background:#ff0000;font-size:10px">YT</div>
+            <div>
+              <div class="program-name" style="font-size:12px">Short — HeyGen AI System</div>
+              <div class="program-stat">Short · 22s · May 8, 2026</div>
+            </div>
+            <a href="https://youtube.com/shorts/YRkddFlypzA" target="_blank" class="btn btn-outline" style="font-size:10px;padding:5px 10px">View</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Channel Goals</div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-label"><span>Subscribers to YPP (500)</span><span id="subs-pct">0%</span></div>
+            <div class="progress-track"><div class="progress-fill" id="subs-bar" style="width:0%"></div></div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-label"><span>Watch Hours (4,000h)</span><span>0%</span></div>
+            <div class="progress-track"><div class="progress-fill gold" style="width:0%"></div></div>
+          </div>
+          <div class="alert alert-info" style="margin-top:8px">
+            📅 Next upload: Tuesday May 13 — Dashboard Live Video
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="card">
-      <div class="card-header"><div class="card-title">🟡 Important — This Week</div></div>
-      <div class="check-list" id="check-important"></div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-header"><div class="card-title">🟢 Optimization — Ongoing</div></div>
-    <div class="check-list" id="check-optimize"></div>
-  </div>
-</div>
 
-</main>
+    <!-- ══ CONTENT CALENDAR ══ -->
+    <div id="panel-calendar" class="panel">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Content Calendar</div>
+          <div class="section-mono">// MAY 2026 · TIKTOK + YOUTUBE</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('add-event-modal')">+ Add Content</button>
+      </div>
 
-<!-- MODALS -->
-<div class="modal-overlay" id="modal-script">
-  <div class="modal">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
-      <div><div class="modal-title">HeyGen Script v2.0</div>
-      <div class="modal-sub">Copy → paste directly into HeyGen script field</div></div>
-      <button class="modal-close" onclick="closeModal('modal-script')">✕</button>
+      <div class="card" style="margin-bottom:16px">
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+          <span class="tag" style="background:rgba(255,0,0,0.15);color:#ff6b6b">▶ YouTube</span>
+          <span class="tag" style="background:rgba(0,212,255,0.15);color:var(--cyan)">⬡ TikTok</span>
+          <span class="tag" style="background:rgba(168,85,247,0.15);color:var(--purple)">◈ Instagram</span>
+          <span class="tag" style="background:rgba(0,229,160,0.15);color:var(--green)">✓ Published</span>
+        </div>
+
+        <div class="cal-grid" id="cal-grid">
+          <!-- Days generated by JS -->
+        </div>
+      </div>
     </div>
-    <div class="script-copybox" id="modal-script-text">Don't scroll. [pause: 0.4s] This A-I is about to replace YOU.
+
+    <!-- ══ TIKTOK ══ -->
+    <div id="panel-tiktok" class="panel">
+      <div class="section-header">
+        <div>
+          <div class="section-title">TikTok Script Hub</div>
+          <div class="section-mono">// HEYGEN-READY · US AUDIENCE · AI JOB REPLACEMENT</div>
+        </div>
+      </div>
+
+      <div class="metrics-row" style="margin-bottom:20px">
+        <div class="metric"><div class="metric-val" style="color:var(--green)">58→82</div><div class="metric-lbl">Viral Score</div></div>
+        <div class="metric"><div class="metric-val">22s</div><div class="metric-lbl">Optimal Duration</div></div>
+        <div class="metric"><div class="metric-val" style="color:var(--cyan)">TikTok</div><div class="metric-lbl">Platform</div></div>
+        <div class="metric"><div class="metric-val">6-9pm</div><div class="metric-lbl">Best Time EST</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Script v2.0 — HeyGen Format</div>
+          <button class="copy-btn" onclick="copyText('tiktok-script',this)">Copy Script</button>
+        </div>
+        <div class="ads-result-text" id="tiktok-script" style="background:var(--bg2);padding:16px;border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.9;color:var(--text2)">Don't scroll. [pause: 0.4s] This A-I is about to replace YOU.
 
 Twelve million jobs. [pause: 0.3s] Already gone in 2024. [pause: 0.4s] Your role? [pause: 0.3s] Probably next.
 
@@ -551,1358 +1297,654 @@ I didn't wait to get replaced. [pause: 0.4s] I used A-I to build three thousand 
 Free blueprint in my bio [pause: 0.3s] — income A-I can't touch.
 
 Is YOUR job safe from A-I? [pause: 0.5s] Comment YES [pause: 0.2s] or NO below.</div>
-    <button class="btn btn-primary" style="width:100%" onclick="copyModalScript()">Copy Script to Clipboard</button>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modal-config">
-  <div class="modal">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
-      <div><div class="modal-title">Sequence Configuration</div>
-      <div class="modal-sub">HotLeads-FF7FA-Followup · Nexus Settings</div></div>
-      <button class="modal-close" onclick="closeModal('modal-config')">✕</button>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:10px">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
-        <div style="background:var(--bg3);padding:10px;border-radius:6px"><div style="color:var(--muted);margin-bottom:3px;font-size:10px">TRIGGER</div><div>hot-lead-ff OR hot-lead-7fa</div></div>
-        <div style="background:var(--bg3);padding:10px;border-radius:6px"><div style="color:var(--muted);margin-bottom:3px;font-size:10px">SEND TIME</div><div>9:15 AM EST daily</div></div>
-        <div style="background:var(--bg3);padding:10px;border-radius:6px"><div style="color:var(--muted);margin-bottom:3px;font-size:10px">FROM NAME</div><div>Alex</div></div>
-        <div style="background:var(--bg3);padding:10px;border-radius:6px"><div style="color:var(--muted);margin-bottom:3px;font-size:10px">EXCLUSIONS</div><div>buyer-ff, buyer-7fa, buyer-shopify</div></div>
-        <div style="background:var(--bg3);padding:10px;border-radius:6px"><div style="color:var(--muted);margin-bottom:3px;font-size:10px">TRACKING</div><div>Opens + Clicks + UTM</div></div>
-        <div style="background:var(--bg3);padding:10px;border-radius:6px"><div style="color:var(--muted);margin-bottom:3px;font-size:10px">DOUBLE OPT-IN</div><div>Disabled (already opt-in)</div></div>
       </div>
     </div>
-  </div>
-</div>
 
-<script>
-// ============ DATA ============
-const programs = [
-  {name:'FunnelFreedom',cat:'Affiliate',color:'var(--green)',dotColor:'#00D97E',rev:1640,clicks:312,conv:8.2,tag:'top',tagClass:'tag-green',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75'},
-  {name:'7 Figure Accelerator',cat:'Community',color:'var(--purple)',dotColor:'#8B5CF6',rev:707,clicks:184,conv:5.1,tag:'growing',tagClass:'tag-purple',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912'},
-  {name:'AI Toolkit Bundle',cat:'Shopify',color:'var(--blue)',dotColor:'#3B82F6',rev:840,clicks:89,conv:3.4,tag:'stable',tagClass:'tag-blue',link:'https://shop.nextgenaimake.com'},
-  {name:'Funnel Templates',cat:'Shopify',color:'var(--amber)',dotColor:'#F5A623',rev:620,clicks:60,conv:2.1,tag:'optimize',tagClass:'tag-amber',link:'https://shop.nextgenaimake.com'},
-  {name:'Email Swipe Files',cat:'Shopify',color:'var(--red)',dotColor:'#FF4757',rev:380,clicks:28,conv:1.8,tag:'low CTR',tagClass:'tag-red',link:'https://shop.nextgenaimake.com'},
-];
-
-const emails14 = [
-  {day:'D1',subj:"You're in. Here's what nobody tells you about passive income",pre:"The mistake I made for 2 years before things clicked",prog:'FF',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75&utm_content=d1',open:72,phase:1},
-  {day:'D2',subj:"I failed for 2 years. Then I stopped doing this one thing.",pre:"The real reason most people never make money online",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d2',open:68,phase:1},
-  {day:'D3',subj:"Why most side hustles stay stuck at $200/month",pre:"The passive income math nobody shows you",prog:'FF',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75&utm_content=d3',open:65,phase:1},
-  {day:'D4',subj:"What happened when I stopped learning and started doing",pre:"Month 1 numbers + the 3 things I changed",prog:'FF',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75&utm_content=d4',open:61,phase:1},
-  {day:'D5',subj:'"I don\'t have time / money / experience" — honest answers',pre:"Let me address the three things holding most people back",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d5',open:58,phase:1},
-  {day:'D6',subj:"I want to show you something specific",pre:"The setup I use — step by step",prog:'FF',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75&utm_content=d6',open:54,phase:1},
-  {day:'D7',subj:"Last call on FunnelFreedom — moving to Phase 2 tomorrow",pre:"One question before we shift gears",prog:'FF',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75&utm_content=d7',open:51,phase:1},
-  {day:'D8',subj:"Phase 2 starts today — meet the community that changes the game",pre:"What separates the $3K from the $10K affiliate",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d8',open:48,phase:2},
-  {day:'D9',subj:"The only 3 traffic sources worth your time in 2025",pre:"Everything else is a distraction",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d9',open:45,phase:2},
-  {day:'D10',subj:"How I produce a week of content in 45 minutes",pre:"The AI workflow I use every week",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d10',open:43,phase:2},
-  {day:'D11',subj:"The exact shift that takes you from $3K to $10K/month",pre:"It's not more traffic. It's not more offers.",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d11',open:41,phase:2},
-  {day:'D12',subj:"From $0 to first $500 — here's what actually happened",pre:"The unglamorous version nobody posts on Instagram",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d12',open:39,phase:2},
-  {day:'D13',subj:"Here's the community I'd join on day 1 if I started over",pre:"And why I didn't wait once I found it",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d13',open:37,phase:2},
-  {day:'D14',subj:"Day 14. Here's everything in one place.",pre:"The complete roadmap — and one final question",prog:'BOTH',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75&utm_content=d14',open:35,phase:2},
-];
-
-const hlEmails = [
-  {day:'D1',subj:"Still thinking about it? Here's what changed my mind.",pre:"The one thing separating people who start from those who don't",progs:['FF','Shopify'],delay:'Immediate'},
-  {day:'D2',subj:"3 people who were exactly where you are — what happened next",pre:"A government worker, a side hustler, a beginner. Same system.",progs:['FF','7FA','Shopify'],delay:'+1 day'},
-  {day:'D3',subj:"I'm adding 3 bonuses this week — expires Friday",pre:"$373 in extra value. Yours if you move before Friday.",progs:['FF','Shopify'],delay:'+1 day',relance:true},
-  {day:'D4',subj:"I waited 18 months. Here's what that cost me.",pre:"Not in money. In time I didn't get back.",progs:['FF'],delay:'+1 day'},
-  {day:'D5',subj:"The difference between $3K/month and $10K/month isn't what you think",pre:"It's not traffic. It's not a better funnel. It's this.",progs:['7FA','FF'],delay:'+1 day'},
-  {day:'D6',subj:"6 sales vs 150 sales — same $3,000/month. Your call.",pre:"I'll let the math speak.",progs:['FF','Shopify'],delay:'+1 day',sms:true},
-  {day:'D7',subj:"{{first_name}}, this is the last email. One question.",pre:"After today I'm closing this out.",progs:['FF','7FA','Shopify'],delay:'+1 day',hardclose:true},
-];
-
-const amsData = {
-  mmo:[
-    {name:'FunnelFreedom',desc:'High-ticket commissions. Pre-built funnels. #1 in your stack.',rev:'$500–$2,000/mo',c:'#00D97E',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75'},
-    {name:'7 Figure Accelerator',desc:'Community + training. $500–$1,000 commissions per sale.',rev:'$1,000–$3,000/mo',c:'#8B5CF6',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912'},
-    {name:'ClickFunnels Affiliate',desc:'Recurring SaaS + one-time. Strong brand recognition.',rev:'$200–$800/mo',c:'#F5A623',link:'#'},
-    {name:'Systeme.io Affiliate',desc:'Free-to-start funnel tool. 40% lifetime commissions.',rev:'$100–$500/mo',c:'#3B82F6',link:'#'},
-  ],
-  ai:[
-    {name:'Claude / Anthropic',desc:'Promote Claude Pro. Recurring SaaS commissions.',rev:'$50–$300/mo',c:'#06B6D4',link:'#'},
-    {name:'Jasper AI',desc:'Content AI — 30% recurring. Strong in MMO/biz niche.',rev:'$100–$500/mo',c:'#8B5CF6',link:'#'},
-    {name:'Bolt.new',desc:'AI web builder. Promote via tutorials. Growing fast.',rev:'$80–$400/mo',c:'#F5A623',link:'#'},
-    {name:'GetResponse AI',desc:'Email + landing page AI. Up to 33% recurring.',rev:'$120–$600/mo',c:'#00D97E',link:'#'},
-  ],
-  fitness:[
-    {name:'Clickbank Health',desc:'Weight loss / supplements. $50–$150 commissions.',rev:'$200–$800/mo',c:'#FF4757',link:'#'},
-    {name:'MyFitnessPal Affiliate',desc:'App subscriptions. High conversion volume.',rev:'$100–$300/mo',c:'#00D97E',link:'#'},
-    {name:'Fitness Course Creator',desc:'Your own AI-powered workout planning course.',rev:'$500–$1,500/mo',c:'#F5A623',link:'#'},
-    {name:'Coaching Program',desc:'$97–$297/month recurring accountability.',rev:'$400–$1,200/mo',c:'#3B82F6',link:'#'},
-  ],
-  crypto:[
-    {name:'Binance Affiliate',desc:'Up to 50% on trading fees. Large US audience.',rev:'$200–$1,000/mo',c:'#F5A623',link:'#'},
-    {name:'Ledger Hardware',desc:'$10–$25/sale. High trust, converts well.',rev:'$150–$600/mo',c:'#E8EDF5',link:'#'},
-    {name:'Crypto Education',desc:'Promote crypto courses. $100–$300 commissions.',rev:'$300–$900/mo',c:'#8B5CF6',link:'#'},
-    {name:'DeFi Tools',desc:'Early mover advantage. Recurring potential.',rev:'$100–$500/mo',c:'#06B6D4',link:'#'},
-  ],
-};
-
-const products = [
-  {icon:'🤖',name:'AI Toolkit Bundle',price:'$47',sales:18,maxSales:18},
-  {icon:'📧',name:'Email Swipe Files',price:'$27',sales:9,maxSales:18},
-  {icon:'🔧',name:'Funnel Templates',price:'$37',sales:14,maxSales:18},
-  {icon:'📱',name:'TikTok Script Pack',price:'$17',sales:22,maxSales:22},
-  {icon:'📚',name:'Course Blueprint',price:'$97',sales:6,maxSales:22},
-];
-
-const tiktokScripts = [
-  {time:'0 – 3s',type:'HOOK',typeColor:'var(--red)',script:"Don't scroll. [pause: 0.4s] This A-I is about to replace YOU.",note:"Tone: Urgent/Alarming · Speed: 1.1x · 🚨 DON'T SCROLL on screen · Pop-in animation"},
-  {time:'3 – 8s',type:'PROOF',typeColor:'var(--amber)',script:"Twelve million jobs. [pause: 0.3s] Already gone in 2024. [pause: 0.4s] Your role? [pause: 0.3s] Probably next.",note:'Tone: Serious/Direct · Stat on screen: "12,000,000 jobs gone in 2024" · Source visible'},
-  {time:'8 – 15s',type:'PIVOT',typeColor:'var(--purple)',script:"I didn't wait to get replaced. [pause: 0.4s] I used A-I to build three thousand dollars a month before it happened.",note:'Tone: Confident/Personal · "$3,000/month → built with AI 🤖" on screen · Slide-in animation'},
-  {time:'15 – 19s',type:'CTA',typeColor:'var(--blue)',script:"Free blueprint in my bio [pause: 0.3s] — income A-I can't touch.",note:"Tone: Helpful/Friendly · '🔗 Free blueprint → link in bio' · Arrow pointing down"},
-  {time:'19 – 22s',type:'ENGAGE',typeColor:'var(--green)',script:"Is YOUR job safe from A-I? [pause: 0.5s] Comment YES [pause: 0.2s] or NO below.",note:'Tone: Direct/Engaging · "Is YOUR job safe? 👇 YES or NO" · Max size · Stay 3s'},
-];
-
-const hooks = [
-  {num:1,score:92,text:"Your job has a 73% chance of being automated. Here's what I did about it.",why:"Chiffre précis + histoire personnelle + curiosité gap"},
-  {num:2,score:88,text:"I didn't fight AI. I used it to replace my own salary first.",why:"Twist contre-intuitif — fort taux de completion"},
-  {num:3,score:81,text:"In 18 months, these 5 jobs won't exist. Is yours on the list?",why:"Curiosité gap maximal — force les 3 premières secondes"},
-  {num:4,score:79,text:"I work a government job AND earn $3K/month online using AI.",why:"Crédibilité max — relatable pour votre audience"},
-  {num:5,score:76,text:"Stop trying to AI-proof your job. Build income AI can't replace instead.",why:"Polarisant — commentaires des deux bords"},
-];
-
-const checkCritical = [
-  'Créer les 10 tags CRM (hot-lead-ff, hot-lead-7fa, buyer-ff, buyer-7fa, clicked-ff, clicked-7fa, clicked-shopify-hl, cold-hotlead, hot-hot, no-open-hot-d3)',
-  'Configurer exclusion automatique buyer-ff / buyer-7fa / buyer-shopify',
-  'Remplacer YOUR_SHOPIFY_URL par shop.nextgenaimake.com dans tous les liens',
-  'Configurer relance D3b (condition 0 ouverture D1+D2+D3 · délai 4h)',
-  'Activer tracking ouverture + clic sur chaque email',
-  'Tester séquence complète sur adresse personnelle avant lancement',
-];
-const checkImportant = [
-  'Connecter pixel shop.nextgenaimake.com → tag buyer-shopify automatique',
-  'Configurer SMS/WhatsApp si numéros disponibles (relance D6)',
-  'Paramétrer notification manuelle pour tag hot-hot (click rate >25%)',
-  'Mettre à jour bio TikTok → lien lead magnet Bolt',
-  'Ajouter animation typewriter au script TikTok dans CapCut',
-  'Ajouter question finale "Is YOUR job safe? YES or NO 👇" à la vidéo',
-];
-const checkOptimize = [
-  'Lancer Meta Ads Lookalike sur segment buyer-ff dès conversion confirmée',
-  'Publier TikTok entre 18h–21h EST (minuit–3h heure belge)',
-  'Répondre aux 5 premiers commentaires TikTok dans les 30 min',
-  'Créer séquence onboarding 3 emails pour acheteurs FF/7FA',
-];
-
-// ============ RENDER FUNCTIONS ============
-
-function renderDashboard(){
-  // Funnel
-  const steps = [
-    {l:'Leads opt-in',n:247,pct:100,c:'var(--blue)'},
-    {l:'Emails opened',n:198,pct:80,c:'var(--purple)'},
-    {l:'Clicked FF',n:89,pct:36,c:'var(--green)'},
-    {l:'Clicked 7FA',n:62,pct:25,c:'var(--amber)'},
-    {l:'Hot leads',n:31,pct:13,c:'var(--red)'},
-    {l:'Buyers',n:14,pct:6,c:'var(--green)'},
-  ];
-  document.getElementById('funnel-viz').innerHTML = steps.map(s=>`
-    <div class="funnel-step" style="background:${s.c}18;border:1px solid ${s.c}30;width:${Math.max(s.pct,20)}%">
-      <span class="funnel-step-label" style="color:${s.c};font-size:11px">${s.l}</span>
-      <span class="funnel-step-val" style="color:${s.c};font-size:12px">${s.n}<span class="funnel-pct">${s.pct}%</span></span>
-    </div>`).join('');
-
-  // Alerts
-  const alerts = [
-    {type:'a-red',icon:'!',t:'D3b — 12 contacts, no open D1+D2+D3',d:'Trigger relance D3b in Nexus now',btn:'Fix'},
-    {type:'a-amber',icon:'!',t:'31 hot leads — no purchase yet',d:'Launch HotLeads-FF7FA-Followup sequence',btn:'Launch'},
-    {type:'a-green',icon:'✓',t:'FunnelFreedom — $1,640 commissions',d:'Top performer. Scale Meta Ads Lookalike.',btn:'Scale'},
-    {type:'a-green',icon:'✓',t:'7FA growing +31% vs last period',d:'Phase 2 performing well.',btn:'View'},
-  ];
-  document.getElementById('alert-list').innerHTML = alerts.map(a=>`
-    <div class="alert ${a.type}">
-      <div class="alert-icon" style="background:${a.type==='a-red'?'var(--red)':a.type==='a-amber'?'var(--amber)':'var(--green)'};color:#000">${a.icon}</div>
-      <div class="alert-body" style="flex:1"><div class="alert-title">${a.t}</div><div class="alert-desc">${a.d}</div></div>
-      <button class="alert-btn" style="color:${a.type==='a-red'?'var(--red)':a.type==='a-amber'?'var(--amber)':'var(--green)'};border-color:${a.type==='a-red'?'var(--red)':a.type==='a-amber'?'var(--amber)':'var(--green)'}" onclick="showPage('hotleads')">${a.btn} →</button>
-    </div>`).join('');
-
-  // Revenue table
-  document.getElementById('revenue-table').innerHTML = `<thead><tr><th>Program</th><th>Revenue</th><th>Clicks</th><th>Conv.</th><th>Status</th></tr></thead><tbody>`
-    + programs.map(p=>`<tr>
-      <td><div class="prog-name"><div class="prog-dot" style="background:${p.dotColor}"></div><div><div class="prog-title">${p.name}</div><div class="prog-sub">${p.cat}</div></div></div></td>
-      <td><div class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:${p.rev/1640*100}%;background:${p.dotColor}"></div></div><div class="bar-num">$${p.rev.toLocaleString()}</div></div></td>
-      <td><span style="font-family:'DM Mono',monospace;font-size:12px">${p.clicks}</span></td>
-      <td><span style="font-family:'DM Mono',monospace;font-size:12px">${p.conv}%</span></td>
-      <td><span class="tag ${p.tagClass}">${p.tag}</span></td>
-    </tr>`).join('') + '</tbody>';
-
-  // Scenarios
-  const sc = [
-    {pct:'5%',rev:'~$1,000',desc:'2 FF sales',c:'var(--muted)'},
-    {pct:'10%',rev:'~$2,700',desc:'3 FF + $200 Shopify',c:'var(--amber)'},
-    {pct:'15% 🎯',rev:'~$4,650',desc:'FF + 7FA + Shopify',c:'var(--green)'},
-    {pct:'25%',rev:'~$9,200+',desc:'hot-hot + coaching',c:'var(--purple)'},
-  ];
-  document.getElementById('scenarios').innerHTML = sc.map(s=>`
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--bg3);border-radius:6px">
-      <span style="font-size:12px;color:var(--muted)">${s.pct} conversion · ${s.desc}</span>
-      <span style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:${s.c}">${s.rev}</span>
-    </div>`).join('');
-}
-
-function renderSequences(){
-  document.getElementById('main-seq').innerHTML = emails14.map(e=>`
-    <div class="seq-row" onclick="window.open('${e.link}','_blank')">
-      <div class="seq-day" style="background:${e.phase===1?'var(--green-dim)':'var(--purple-dim)'};color:${e.phase===1?'var(--green)':'var(--purple)'}">${e.day}</div>
-      <div class="seq-info">
-        <div class="seq-subj">${e.subj}</div>
-        <div class="seq-pre">${e.pre}</div>
+    <!-- ══ AI ADS CREATOR ══ -->
+    <div id="panel-ads" class="panel">
+      <div class="section-header">
+        <div>
+          <div class="section-title">AI Ads Creator</div>
+          <div class="section-mono">// POWERED BY CLAUDE · DIRECT RESPONSE</div>
+        </div>
+        <span class="card-badge badge-blue" style="padding:6px 14px;font-size:11px">⚡ Claude Sonnet</span>
       </div>
-      <div class="seq-links">
-        <a class="seq-link ${e.prog==='FF'?'tag-green':e.prog==='7FA'?'tag-purple':'tag-gray'}" href="${e.link}" target="_blank" style="text-decoration:none" onclick="event.stopPropagation()">${e.prog} →</a>
-      </div>
-      <div class="open-rate">${e.open}% open</div>
-    </div>`).join('');
-}
 
-function renderPrograms(){
-  document.getElementById('program-cards').innerHTML = programs.map(p=>`
-    <div class="card" style="border-top:2px solid ${p.dotColor}">
-      <div class="card-header"><div class="card-title">${p.name}</div><span class="tag ${p.tagClass}">${p.tag}</span></div>
-      <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:${p.color};margin-bottom:4px">$${p.rev.toLocaleString()}</div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:12px">${p.cat} · ${p.clicks} clicks · ${p.conv}% conv.</div>
-      <a href="${p.link}" target="_blank" class="btn btn-ghost" style="width:100%;justify-content:center;text-decoration:none;display:flex">View Program ↗</a>
-    </div>`).join('');
+      <div class="grid-65">
+        <div>
+          <div class="card" style="margin-bottom:20px">
+            <div class="card-header">
+              <div class="card-title">Generate Ad</div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Platform</label>
+                <select class="form-select" id="ads-platform">
+                  <option>TikTok</option>
+                  <option>YouTube Shorts</option>
+                  <option>Instagram Reels</option>
+                  <option>Facebook</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Ad Goal</label>
+                <select class="form-select" id="ads-goal">
+                  <option>Sales / Conversions</option>
+                  <option>Clicks / Traffic</option>
+                  <option>Awareness</option>
+                  <option>Lead Generation</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Product / Offer</label>
+              <input class="form-input" id="ads-product" placeholder="e.g. NEXUS AI — Affiliate automation system" value="NEXUS AI — AI-powered affiliate marketing system">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Target Audience</label>
+              <input class="form-input" id="ads-audience" placeholder="e.g. entrepreneurs, freelancers, 25-45" value="Entrepreneurs and online marketers who want passive income">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Tone</label>
+                <select class="form-select" id="ads-tone">
+                  <option>Urgent / FOMO</option>
+                  <option>Professional</option>
+                  <option>Casual / Relatable</option>
+                  <option>Inspiring</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Language</label>
+                <select class="form-select" id="ads-lang">
+                  <option>English</option>
+                  <option>French</option>
+                  <option>Bilingual EN/FR</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="generateAd()">
+              ⚡ Generate with Claude AI
+            </button>
+            <div class="ai-loading" id="ads-loading">
+              <div class="ai-spinner"></div>
+              Claude is writing your ad...
+            </div>
+          </div>
+        </div>
 
-  document.getElementById('perf-table').innerHTML = `<thead><tr><th>Program</th><th>Email Clicks</th><th>Ad Clicks</th><th>Shopify</th><th>Affil. Rev</th><th>Engagement</th></tr></thead><tbody>`
-    + programs.map(p=>`<tr>
-      <td><div class="prog-name"><div class="prog-dot" style="background:${p.dotColor}"></div><span style="font-size:12px;font-weight:500">${p.name}</span></div></td>
-      <td><div class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:${p.clicks/312*100}%;background:var(--blue)"></div></div><div class="bar-num">${Math.round(p.clicks*0.6)}</div></div></td>
-      <td><span style="font-family:'DM Mono',monospace;font-size:11px">${p.clicks}</span></td>
-      <td><span style="font-family:'DM Mono',monospace;font-size:11px">${p.cat==='Shopify'?'$'+p.rev:'—'}</span></td>
-      <td><span style="font-family:'DM Mono',monospace;font-size:11px">${p.cat!=='Shopify'?'$'+p.rev:'—'}</span></td>
-      <td><span class="tag ${p.conv>4?'tag-green':p.conv>2?'tag-amber':'tag-red'}">${Math.round(p.conv*6)}%</span></td>
-    </tr>`).join('')+'</tbody>';
-}
-
-function renderHotLeads(){
-  document.getElementById('hl-seq').innerHTML = hlEmails.map(e=>`
-    <div class="seq-row" onclick="showModal('modal-script')">
-      <div class="seq-day" style="background:var(--amber-dim);color:var(--amber)">${e.day}</div>
-      <div class="seq-info">
-        <div class="seq-subj">${e.subj}</div>
-        <div class="seq-pre">${e.pre}</div>
-      </div>
-      <div class="seq-links">
-        ${e.progs.map(p=>`<span class="tag ${p==='FF'?'tag-green':p==='7FA'?'tag-purple':'tag-blue'}">${p}</span>`).join('')}
-        ${e.relance?'<span class="tag tag-amber">+Relance</span>':''}
-        ${e.sms?'<span class="tag tag-blue">+SMS</span>':''}
-        ${e.hardclose?'<span class="tag tag-red">Hard Close</span>':''}
-      </div>
-      <div class="open-rate">${e.delay}</div>
-    </div>`).join('');
-}
-
-function renderAMS(niche='mmo'){
-  const data = amsData[niche];
-  document.getElementById('ams-grid').innerHTML = data.map(d=>`
-    <div class="ams-card" style="background:${d.c}12;border-color:${d.c}30">
-      <div class="ams-name" style="color:${d.c}">${d.name}</div>
-      <div class="ams-desc">${d.desc}</div>
-      <div class="ams-rev" style="color:${d.c}">${d.rev}</div>
-      <a href="${d.link}" target="_blank" class="ams-cta" style="background:${d.c};color:#000;text-decoration:none">${d.link==='#'?'Explore →':'Join now →'}</a>
-    </div>`).join('');
-}
-
-function renderShopify(){
-  document.getElementById('product-grid').innerHTML = products.map(p=>`
-    <div class="product-card">
-      <div class="product-icon">${p.icon}</div>
-      <div class="product-name">${p.name}</div>
-      <div class="product-price">${p.price}</div>
-      <div class="product-sales">${p.sales} sales this month</div>
-      <div class="product-bar"><div class="product-bar-fill" style="width:${p.sales/p.maxSales*100}%"></div></div>
-    </div>`).join('');
-}
-
-function renderTikTok(){
-  document.getElementById('tiktok-scripts').innerHTML = tiktokScripts.map(s=>`
-    <div class="script-row">
-      <div class="script-meta">
-        <span class="tag" style="background:${s.typeColor}20;color:${s.typeColor}">${s.type}</span>
-        <span class="script-frame">${s.time}</span>
-      </div>
-      <div class="script-text">"${s.script}"</div>
-      <div class="script-note">⚙️ ${s.note}</div>
-    </div>`).join('');
-
-  document.getElementById('hook-list').innerHTML = hooks.map(h=>`
-    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 14px;display:flex;align-items:flex-start;gap:12px">
-      <div style="min-width:32px;height:32px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);flex-shrink:0">#${h.num}</div>
-      <div style="flex:1">
-        <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px">${h.text}</div>
-        <div style="font-size:11px;color:var(--muted)">${h.why}</div>
-      </div>
-      <div style="font-family:'DM Mono',monospace;font-size:12px;font-weight:600;color:${h.score>=88?'var(--green)':h.score>=80?'var(--amber)':'var(--blue)'};flex-shrink:0">${h.score}/100</div>
-    </div>`).join('');
-}
-
-function renderChecklist(){
-  let total = 0, done = 0;
-  function renderGroup(items, containerId){
-    document.getElementById(containerId).innerHTML = items.map((item,i)=>{
-      total++;
-      return `<div class="check-item" onclick="toggleCheck(this)">
-        <div class="check-box">✓</div>
-        <span>${item}</span>
-      </div>`;
-    }).join('');
-  }
-  renderGroup(checkCritical,'check-critical');
-  renderGroup(checkImportant,'check-important');
-  renderGroup(checkOptimize,'check-optimize');
-  updateChecklistProgress();
-}
-
-function toggleCheck(el){
-  el.querySelector('.check-box').classList.toggle('done');
-  updateChecklistProgress();
-}
-
-function updateChecklistProgress(){
-  const all = document.querySelectorAll('.check-box');
-  const done = document.querySelectorAll('.check-box.done').length;
-  const el = document.getElementById('checklist-progress');
-  if(el){
-    el.textContent = `${done} / ${all.length} complete`;
-    el.className = `tag ${done===all.length?'tag-green':done>all.length/2?'tag-amber':'tag-red'}`;
-  }
-}
-
-// ============ NAVIGATION ============
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  const navMap = {dashboard:0,sequences:1,programs:2,hotleads:3,ams:4,shopify:5,tiktok:6,checklist:7};
-  const items = document.querySelectorAll('.nav-item');
-  if(navMap[id]!==undefined && items[navMap[id]]) items[navMap[id]].classList.add('active');
-  // Lazy render
-  if(id==='ams') renderAMS(document.getElementById('niche-sel').value);
-  if(id==='shopify') renderShopify();
-  if(id==='tiktok') renderTikTok();
-  if(id==='checklist') renderChecklist();
-  if(id==='sequences') renderSequences();
-  if(id==='programs') renderPrograms();
-  if(id==='hotleads') renderHotLeads();
-}
-
-// ============ LAUNCH SEQUENCE ============
-let launched = false;
-function launchSequence(){
-  if(launched) return;
-  launched = true;
-  document.getElementById('launch-btn').textContent = '✓ Launched';
-  document.getElementById('launch-btn').style.background = 'var(--green)';
-  document.getElementById('launch-count').innerHTML = '<span style="color:var(--green)">✓ Sequence active — 31 contacts entering at 9:15 AM EST tomorrow</span>';
-  let o=0,c=0,v=0;
-  const t = setInterval(()=>{
-    o=Math.min(o+1.5,68); c=Math.min(c+0.7,28); v=Math.min(v+0.35,14);
-    const hlOpen=document.getElementById('hl-open');
-    const hlClick=document.getElementById('hl-click');
-    const hlConv=document.getElementById('hl-conv');
-    if(hlOpen) hlOpen.textContent=Math.round(o)+'%';
-    if(hlClick) hlClick.textContent=Math.round(c)+'%';
-    if(hlConv) hlConv.textContent=v.toFixed(1)+'%';
-    if(o>=68) clearInterval(t);
-  },30);
-}
-
-// ============ MODALS ============
-function showModal(id){document.getElementById(id).classList.add('open')}
-function closeModal(id){document.getElementById(id).classList.remove('open')}
-document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
-
-function copyModalScript(){
-  const txt = document.getElementById('modal-script-text').textContent;
-  navigator.clipboard.writeText(txt).then(()=>{
-    const btn = event.target;
-    btn.textContent = '✓ Copied to clipboard!';
-    setTimeout(()=>btn.textContent='Copy Script to Clipboard',2000);
-  });
-}
-
-// ============ INIT ============
-renderDashboard();
-</script>
-</body>
-</html>
-PE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nexus AI — Command Center</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg: #080B10;
-  --bg2: #0D1117;
-  --bg3: #131920;
-  --bg4: #1A2230;
-  --border: rgba(255,255,255,0.06);
-  --border2: rgba(255,255,255,0.1);
-  --text: #E8EDF5;
-  --muted: #5A6A80;
-  --muted2: #3A4858;
-  --green: #00D97E;
-  --green-dim: rgba(0,217,126,0.12);
-  --amber: #F5A623;
-  --amber-dim: rgba(245,166,35,0.12);
-  --red: #FF4757;
-  --red-dim: rgba(255,71,87,0.12);
-  --blue: #3B82F6;
-  --blue-dim: rgba(59,130,246,0.12);
-  --purple: #8B5CF6;
-  --purple-dim: rgba(139,92,246,0.12);
-  --cyan: #06B6D4;
-  --cyan-dim: rgba(6,182,212,0.12);
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;min-height:100vh;overflow-x:hidden}
-
-/* SIDEBAR */
-.sidebar{position:fixed;left:0;top:0;bottom:0;width:220px;background:var(--bg2);border-right:1px solid var(--border);padding:20px 0;z-index:100;display:flex;flex-direction:column}
-.logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
-.logo-text{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;background:linear-gradient(135deg,#00D97E,#3B82F6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.5px}
-.logo-sub{font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:2px}
-.nav-section{padding:0 12px;margin-bottom:20px}
-.nav-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;padding:0 8px;margin-bottom:6px;font-weight:500}
-.nav-item{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:6px;cursor:pointer;color:var(--muted);font-size:13px;transition:all .15s;border:1px solid transparent}
-.nav-item:hover{background:var(--bg3);color:var(--text)}
-.nav-item.active{background:var(--green-dim);color:var(--green);border-color:rgba(0,217,126,0.2)}
-.nav-icon{font-size:14px;width:18px;text-align:center;flex-shrink:0}
-.nav-badge{margin-left:auto;font-size:10px;padding:1px 6px;border-radius:99px;background:var(--red-dim);color:var(--red)}
-.status-bar{margin-top:auto;padding:12px 16px;border-top:1px solid var(--border)}
-.status-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-bottom:4px}
-.status-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
-
-/* MAIN */
-.main{margin-left:220px;padding:24px;min-height:100vh}
-.page{display:none}
-.page.active{display:block}
-.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
-.page-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--text);letter-spacing:-0.5px}
-.page-sub{font-size:13px;color:var(--muted);margin-top:4px}
-.header-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.btn{padding:7px 16px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;border:1px solid;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:6px}
-.btn-primary{background:var(--green);color:#000;border-color:var(--green)}
-.btn-primary:hover{background:#00c070}
-.btn-ghost{background:transparent;color:var(--muted);border-color:var(--border2)}
-.btn-ghost:hover{background:var(--bg3);color:var(--text)}
-
-/* KPI GRID */
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px}
-.kpi-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;position:relative;overflow:hidden;transition:border-color .2s}
-.kpi-card:hover{border-color:var(--border2)}
-.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
-.kpi-card.green::before{background:var(--green)}
-.kpi-card.amber::before{background:var(--amber)}
-.kpi-card.blue::before{background:var(--blue)}
-.kpi-card.red::before{background:var(--red)}
-.kpi-card.purple::before{background:var(--purple)}
-.kpi-card.cyan::before{background:var(--cyan)}
-.kpi-icon{font-size:18px;margin-bottom:8px}
-.kpi-val{font-family:'Syne',sans-serif;font-size:26px;font-weight:700;line-height:1;margin-bottom:4px}
-.kpi-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em}
-.kpi-delta{font-size:11px;margin-top:6px;display:flex;align-items:center;gap:3px}
-.delta-up{color:var(--green)}
-.delta-dn{color:var(--red)}
-.delta-flat{color:var(--muted)}
-
-/* GRID LAYOUTS */
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
-.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
-.grid-1-2{display:grid;grid-template-columns:1fr 2fr;gap:16px;margin-bottom:16px}
-
-/* CARDS */
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px}
-.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.card-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:var(--text);letter-spacing:0.02em}
-.card-action{font-size:11px;color:var(--muted);cursor:pointer;transition:color .15s}
-.card-action:hover{color:var(--text)}
-
-/* PROGRAM TABLE */
-.prog-table{width:100%;border-collapse:collapse}
-.prog-table th{font-size:10px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;padding:6px 10px;text-align:left;border-bottom:1px solid var(--border)}
-.prog-table td{padding:10px;border-bottom:1px solid var(--border);vertical-align:middle}
-.prog-table tr:last-child td{border-bottom:none}
-.prog-table tr:hover td{background:rgba(255,255,255,0.02)}
-.prog-name{display:flex;align-items:center;gap:10px}
-.prog-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.prog-title{font-size:13px;font-weight:500;color:var(--text)}
-.prog-sub{font-size:11px;color:var(--muted)}
-.bar-cell{display:flex;align-items:center;gap:8px}
-.bar-bg{flex:1;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;min-width:60px}
-.bar-fill{height:100%;border-radius:2px;transition:width 1s ease}
-.bar-num{font-size:11px;color:var(--muted);min-width:40px;text-align:right;font-family:'DM Mono',monospace}
-.tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:99px;font-family:'DM Mono',monospace}
-.tag-green{background:var(--green-dim);color:var(--green)}
-.tag-amber{background:var(--amber-dim);color:var(--amber)}
-.tag-red{background:var(--red-dim);color:var(--red)}
-.tag-blue{background:var(--blue-dim);color:var(--blue)}
-.tag-purple{background:var(--purple-dim);color:var(--purple)}
-.tag-cyan{background:var(--cyan-dim);color:var(--cyan)}
-.tag-gray{background:rgba(255,255,255,0.06);color:var(--muted)}
-
-/* EMAIL SEQUENCE */
-.seq-list{display:flex;flex-direction:column;gap:1px}
-.seq-row{display:grid;grid-template-columns:36px 1fr auto auto;gap:12px;align-items:center;padding:10px 12px;background:var(--bg3);border-radius:6px;margin-bottom:4px;transition:background .15s;cursor:pointer}
-.seq-row:hover{background:var(--bg4)}
-.seq-day{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;font-family:'DM Mono',monospace;flex-shrink:0}
-.seq-info .seq-subj{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:320px}
-.seq-info .seq-pre{font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:320px}
-.seq-links{display:flex;gap:4px;flex-shrink:0}
-.seq-link{font-size:10px;padding:2px 7px;border-radius:4px;text-decoration:none;transition:opacity .15s}
-.seq-link:hover{opacity:0.8}
-.open-rate{font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);white-space:nowrap;text-align:right}
-
-/* FUNNEL VISUAL */
-.funnel-viz{display:flex;flex-direction:column;gap:4px}
-.funnel-step{border-radius:6px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;transition:opacity .2s}
-.funnel-step-label{font-size:12px;font-weight:500}
-.funnel-step-val{font-size:13px;font-weight:600;font-family:'DM Mono',monospace}
-.funnel-pct{font-size:10px;opacity:0.7;margin-left:6px}
-
-/* ALERTS */
-.alert-list{display:flex;flex-direction:column;gap:8px}
-.alert{display:flex;gap:10px;padding:10px 12px;border-radius:8px;border:1px solid;transition:all .15s}
-.alert-icon{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px}
-.alert-body .alert-title{font-size:12px;font-weight:500;margin-bottom:2px}
-.alert-body .alert-desc{font-size:11px;line-height:1.5;opacity:0.8}
-.alert-btn{margin-left:auto;flex-shrink:0;font-size:10px;padding:3px 8px;border-radius:4px;border:1px solid;cursor:pointer;background:transparent;transition:background .15s;white-space:nowrap;align-self:flex-start}
-.alert.a-red{background:var(--red-dim);border-color:rgba(255,71,87,0.2);color:#FFB3BB}
-.alert.a-amber{background:var(--amber-dim);border-color:rgba(245,166,35,0.2);color:#FFD98A}
-.alert.a-green{background:var(--green-dim);border-color:rgba(0,217,126,0.2);color:#80FFB8}
-
-/* AUTO MONEY SYSTEM */
-.ams-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
-.ams-card{border-radius:8px;border:1px solid;padding:12px;transition:transform .15s,box-shadow .15s;cursor:pointer}
-.ams-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.3)}
-.ams-name{font-size:12px;font-weight:600;margin-bottom:4px}
-.ams-desc{font-size:11px;opacity:0.7;line-height:1.4;margin-bottom:8px}
-.ams-rev{font-size:13px;font-weight:600;font-family:'DM Mono',monospace}
-.ams-cta{display:inline-block;font-size:10px;padding:3px 8px;border-radius:4px;text-decoration:none;font-weight:500;margin-top:6px;transition:opacity .15s}
-.ams-cta:hover{opacity:0.8}
-
-/* TIKTOK SECTION */
-.tiktok-scripts{display:flex;flex-direction:column;gap:8px}
-.script-row{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
-.script-meta{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.script-frame{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace}
-.script-text{font-size:13px;color:var(--text);line-height:1.5;font-style:italic}
-.script-note{font-size:10px;color:var(--muted);margin-top:5px;padding-top:5px;border-top:1px solid var(--border)}
-
-/* SHOPIFY */
-.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
-.product-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;transition:border-color .15s}
-.product-card:hover{border-color:var(--border2)}
-.product-icon{font-size:24px;margin-bottom:8px}
-.product-name{font-size:12px;font-weight:500;margin-bottom:4px}
-.product-price{font-size:16px;font-weight:700;color:var(--green);font-family:'DM Mono',monospace}
-.product-sales{font-size:10px;color:var(--muted);margin-top:2px}
-.product-bar{height:3px;background:var(--bg4);border-radius:2px;margin-top:8px;overflow:hidden}
-.product-bar-fill{height:100%;border-radius:2px;background:var(--green);transition:width 1s}
-
-/* LAUNCH BUTTON */
-.launch-panel{background:linear-gradient(135deg,rgba(0,217,126,0.08),rgba(59,130,246,0.08));border:1px solid rgba(0,217,126,0.2);border-radius:12px;padding:20px;text-align:center;margin-bottom:20px}
-.launch-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
-.launch-sub{font-size:12px;color:var(--muted);margin-bottom:14px}
-.launch-big-btn{padding:12px 32px;background:var(--green);color:#000;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .15s;letter-spacing:0.02em}
-.launch-big-btn:hover{background:#00c070;transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,217,126,0.3)}
-.launch-count{font-size:11px;color:var(--muted);margin-top:8px}
-
-/* PROGRESS RINGS */
-.ring-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
-.ring-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
-.ring-val{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:2px}
-.ring-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em}
-.ring-tgt{font-size:10px;margin-top:4px}
-
-/* CHECKLIST */
-.check-list{display:flex;flex-direction:column;gap:6px}
-.check-item{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;background:var(--bg3);border-radius:6px;font-size:12px;color:var(--text);cursor:pointer;transition:background .15s}
-.check-item:hover{background:var(--bg4)}
-.check-box{width:16px;height:16px;border-radius:4px;border:1px solid var(--muted2);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:9px;transition:all .15s}
-.check-box.done{background:var(--green);border-color:var(--green);color:#000}
-.check-prio{font-size:10px;margin-left:auto;flex-shrink:0;padding-top:2px}
-
-/* MINI CHART */
-.sparkline{height:40px;display:flex;align-items:flex-end;gap:3px}
-.spark-bar{border-radius:2px 2px 0 0;transition:height .5s;min-width:6px}
-
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;display:none;align-items:center;justify-content:center}
-.modal-overlay.open{display:flex}
-.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:24px;max-width:500px;width:90%;max-height:80vh;overflow-y:auto}
-.modal-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:4px}
-.modal-sub{font-size:12px;color:var(--muted);margin-bottom:16px}
-.modal-close{float:right;background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;margin-top:-4px}
-.script-copybox{background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:14px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.8;color:var(--text);white-space:pre-wrap;margin-bottom:12px}
-
-/* LIVE DOT */
-.live{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--green)}
-.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
-
-/* RESPONSIVE */
-@media(max-width:768px){
-  .sidebar{width:60px}
-  .sidebar .logo-text,.sidebar .logo-sub,.sidebar .nav-item span:not(.nav-icon),.sidebar .nav-label,.sidebar .status-bar{display:none}
-  .sidebar .nav-item{justify-content:center;padding:8px}
-  .main{margin-left:60px;padding:16px}
-  .grid-2,.grid-3,.grid-1-2{grid-template-columns:1fr}
-  .kpi-grid{grid-template-columns:repeat(2,1fr)}
-  .ring-grid{grid-template-columns:repeat(2,1fr)}
-}
-
-/* SCROLLBAR */
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--muted2);border-radius:2px}
-</style>
-</head>
-<body>
-
-<!-- SIDEBAR -->
-<nav class="sidebar">
-  <div class="logo">
-    <div class="logo-text">NEXUS AI</div>
-    <div class="logo-sub">Command Center</div>
-  </div>
-  <div class="nav-section">
-    <div class="nav-label">Core</div>
-    <div class="nav-item active" onclick="showPage('dashboard')"><span class="nav-icon">⬡</span><span>Dashboard</span></div>
-    <div class="nav-item" onclick="showPage('sequences')"><span class="nav-icon">✉</span><span>Email Sequences</span><span class="nav-badge">3</span></div>
-    <div class="nav-item" onclick="showPage('programs')"><span class="nav-icon">◈</span><span>Programs</span></div>
-  </div>
-  <div class="nav-section">
-    <div class="nav-label">Revenue</div>
-    <div class="nav-item" onclick="showPage('hotleads')"><span class="nav-icon">🔥</span><span>Hot Leads</span><span class="nav-badge">31</span></div>
-    <div class="nav-item" onclick="showPage('ams')"><span class="nav-icon">⚡</span><span>Auto Money</span></div>
-    <div class="nav-item" onclick="showPage('shopify')"><span class="nav-icon">◉</span><span>Shopify</span></div>
-  </div>
-  <div class="nav-section">
-    <div class="nav-label">Content</div>
-    <div class="nav-item" onclick="showPage('tiktok')"><span class="nav-icon">▷</span><span>TikTok Scripts</span></div>
-    <div class="nav-item" onclick="showPage('checklist')"><span class="nav-icon">✓</span><span>Launch Checklist</span></div>
-  </div>
-  <div class="status-bar">
-    <div class="status-item"><div class="status-dot" style="background:var(--green)"></div><span>FunnelFreedom — Live</span></div>
-    <div class="status-item"><div class="status-dot" style="background:var(--green)"></div><span>7FA — Live</span></div>
-    <div class="status-item"><div class="status-dot" style="background:var(--amber)"></div><span>Shopify — Setup</span></div>
-  </div>
-</nav>
-
-<main class="main">
-
-<!-- =================== DASHBOARD =================== -->
-<div class="page active" id="page-dashboard">
-
-<div class="page-header">
-    <div>
-      <div class="page-title">Command Center</div>
-      <div class="page-sub">Alex · Brussels → US Market · All systems overview</div>
-
- <div style="background:#111;padding:12px;border-radius:8px;margin-bottom:10px">
-      <b>STEP 2:</b> Post your first video<br>
-      👉 Use the scripts below and post on TikTok
-    </div>
-
-    <div style="background:#111;padding:12px;border-radius:8px">
-      <b>STEP 3:</b> Get your first clicks<br>
-      👉 Check your results and scale what works
-    </div>
-
-  </div>
-
-</div>
-
-<div class="page-header">
-    <div>
- 
-  <div class="page-header">
-    <div>
-      <div class="page-title">Command Center</div>
-      <div class="page-sub">Alex · Brussels → US Market · All systems overview</div>
-      
-       <div style="margin-top:18px">
-  <a href="https://www.systeme-4l.com/agent-tiktok" target="_blank"
-     style="
-     display:inline-block;
-     padding:14px 28px;
-     background:linear-gradient(135deg,#00D97E,#3B82F6);
-     color:#000;
-     font-weight:700;
-     border-radius:10px;
-     text-decoration:none;
-     font-size:14px;
-     box-shadow:0 8px 20px rgba(0,217,126,0.3);
-     transition:all 0.2s ease;
-     ">
-     🚀 Start Making Money With AI
-  </a>
-  <div style="font-size:11px;color:#5A6A80;margin-top:6px">
-    Free system • No experience needed
-  </div>
-</div>
-
-    </div>
-
-    <div class="header-actions">
-    </div>
-    <div class="header-actions">
-      <div class="live"><div class="live-dot"></div>Live tracking</div>
-      <button class="btn btn-primary" onclick="showPage('hotleads')">🔥 Launch Hot Leads</button>
-    </div>
-  </div>
-
-  <div class="kpi-grid">
-    <div class="kpi-card green">
-      <div class="kpi-icon">💰</div>
-      <div class="kpi-val" style="color:var(--green)">$4,187</div>
-      <div class="kpi-label">Total Revenue MTD</div>
-      <div class="kpi-delta delta-up">↑ +31% vs last month</div>
-    </div>
-    <div class="kpi-card amber">
-      <div class="kpi-icon">🔥</div>
-      <div class="kpi-val" style="color:var(--amber)">31</div>
-      <div class="kpi-label">Hot Leads Active</div>
-      <div class="kpi-delta delta-up">FF(18) + 7FA(13)</div>
-    </div>
-    <div class="kpi-card blue">
-      <div class="kpi-icon">✉</div>
-      <div class="kpi-val" style="color:var(--blue)">247</div>
-      <div class="kpi-label">Total Subscribers</div>
-      <div class="kpi-delta delta-up">↑ +12% this week</div>
-    </div>
-    <div class="kpi-card purple">
-      <div class="kpi-icon">🔗</div>
-      <div class="kpi-val" style="color:var(--purple)">496</div>
-      <div class="kpi-label">Affiliate Clicks</div>
-      <div class="kpi-delta delta-up">FF(312) + 7FA(184)</div>
-    </div>
-    <div class="kpi-card cyan">
-      <div class="kpi-icon">🛍</div>
-      <div class="kpi-val" style="color:var(--cyan)">$1,840</div>
-      <div class="kpi-label">Shopify Sales</div>
-      <div class="kpi-delta delta-dn">↓ -3% (optimize needed)</div>
-    </div>
-    <div class="kpi-card red">
-      <div class="kpi-icon">📊</div>
-      <div class="kpi-val" style="color:var(--red)">38%</div>
-      <div class="kpi-label">Avg Engagement</div>
-      <div class="kpi-delta delta-up">↑ +5pt vs benchmark</div>
-    </div>
-  </div>
-
-  <div class="grid-1-2">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">Conversion Funnel</div>
-        <span class="tag tag-green">14-day period</span>
-      </div>
-      <div class="funnel-viz" id="funnel-viz"></div>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">🚨 Alerts & Actions</div>
-        <span class="card-action" onclick="showPage('hotleads')">View all →</span>
-      </div>
-      <div class="alert-list" id="alert-list"></div>
-    </div>
-  </div>
-
-  <div class="grid-2">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">Revenue by Program</div>
-        <span class="tag tag-amber">14 days</span>
-      </div>
-      <table class="prog-table" id="revenue-table"></table>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">Revenue Scenarios — 31 Hot Leads</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:8px" id="scenarios"></div>
-    </div>
-  </div>
-</div>
-
-<!-- =================== SEQUENCES =================== -->
-<div class="page" id="page-sequences">
-  <div class="page-header">
-    <div>
-      <div class="page-title">Email Sequences</div>
-      <div class="page-sub">3 active sequences · 14-day main + 7-day hot leads + re-engagement</div>
-    </div>
-    <div class="header-actions">
-      <button class="btn btn-ghost" onclick="showModal('modal-config')">⚙ Config</button>
-      <button class="btn btn-primary">+ New Sequence</button>
-    </div>
-  </div>
-
-  <div class="ring-grid">
-    <div class="ring-card"><div class="ring-val" style="color:var(--green)">68%</div><div class="ring-label">Open Rate</div><div class="ring-tgt" style="color:var(--green)">Target >60% ✓</div></div>
-    <div class="ring-card"><div class="ring-val" style="color:var(--amber)">28%</div><div class="ring-label">Click Rate</div><div class="ring-tgt" style="color:var(--green)">Target >25% ✓</div></div>
-    <div class="ring-card"><div class="ring-val" style="color:var(--purple)">14%</div><div class="ring-label">Conversion</div><div class="ring-tgt" style="color:var(--amber)">Target >15% ↑</div></div>
-    <div class="ring-card"><div class="ring-val" style="color:var(--blue)">1.2%</div><div class="ring-label">Unsub Rate</div><div class="ring-tgt" style="color:var(--green)">Target <2% ✓</div></div>
-  </div>
-
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-header">
-      <div class="card-title">14-Day Master Sequence · FF + 7FA</div>
-      <div style="display:flex;gap:6px">
-        <span class="tag tag-green">Phase 1: FF (D1–D7)</span>
-        <span class="tag tag-purple">Phase 2: 7FA (D8–D14)</span>
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Generated Ad</div>
+              <span id="ads-platform-badge" class="card-badge badge-blue">TikTok</span>
+            </div>
+            <div id="ads-output">
+              <div style="text-align:center;padding:40px 0;color:var(--text3);font-family:'JetBrains Mono',monospace;font-size:11px">
+                Fill the form and click Generate<br>to create your ad with Claude AI
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="seq-list" id="main-seq"></div>
-  </div>
-</div>
 
-<!-- =================== PROGRAMS =================== -->
-<div class="page" id="page-programs">
-  <div class="page-header">
-    <div><div class="page-title">Programs & Affiliates</div>
-    <div class="page-sub">FunnelFreedom · 7 Figure Accelerator · Shopify · AI Tools</div></div>
-    <button class="btn btn-primary">+ Add Program</button>
-  </div>
+    <!-- ══ CHECKLIST ══ -->
+    <div id="panel-checklist" class="panel">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Launch Checklist</div>
+          <div class="section-mono">// COMPLETE ALL STEPS BEFORE GOING LIVE</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:24px;font-weight:800;color:var(--green)" id="cl-pct-display">0%</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3)">completed</div>
+        </div>
+      </div>
 
-  <div class="grid-3" id="program-cards"></div>
+      <div class="cl-progress-bar">
+        <div class="cl-progress-fill" id="cl-progress" style="width:0%"></div>
+      </div>
 
-  <div class="card">
-    <div class="card-header">
-      <div class="card-title">Performance Overview — All Programs</div>
-      <span class="tag tag-amber">14-day period</span>
+      <div id="checklist-container"></div>
     </div>
-    <table class="prog-table" id="perf-table"></table>
-  </div>
-</div>
 
-<!-- =================== HOT LEADS =================== -->
-<div class="page" id="page-hotleads">
-  <div class="page-header">
-    <div><div class="page-title">🔥 Hot Leads Sequence</div>
-    <div class="page-sub">HotLeads-FF7FA-Followup · 31 contacts · 9:15 AM EST</div></div>
-    <button class="btn btn-primary" id="launch-btn" onclick="launchSequence()">▶ Launch Sequence</button>
-  </div>
-
-  <div class="launch-panel" id="launch-panel">
-    <div class="launch-title">31 Hot Leads Ready to Convert</div>
-    <div class="launch-sub">FF(18) + 7FA(13) · 7-day follow-up · All links tracked · Automations configured</div>
-    <button class="launch-big-btn" onclick="launchSequence()">▶ LAUNCH HOTLEADS-FF7FA-FOLLOWUP</button>
-    <div class="launch-count" id="launch-count">Waiting to launch · Est. revenue at 15% conversion: $4,650</div>
-  </div>
-
-  <div class="ring-grid">
-    <div class="ring-card"><div class="ring-val" style="color:var(--amber)" id="hl-open">0%</div><div class="ring-label">Open Rate</div><div class="ring-tgt" style="color:var(--amber)">Target >60%</div></div>
-    <div class="ring-card"><div class="ring-val" style="color:var(--amber)" id="hl-click">0%</div><div class="ring-label">Click Rate</div><div class="ring-tgt" style="color:var(--amber)">Target >25%</div></div>
-    <div class="ring-card"><div class="ring-val" style="color:var(--amber)" id="hl-conv">0%</div><div class="ring-label">Conversion</div><div class="ring-tgt" style="color:var(--amber)">Target >15%</div></div>
-    <div class="ring-card"><div class="ring-val" style="color:var(--green)">$4,650</div><div class="ring-label">Rev Potential</div><div class="ring-tgt" style="color:var(--green)">At 15% conv.</div></div>
-  </div>
-
-  <div class="card">
-    <div class="card-header">
-      <div class="card-title">7-Day Hot Lead Emails</div>
-      <span class="tag tag-green">Click to copy script</span>
-    </div>
-    <div class="seq-list" id="hl-seq"></div>
-  </div>
-</div>
-
-<!-- =================== AUTO MONEY =================== -->
-<div class="page" id="page-ams">
-  <div class="page-header">
-    <div><div class="page-title">⚡ Auto Money System</div>
-    <div class="page-sub">4 niches · 16 programs · Recurring commissions</div></div>
-    <div class="header-actions">
-      <select id="niche-sel" onchange="renderAMS(this.value)" style="padding:7px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:12px;cursor:pointer">
-        <option value="mmo">MMO / Make Money Online</option>
-        <option value="ai">AI / Tech Tools</option>
-        <option value="fitness">Fitness / Health</option>
-        <option value="crypto">Crypto / Web3</option>
-      </select>
-    </div>
-  </div>
-  <div class="ams-grid" id="ams-grid"></div>
-</div>
-
-<!-- =================== SHOPIFY =================== -->
-<div class="page" id="page-shopify">
-  <div class="page-header">
-    <div><div class="page-title">◉ Shopify Store</div>
-    <div class="page-sub">shop.nextgenaimake.com · Digital products · AI tools</div></div>
-    <a href="https://shop.nextgenaimake.com" target="_blank" class="btn btn-primary">Open Store ↗</a>
-  </div>
-  <div class="kpi-grid">
-    <div class="kpi-card green"><div class="kpi-icon">💵</div><div class="kpi-val" style="color:var(--green)">$1,840</div><div class="kpi-label">Revenue MTD</div></div>
-    <div class="kpi-card blue"><div class="kpi-icon">🛒</div><div class="kpi-val" style="color:var(--blue)">24</div><div class="kpi-label">Orders</div></div>
-    <div class="kpi-card amber"><div class="kpi-icon">📦</div><div class="kpi-val" style="color:var(--amber)">5</div><div class="kpi-label">Products Active</div></div>
-    <div class="kpi-card purple"><div class="kpi-icon">🔁</div><div class="kpi-val" style="color:var(--purple)">$76</div><div class="kpi-label">Avg Order Value</div></div>
-  </div>
-  <div class="card">
-    <div class="card-header"><div class="card-title">Product Performance</div></div>
-    <div class="product-grid" id="product-grid"></div>
-  </div>
-</div>
-
-<!-- =================== TIKTOK =================== -->
-<div class="page" id="page-tiktok">
-  <div class="page-header">
-    <div><div class="page-title">▷ TikTok Script Hub</div>
-    <div class="page-sub">AI Job Replacement · HeyGen-ready · US audience</div></div>
-    <button class="btn btn-primary" onclick="showModal('modal-script')">📋 Copy Best Script</button>
-  </div>
-
-  <div class="kpi-grid">
-    <div class="kpi-card amber"><div class="kpi-icon">🎯</div><div class="kpi-val" style="color:var(--amber)">58→82</div><div class="kpi-label">Viral Score (before→after)</div></div>
-    <div class="kpi-card green"><div class="kpi-icon">⏱</div><div class="kpi-val" style="color:var(--green)">22s</div><div class="kpi-label">Optimal Duration</div></div>
-    <div class="kpi-card blue"><div class="kpi-icon">📱</div><div class="kpi-val" style="color:var(--blue)">TikTok</div><div class="kpi-label">Target Platform</div></div>
-    <div class="kpi-card purple"><div class="kpi-icon">🇺🇸</div><div class="kpi-val" style="color:var(--purple)">6–9pm</div><div class="kpi-label">Best Post Time EST</div></div>
-  </div>
-
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-header">
-      <div class="card-title">Script v2.0 — HeyGen Format · AI Job Replacement</div>
-      <button class="btn btn-ghost" style="font-size:11px" onclick="showModal('modal-script')">Copy full script</button>
-    </div>
-    <div class="tiktok-scripts" id="tiktok-scripts"></div>
-  </div>
-
-  <div class="card">
-    <div class="card-header"><div class="card-title">5 Hook Alternatives — A/B Test</div></div>
-    <div id="hook-list" style="display:flex;flex-direction:column;gap:8px"></div>
-  </div>
-</div>
-
-<!-- =================== CHECKLIST =================== -->
-<div class="page" id="page-checklist">
-  <div class="page-header">
-    <div><div class="page-title">✓ Launch Checklist</div>
-    <div class="page-sub">Complete all steps before going live</div></div>
-    <span id="checklist-progress" class="tag tag-amber">0 / 16 complete</span>
-  </div>
-
-  <div class="grid-2">
-    <div class="card">
-      <div class="card-header"><div class="card-title">🔴 Critical — Do First</div></div>
-      <div class="check-list" id="check-critical"></div>
-    </div>
-    <div class="card">
-      <div class="card-header"><div class="card-title">🟡 Important — This Week</div></div>
-      <div class="check-list" id="check-important"></div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-header"><div class="card-title">🟢 Optimization — Ongoing</div></div>
-    <div class="check-list" id="check-optimize"></div>
-  </div>
-</div>
-
+  </div><!-- /content -->
 </main>
 
-<!-- MODALS -->
-<div class="modal-overlay" id="modal-script">
+<!-- ══ MODALS ══ -->
+
+<!-- Add Program -->
+<div class="modal-overlay" id="add-program-modal" onclick="closeModalOutside(event,this)">
   <div class="modal">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
-      <div><div class="modal-title">HeyGen Script v2.0</div>
-      <div class="modal-sub">Copy → paste directly into HeyGen script field</div></div>
-      <button class="modal-close" onclick="closeModal('modal-script')">✕</button>
+    <div class="modal-title">
+      Add Affiliate Program
+      <button class="modal-close" onclick="closeModal('add-program-modal')">✕</button>
     </div>
-    <div class="script-copybox" id="modal-script-text">Don't scroll. [pause: 0.4s] This A-I is about to replace YOU.
-
-Twelve million jobs. [pause: 0.3s] Already gone in 2024. [pause: 0.4s] Your role? [pause: 0.3s] Probably next.
-
-I didn't wait to get replaced. [pause: 0.4s] I used A-I to build three thousand dollars a month [pause: 0.3s] before it happened to me.
-
-Free blueprint in my bio [pause: 0.3s] — income A-I can't touch.
-
-Is YOUR job safe from A-I? [pause: 0.5s] Comment YES [pause: 0.2s] or NO below.</div>
-    <button class="btn btn-primary" style="width:100%" onclick="copyModalScript()">Copy Script to Clipboard</button>
+    <div class="form-group">
+      <label class="form-label">Program Name</label>
+      <input class="form-input" id="prog-name" placeholder="e.g. ClickBank, Amazon Associates">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Affiliate Link</label>
+      <input class="form-input" id="prog-link" placeholder="https://...">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Commission %</label>
+        <input class="form-input" id="prog-commission" placeholder="e.g. 40%" type="text">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        <select class="form-select" id="prog-status">
+          <option>Live</option>
+          <option>Setup</option>
+          <option>Paused</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:8px">
+      <button class="btn btn-outline" style="flex:1;justify-content:center" onclick="closeModal('add-program-modal')">Cancel</button>
+      <button class="btn btn-primary" style="flex:2;justify-content:center" onclick="addProgram()">Add Program</button>
+    </div>
   </div>
 </div>
 
-<div class="modal-overlay" id="modal-config">
+<!-- Add Revenue -->
+<div class="modal-overlay" id="add-revenue-modal" onclick="closeModalOutside(event,this)">
   <div class="modal">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
-      <div><div class="modal-title">Sequence Configuration</div>
-      <div class="modal-sub">HotLeads-FF7FA-Followup · Nexus Settings</div></div>
-      <button class="modal-close" onclick="closeModal('modal-config')">✕</button>
+    <div class="modal-title">
+      Log Commission
+      <button class="modal-close" onclick="closeModal('add-revenue-modal')">✕</button>
     </div>
-    <div style="display:flex;flex-direction:column;gap:10px">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
-        <div style="background:var(--bg3);padding:10px;border-radius:6px"><div style="color:var(--muted);margin-bottom:3px;font-size:10px">TRIGGER</div><div>hot-lead-ff OR hot-lead-7fa</div></div>
-        <div style="background:var(--bg3);padding:10px;border-radius:6px"><div style="color:var(--muted);margin-bottom:3px;font-size:10px">SEND TIME</div><div>9:15 AM EST daily</div></div>
-        <div style="background:var(--bg3);padding:10px;border-radius:6px"><div style="color:var(--muted);margin-bottom:3px;font-size:10px">FROM NAME</div><div>Alex</div></div>
-        <div style="background:var(--bg3);padding:10px;border-radius:6px"><div style="color:var(--muted);margin-bottom:3px;font-size:10px">EXCLUSIONS</div><div>buyer-ff, buyer-7fa, buyer-shopify</div></div>
-        <div style="background:var(--bg3);padding:10px;border-radius:6px"><div style="color:var(--muted);margin-bottom:3px;font-size:10px">TRACKING</div><div>Opens + Clicks + UTM</div></div>
-        <div style="background:var(--bg3);padding:10px;border-radius:6px"><div style="color:var(--muted);margin-bottom:3px;font-size:10px">DOUBLE OPT-IN</div><div>Disabled (already opt-in)</div></div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Date</label>
+        <input class="form-input" id="rev-date" type="date">
       </div>
+      <div class="form-group">
+        <label class="form-label">Program</label>
+        <select class="form-select" id="rev-program">
+          <option>FunnelFreedom</option>
+          <option>7FA</option>
+          <option>Shopify</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Amount ($)</label>
+      <input class="form-input" id="rev-amount" placeholder="e.g. 150" type="number">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Notes</label>
+      <input class="form-input" id="rev-notes" placeholder="e.g. High ticket sale via email sequence">
+    </div>
+    <div style="display:flex;gap:10px;margin-top:8px">
+      <button class="btn btn-outline" style="flex:1;justify-content:center" onclick="closeModal('add-revenue-modal')">Cancel</button>
+      <button class="btn btn-green" style="flex:2;justify-content:center" onclick="addRevenue()">Log Commission</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Calendar Event -->
+<div class="modal-overlay" id="add-event-modal" onclick="closeModalOutside(event,this)">
+  <div class="modal">
+    <div class="modal-title">
+      Add Content <span id="cal-modal-day"></span>
+      <button class="modal-close" onclick="closeModal('add-event-modal')">✕</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Title</label>
+      <input class="form-input" id="event-title" placeholder="e.g. Short — AI Jobs Replacement">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Platform</label>
+        <select class="form-select" id="event-platform">
+          <option>YouTube</option>
+          <option>TikTok</option>
+          <option>Instagram</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        <select class="form-select" id="event-status">
+          <option>Planned</option>
+          <option>Scheduled</option>
+          <option>Published</option>
+        </select>
+      </div>
+    </div>
+    <input type="hidden" id="event-day">
+    <div style="display:flex;gap:10px;margin-top:8px">
+      <button class="btn btn-outline" style="flex:1;justify-content:center" onclick="closeModal('add-event-modal')">Cancel</button>
+      <button class="btn btn-primary" style="flex:2;justify-content:center" onclick="addCalEvent()">Add Content</button>
+    </div>
+  </div>
+</div>
+
+<!-- Hot Leads Launch -->
+<div class="modal-overlay" id="hotleads-modal" onclick="closeModalOutside(event,this)">
+  <div class="modal">
+    <div class="modal-title">
+      🔥 Launch Hot Leads Sequence
+      <button class="modal-close" onclick="closeModal('hotleads-modal')">✕</button>
+    </div>
+    <div class="alert alert-warn" style="margin-bottom:16px">
+      ⚠ This will send emails to 31 hot leads. Make sure your sequences are configured in Systeme.io before launching.
+    </div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:20px">
+      <strong>Sequence:</strong> HotLeads-FF7FA-Followup<br>
+      <strong>Contacts:</strong> 31 (FF: 18 · 7FA: 13)<br>
+      <strong>Send time:</strong> 9:15 AM EST daily<br>
+      <strong>Est. revenue:</strong> $4,650 at 15% conversion
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-outline" style="flex:1;justify-content:center" onclick="closeModal('hotleads-modal')">Cancel</button>
+      <a href="https://www.systeme-4l.com/agent-tiktok?sa=sa01050568776871bba42db33d6becbce23ce2bd1a" target="_blank" class="btn btn-gold" style="flex:2;justify-content:center;text-decoration:none">▶ Go to Systeme.io →</a>
     </div>
   </div>
 </div>
 
 <script>
-// ============ DATA ============
-const programs = [
-  {name:'FunnelFreedom',cat:'Affiliate',color:'var(--green)',dotColor:'#00D97E',rev:1640,clicks:312,conv:8.2,tag:'top',tagClass:'tag-green',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75'},
-  {name:'7 Figure Accelerator',cat:'Community',color:'var(--purple)',dotColor:'#8B5CF6',rev:707,clicks:184,conv:5.1,tag:'growing',tagClass:'tag-purple',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912'},
-  {name:'AI Toolkit Bundle',cat:'Shopify',color:'var(--blue)',dotColor:'#3B82F6',rev:840,clicks:89,conv:3.4,tag:'stable',tagClass:'tag-blue',link:'https://shop.nextgenaimake.com'},
-  {name:'Funnel Templates',cat:'Shopify',color:'var(--amber)',dotColor:'#F5A623',rev:620,clicks:60,conv:2.1,tag:'optimize',tagClass:'tag-amber',link:'https://shop.nextgenaimake.com'},
-  {name:'Email Swipe Files',cat:'Shopify',color:'var(--red)',dotColor:'#FF4757',rev:380,clicks:28,conv:1.8,tag:'low CTR',tagClass:'tag-red',link:'https://shop.nextgenaimake.com'},
-];
+// ══ DATA ══
+let programs = JSON.parse(localStorage.getItem('nx-programs') || '[]');
+let revenues = JSON.parse(localStorage.getItem('nx-revenues') || '[]');
+let calEvents = JSON.parse(localStorage.getItem('nx-cal') || '{}');
+let checklist = JSON.parse(localStorage.getItem('nx-checklist') || '{}');
+let kpis = JSON.parse(localStorage.getItem('nx-kpis') || '{}');
+let ytStats = JSON.parse(localStorage.getItem('nx-yt') || '{"yt-subs":"0","yt-views":"13","yt-videos":"2"}');
 
-const emails14 = [
-  {day:'D1',subj:"You're in. Here's what nobody tells you about passive income",pre:"The mistake I made for 2 years before things clicked",prog:'FF',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75&utm_content=d1',open:72,phase:1},
-  {day:'D2',subj:"I failed for 2 years. Then I stopped doing this one thing.",pre:"The real reason most people never make money online",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d2',open:68,phase:1},
-  {day:'D3',subj:"Why most side hustles stay stuck at $200/month",pre:"The passive income math nobody shows you",prog:'FF',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75&utm_content=d3',open:65,phase:1},
-  {day:'D4',subj:"What happened when I stopped learning and started doing",pre:"Month 1 numbers + the 3 things I changed",prog:'FF',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75&utm_content=d4',open:61,phase:1},
-  {day:'D5',subj:'"I don\'t have time / money / experience" — honest answers',pre:"Let me address the three things holding most people back",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d5',open:58,phase:1},
-  {day:'D6',subj:"I want to show you something specific",pre:"The setup I use — step by step",prog:'FF',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75&utm_content=d6',open:54,phase:1},
-  {day:'D7',subj:"Last call on FunnelFreedom — moving to Phase 2 tomorrow",pre:"One question before we shift gears",prog:'FF',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75&utm_content=d7',open:51,phase:1},
-  {day:'D8',subj:"Phase 2 starts today — meet the community that changes the game",pre:"What separates the $3K from the $10K affiliate",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d8',open:48,phase:2},
-  {day:'D9',subj:"The only 3 traffic sources worth your time in 2025",pre:"Everything else is a distraction",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d9',open:45,phase:2},
-  {day:'D10',subj:"How I produce a week of content in 45 minutes",pre:"The AI workflow I use every week",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d10',open:43,phase:2},
-  {day:'D11',subj:"The exact shift that takes you from $3K to $10K/month",pre:"It's not more traffic. It's not more offers.",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d11',open:41,phase:2},
-  {day:'D12',subj:"From $0 to first $500 — here's what actually happened",pre:"The unglamorous version nobody posts on Instagram",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d12',open:39,phase:2},
-  {day:'D13',subj:"Here's the community I'd join on day 1 if I started over",pre:"And why I didn't wait once I found it",prog:'7FA',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912?utm_content=d13',open:37,phase:2},
-  {day:'D14',subj:"Day 14. Here's everything in one place.",pre:"The complete roadmap — and one final question",prog:'BOTH',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75&utm_content=d14',open:35,phase:2},
-];
-
-const hlEmails = [
-  {day:'D1',subj:"Still thinking about it? Here's what changed my mind.",pre:"The one thing separating people who start from those who don't",progs:['FF','Shopify'],delay:'Immediate'},
-  {day:'D2',subj:"3 people who were exactly where you are — what happened next",pre:"A government worker, a side hustler, a beginner. Same system.",progs:['FF','7FA','Shopify'],delay:'+1 day'},
-  {day:'D3',subj:"I'm adding 3 bonuses this week — expires Friday",pre:"$373 in extra value. Yours if you move before Friday.",progs:['FF','Shopify'],delay:'+1 day',relance:true},
-  {day:'D4',subj:"I waited 18 months. Here's what that cost me.",pre:"Not in money. In time I didn't get back.",progs:['FF'],delay:'+1 day'},
-  {day:'D5',subj:"The difference between $3K/month and $10K/month isn't what you think",pre:"It's not traffic. It's not a better funnel. It's this.",progs:['7FA','FF'],delay:'+1 day'},
-  {day:'D6',subj:"6 sales vs 150 sales — same $3,000/month. Your call.",pre:"I'll let the math speak.",progs:['FF','Shopify'],delay:'+1 day',sms:true},
-  {day:'D7',subj:"{{first_name}}, this is the last email. One question.",pre:"After today I'm closing this out.",progs:['FF','7FA','Shopify'],delay:'+1 day',hardclose:true},
-];
-
-const amsData = {
-  mmo:[
-    {name:'FunnelFreedom',desc:'High-ticket commissions. Pre-built funnels. #1 in your stack.',rev:'$500–$2,000/mo',c:'#00D97E',link:'https://www.jonathanmontoyalive.com/3dayvsl?fpr=joseph75'},
-    {name:'7 Figure Accelerator',desc:'Community + training. $500–$1,000 commissions per sale.',rev:'$1,000–$3,000/mo',c:'#8B5CF6',link:'https://www.skool.com/7-figure-accelerator-by-philip-9912'},
-    {name:'ClickFunnels Affiliate',desc:'Recurring SaaS + one-time. Strong brand recognition.',rev:'$200–$800/mo',c:'#F5A623',link:'#'},
-    {name:'Systeme.io Affiliate',desc:'Free-to-start funnel tool. 40% lifetime commissions.',rev:'$100–$500/mo',c:'#3B82F6',link:'#'},
-  ],
-  ai:[
-    {name:'Claude / Anthropic',desc:'Promote Claude Pro. Recurring SaaS commissions.',rev:'$50–$300/mo',c:'#06B6D4',link:'#'},
-    {name:'Jasper AI',desc:'Content AI — 30% recurring. Strong in MMO/biz niche.',rev:'$100–$500/mo',c:'#8B5CF6',link:'#'},
-    {name:'Bolt.new',desc:'AI web builder. Promote via tutorials. Growing fast.',rev:'$80–$400/mo',c:'#F5A623',link:'#'},
-    {name:'GetResponse AI',desc:'Email + landing page AI. Up to 33% recurring.',rev:'$120–$600/mo',c:'#00D97E',link:'#'},
-  ],
-  fitness:[
-    {name:'Clickbank Health',desc:'Weight loss / supplements. $50–$150 commissions.',rev:'$200–$800/mo',c:'#FF4757',link:'#'},
-    {name:'MyFitnessPal Affiliate',desc:'App subscriptions. High conversion volume.',rev:'$100–$300/mo',c:'#00D97E',link:'#'},
-    {name:'Fitness Course Creator',desc:'Your own AI-powered workout planning course.',rev:'$500–$1,500/mo',c:'#F5A623',link:'#'},
-    {name:'Coaching Program',desc:'$97–$297/month recurring accountability.',rev:'$400–$1,200/mo',c:'#3B82F6',link:'#'},
-  ],
-  crypto:[
-    {name:'Binance Affiliate',desc:'Up to 50% on trading fees. Large US audience.',rev:'$200–$1,000/mo',c:'#F5A623',link:'#'},
-    {name:'Ledger Hardware',desc:'$10–$25/sale. High trust, converts well.',rev:'$150–$600/mo',c:'#E8EDF5',link:'#'},
-    {name:'Crypto Education',desc:'Promote crypto courses. $100–$300 commissions.',rev:'$300–$900/mo',c:'#8B5CF6',link:'#'},
-    {name:'DeFi Tools',desc:'Early mover advantage. Recurring potential.',rev:'$100–$500/mo',c:'#06B6D4',link:'#'},
-  ],
-};
-
-const products = [
-  {icon:'🤖',name:'AI Toolkit Bundle',price:'$47',sales:18,maxSales:18},
-  {icon:'📧',name:'Email Swipe Files',price:'$27',sales:9,maxSales:18},
-  {icon:'🔧',name:'Funnel Templates',price:'$37',sales:14,maxSales:18},
-  {icon:'📱',name:'TikTok Script Pack',price:'$17',sales:22,maxSales:22},
-  {icon:'📚',name:'Course Blueprint',price:'$97',sales:6,maxSales:22},
-];
-
-const tiktokScripts = [
-  {time:'0 – 3s',type:'HOOK',typeColor:'var(--red)',script:"Don't scroll. [pause: 0.4s] This A-I is about to replace YOU.",note:"Tone: Urgent/Alarming · Speed: 1.1x · 🚨 DON'T SCROLL on screen · Pop-in animation"},
-  {time:'3 – 8s',type:'PROOF',typeColor:'var(--amber)',script:"Twelve million jobs. [pause: 0.3s] Already gone in 2024. [pause: 0.4s] Your role? [pause: 0.3s] Probably next.",note:'Tone: Serious/Direct · Stat on screen: "12,000,000 jobs gone in 2024" · Source visible'},
-  {time:'8 – 15s',type:'PIVOT',typeColor:'var(--purple)',script:"I didn't wait to get replaced. [pause: 0.4s] I used A-I to build three thousand dollars a month before it happened.",note:'Tone: Confident/Personal · "$3,000/month → built with AI 🤖" on screen · Slide-in animation'},
-  {time:'15 – 19s',type:'CTA',typeColor:'var(--blue)',script:"Free blueprint in my bio [pause: 0.3s] — income A-I can't touch.",note:"Tone: Helpful/Friendly · '🔗 Free blueprint → link in bio' · Arrow pointing down"},
-  {time:'19 – 22s',type:'ENGAGE',typeColor:'var(--green)',script:"Is YOUR job safe from A-I? [pause: 0.5s] Comment YES [pause: 0.2s] or NO below.",note:'Tone: Direct/Engaging · "Is YOUR job safe? 👇 YES or NO" · Max size · Stay 3s'},
-];
-
-const hooks = [
-  {num:1,score:92,text:"Your job has a 73% chance of being automated. Here's what I did about it.",why:"Chiffre précis + histoire personnelle + curiosité gap"},
-  {num:2,score:88,text:"I didn't fight AI. I used it to replace my own salary first.",why:"Twist contre-intuitif — fort taux de completion"},
-  {num:3,score:81,text:"In 18 months, these 5 jobs won't exist. Is yours on the list?",why:"Curiosité gap maximal — force les 3 premières secondes"},
-  {num:4,score:79,text:"I work a government job AND earn $3K/month online using AI.",why:"Crédibilité max — relatable pour votre audience"},
-  {num:5,score:76,text:"Stop trying to AI-proof your job. Build income AI can't replace instead.",why:"Polarisant — commentaires des deux bords"},
-];
-
-const checkCritical = [
-  'Créer les 10 tags CRM (hot-lead-ff, hot-lead-7fa, buyer-ff, buyer-7fa, clicked-ff, clicked-7fa, clicked-shopify-hl, cold-hotlead, hot-hot, no-open-hot-d3)',
-  'Configurer exclusion automatique buyer-ff / buyer-7fa / buyer-shopify',
-  'Remplacer YOUR_SHOPIFY_URL par shop.nextgenaimake.com dans tous les liens',
-  'Configurer relance D3b (condition 0 ouverture D1+D2+D3 · délai 4h)',
-  'Activer tracking ouverture + clic sur chaque email',
-  'Tester séquence complète sur adresse personnelle avant lancement',
-];
-const checkImportant = [
-  'Connecter pixel shop.nextgenaimake.com → tag buyer-shopify automatique',
-  'Configurer SMS/WhatsApp si numéros disponibles (relance D6)',
-  'Paramétrer notification manuelle pour tag hot-hot (click rate >25%)',
-  'Mettre à jour bio TikTok → lien lead magnet Bolt',
-  'Ajouter animation typewriter au script TikTok dans CapCut',
-  'Ajouter question finale "Is YOUR job safe? YES or NO 👇" à la vidéo',
-];
-const checkOptimize = [
-  'Lancer Meta Ads Lookalike sur segment buyer-ff dès conversion confirmée',
-  'Publier TikTok entre 18h–21h EST (minuit–3h heure belge)',
-  'Répondre aux 5 premiers commentaires TikTok dans les 30 min',
-  'Créer séquence onboarding 3 emails pour acheteurs FF/7FA',
-];
-
-// ============ RENDER FUNCTIONS ============
-
-function renderDashboard(){
-  // Funnel
-  const steps = [
-    {l:'Leads opt-in',n:247,pct:100,c:'var(--blue)'},
-    {l:'Emails opened',n:198,pct:80,c:'var(--purple)'},
-    {l:'Clicked FF',n:89,pct:36,c:'var(--green)'},
-    {l:'Clicked 7FA',n:62,pct:25,c:'var(--amber)'},
-    {l:'Hot leads',n:31,pct:13,c:'var(--red)'},
-    {l:'Buyers',n:14,pct:6,c:'var(--green)'},
-  ];
-  document.getElementById('funnel-viz').innerHTML = steps.map(s=>`
-    <div class="funnel-step" style="background:${s.c}18;border:1px solid ${s.c}30;width:${Math.max(s.pct,20)}%">
-      <span class="funnel-step-label" style="color:${s.c};font-size:11px">${s.l}</span>
-      <span class="funnel-step-val" style="color:${s.c};font-size:12px">${s.n}<span class="funnel-pct">${s.pct}%</span></span>
-    </div>`).join('');
-
-  // Alerts
-  const alerts = [
-    {type:'a-red',icon:'!',t:'D3b — 12 contacts, no open D1+D2+D3',d:'Trigger relance D3b in Nexus now',btn:'Fix'},
-    {type:'a-amber',icon:'!',t:'31 hot leads — no purchase yet',d:'Launch HotLeads-FF7FA-Followup sequence',btn:'Launch'},
-    {type:'a-green',icon:'✓',t:'FunnelFreedom — $1,640 commissions',d:'Top performer. Scale Meta Ads Lookalike.',btn:'Scale'},
-    {type:'a-green',icon:'✓',t:'7FA growing +31% vs last period',d:'Phase 2 performing well.',btn:'View'},
-  ];
-  document.getElementById('alert-list').innerHTML = alerts.map(a=>`
-    <div class="alert ${a.type}">
-      <div class="alert-icon" style="background:${a.type==='a-red'?'var(--red)':a.type==='a-amber'?'var(--amber)':'var(--green)'};color:#000">${a.icon}</div>
-      <div class="alert-body" style="flex:1"><div class="alert-title">${a.t}</div><div class="alert-desc">${a.d}</div></div>
-      <button class="alert-btn" style="color:${a.type==='a-red'?'var(--red)':a.type==='a-amber'?'var(--amber)':'var(--green)'};border-color:${a.type==='a-red'?'var(--red)':a.type==='a-amber'?'var(--amber)':'var(--green)'}" onclick="showPage('hotleads')">${a.btn} →</button>
-    </div>`).join('');
-
-  // Revenue table
-  document.getElementById('revenue-table').innerHTML = `<thead><tr><th>Program</th><th>Revenue</th><th>Clicks</th><th>Conv.</th><th>Status</th></tr></thead><tbody>`
-    + programs.map(p=>`<tr>
-      <td><div class="prog-name"><div class="prog-dot" style="background:${p.dotColor}"></div><div><div class="prog-title">${p.name}</div><div class="prog-sub">${p.cat}</div></div></div></td>
-      <td><div class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:${p.rev/1640*100}%;background:${p.dotColor}"></div></div><div class="bar-num">$${p.rev.toLocaleString()}</div></div></td>
-      <td><span style="font-family:'DM Mono',monospace;font-size:12px">${p.clicks}</span></td>
-      <td><span style="font-family:'DM Mono',monospace;font-size:12px">${p.conv}%</span></td>
-      <td><span class="tag ${p.tagClass}">${p.tag}</span></td>
-    </tr>`).join('') + '</tbody>';
-
-  // Scenarios
-  const sc = [
-    {pct:'5%',rev:'~$1,000',desc:'2 FF sales',c:'var(--muted)'},
-    {pct:'10%',rev:'~$2,700',desc:'3 FF + $200 Shopify',c:'var(--amber)'},
-    {pct:'15% 🎯',rev:'~$4,650',desc:'FF + 7FA + Shopify',c:'var(--green)'},
-    {pct:'25%',rev:'~$9,200+',desc:'hot-hot + coaching',c:'var(--purple)'},
-  ];
-  document.getElementById('scenarios').innerHTML = sc.map(s=>`
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--bg3);border-radius:6px">
-      <span style="font-size:12px;color:var(--muted)">${s.pct} conversion · ${s.desc}</span>
-      <span style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:${s.c}">${s.rev}</span>
-    </div>`).join('');
+// ══ NAV ══
+function showPanel(id, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  if (el) el.classList.add('active');
+  const titles = {
+    dashboard:'Dashboard', programs:'Programs & Affiliates', leads:'Hot Leads',
+    revenue:'Revenue Logger', email:'Email Sequences', shopify:'Shopify Store',
+    youtube:'YouTube Channel', calendar:'Content Calendar', tiktok:'TikTok Scripts',
+    ads:'AI Ads Creator', checklist:'Launch Checklist'
+  };
+  document.getElementById('topbar-title').textContent = titles[id] || id;
 }
 
-function renderSequences(){
-  document.getElementById('main-seq').innerHTML = emails14.map(e=>`
-    <div class="seq-row" onclick="window.open('${e.link}','_blank')">
-      <div class="seq-day" style="background:${e.phase===1?'var(--green-dim)':'var(--purple-dim)'};color:${e.phase===1?'var(--green)':'var(--purple)'}">${e.day}</div>
-      <div class="seq-info">
-        <div class="seq-subj">${e.subj}</div>
-        <div class="seq-pre">${e.pre}</div>
+// ══ MODAL ══
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+function closeModalOutside(e, overlay) { if(e.target===overlay) overlay.classList.remove('show'); }
+
+// ══ KPI EDIT ══
+function editKPI(btn, id) {
+  const val = document.getElementById(id);
+  const input = document.getElementById(id + '-input');
+  val.style.display = 'none';
+  input.style.display = 'block';
+  input.value = val.textContent;
+  input.focus();
+}
+
+function saveKPI(input, id) {
+  const val = document.getElementById(id);
+  if (input.value.trim()) {
+    val.textContent = input.value.trim();
+    kpis[id] = input.value.trim();
+    localStorage.setItem('nx-kpis', JSON.stringify(kpis));
+  }
+  input.style.display = 'none';
+  val.style.display = 'block';
+}
+
+// Load saved KPIs
+Object.keys(kpis).forEach(k => {
+  const el = document.getElementById(k);
+  if (el) el.textContent = kpis[k];
+});
+
+// ══ PROGRAMS ══
+function addProgram() {
+  const name = document.getElementById('prog-name').value.trim();
+  const link = document.getElementById('prog-link').value.trim();
+  const comm = document.getElementById('prog-commission').value.trim();
+  const status = document.getElementById('prog-status').value;
+  if (!name) return;
+  programs.push({ name, link, comm, status, id: Date.now() });
+  localStorage.setItem('nx-programs', JSON.stringify(programs));
+  renderPrograms();
+  closeModal('add-program-modal');
+  document.getElementById('prog-name').value = '';
+  document.getElementById('prog-link').value = '';
+  document.getElementById('prog-commission').value = '';
+}
+
+function renderPrograms() {
+  const list = document.getElementById('extra-programs-list');
+  if (!programs.length) {
+    list.innerHTML = '<div style="text-align:center;padding:24px 0;color:var(--text3);font-family:\'JetBrains Mono\',monospace;font-size:11px">No programs added yet.<br>Click "+ Add Program" to start.</div>';
+    return;
+  }
+  const colors = { Live: 'badge-green', Setup: 'badge-gold', Paused: 'badge-red' };
+  list.innerHTML = programs.map(p => `
+    <div class="program-item">
+      <div class="program-dot" style="background:linear-gradient(135deg,var(--blue2),var(--purple))">${p.name.substring(0,2).toUpperCase()}</div>
+      <div>
+        <div class="program-name">${p.name}</div>
+        <div class="program-stat">${p.comm ? p.comm + ' commission' : 'No commission set'}</div>
       </div>
-      <div class="seq-links">
-        <a class="seq-link ${e.prog==='FF'?'tag-green':e.prog==='7FA'?'tag-purple':'tag-gray'}" href="${e.link}" target="_blank" style="text-decoration:none" onclick="event.stopPropagation()">${e.prog} →</a>
+      <span class="card-badge ${colors[p.status]||'badge-blue'}">${p.status}</span>
+      <button class="rev-delete" onclick="deleteProgram(${p.id})">✕</button>
+    </div>
+  `).join('');
+}
+
+function deleteProgram(id) {
+  programs = programs.filter(p => p.id !== id);
+  localStorage.setItem('nx-programs', JSON.stringify(programs));
+  renderPrograms();
+}
+
+renderPrograms();
+
+// ══ REVENUE ══
+function addRevenue() {
+  const date = document.getElementById('rev-date').value;
+  const program = document.getElementById('rev-program').value;
+  const amount = parseFloat(document.getElementById('rev-amount').value);
+  const notes = document.getElementById('rev-notes').value.trim();
+  if (!amount || isNaN(amount)) return;
+  revenues.push({ date: date || new Date().toISOString().split('T')[0], program, amount, notes, id: Date.now() });
+  localStorage.setItem('nx-revenues', JSON.stringify(revenues));
+  renderRevenues();
+  closeModal('add-revenue-modal');
+  document.getElementById('rev-amount').value = '';
+  document.getElementById('rev-notes').value = '';
+}
+
+function renderRevenues() {
+  const list = document.getElementById('revenue-list');
+  const total = revenues.reduce((s, r) => s + r.amount, 0);
+  document.getElementById('total-logged').textContent = '$' + total.toLocaleString('en', {minimumFractionDigits:0, maximumFractionDigits:0});
+  const pct = Math.min(100, (total / 5000) * 100);
+  document.getElementById('revenue-progress').style.width = pct + '%';
+  document.getElementById('revenue-pct').textContent = Math.round(pct) + '%';
+
+  if (!revenues.length) {
+    list.innerHTML = '<div style="text-align:center;padding:32px;color:var(--text3);font-family:\'JetBrains Mono\',monospace;font-size:11px">No commissions logged yet.<br>Click "+ Log Commission" to start tracking.</div>';
+    return;
+  }
+
+  const progColors = { FunnelFreedom:'rgba(231,76,60,0.2)', '7FA':'rgba(155,89,182,0.2)', Shopify:'rgba(39,174,96,0.2)', Other:'rgba(79,168,255,0.2)' };
+  const progText = { FunnelFreedom:'#ff6b6b', '7FA':'' + 'var(--purple)', Shopify:'var(--green)', Other:'var(--blue)' };
+  list.innerHTML = [...revenues].reverse().map(r => `
+    <div class="revenue-entry">
+      <div class="rev-program" style="background:${progColors[r.program]||'rgba(79,168,255,0.15)'};color:${progText[r.program]||'var(--blue)'}">${r.program}</div>
+      <div class="rev-date">${r.date}</div>
+      <div class="rev-note">${r.notes || '—'}</div>
+      <div class="rev-amount">+$${r.amount.toLocaleString()}</div>
+      <button class="rev-delete" onclick="deleteRevenue(${r.id})">✕</button>
+    </div>
+  `).join('');
+}
+
+function deleteRevenue(id) {
+  revenues = revenues.filter(r => r.id !== id);
+  localStorage.setItem('nx-revenues', JSON.stringify(revenues));
+  renderRevenues();
+}
+
+renderRevenues();
+
+// ══ CALENDAR ══
+const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const platColors = { YouTube:'cal-yt', TikTok:'cal-tt', Instagram:'cal-ig' };
+let selectedDay = 0;
+
+function renderCalendar() {
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = days.map((d, i) => {
+    const events = (calEvents[i] || []);
+    return `
+      <div class="cal-day" onclick="openCalModal(${i}, '${d}')">
+        <div class="cal-day-name">${d}</div>
+        ${events.map(e => `<div class="cal-event ${platColors[e.platform]||'cal-yt'}" title="${e.status}">${e.title.substring(0,18)}${e.title.length>18?'…':''}</div>`).join('')}
+        <div class="cal-add">+</div>
       </div>
-      <div class="open-rate">${e.open}% open</div>
-    </div>`).join('');
+    `;
+  }).join('');
 }
 
-function renderPrograms(){
-  document.getElementById('program-cards').innerHTML = programs.map(p=>`
-    <div class="card" style="border-top:2px solid ${p.dotColor}">
-      <div class="card-header"><div class="card-title">${p.name}</div><span class="tag ${p.tagClass}">${p.tag}</span></div>
-      <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:${p.color};margin-bottom:4px">$${p.rev.toLocaleString()}</div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:12px">${p.cat} · ${p.clicks} clicks · ${p.conv}% conv.</div>
-      <a href="${p.link}" target="_blank" class="btn btn-ghost" style="width:100%;justify-content:center;text-decoration:none;display:flex">View Program ↗</a>
-    </div>`).join('');
-
-  document.getElementById('perf-table').innerHTML = `<thead><tr><th>Program</th><th>Email Clicks</th><th>Ad Clicks</th><th>Shopify</th><th>Affil. Rev</th><th>Engagement</th></tr></thead><tbody>`
-    + programs.map(p=>`<tr>
-      <td><div class="prog-name"><div class="prog-dot" style="background:${p.dotColor}"></div><span style="font-size:12px;font-weight:500">${p.name}</span></div></td>
-      <td><div class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:${p.clicks/312*100}%;background:var(--blue)"></div></div><div class="bar-num">${Math.round(p.clicks*0.6)}</div></div></td>
-      <td><span style="font-family:'DM Mono',monospace;font-size:11px">${p.clicks}</span></td>
-      <td><span style="font-family:'DM Mono',monospace;font-size:11px">${p.cat==='Shopify'?'$'+p.rev:'—'}</span></td>
-      <td><span style="font-family:'DM Mono',monospace;font-size:11px">${p.cat!=='Shopify'?'$'+p.rev:'—'}</span></td>
-      <td><span class="tag ${p.conv>4?'tag-green':p.conv>2?'tag-amber':'tag-red'}">${Math.round(p.conv*6)}%</span></td>
-    </tr>`).join('')+'</tbody>';
+function openCalModal(dayIdx, dayName) {
+  selectedDay = dayIdx;
+  document.getElementById('cal-modal-day').textContent = '— ' + dayName;
+  document.getElementById('event-day').value = dayIdx;
+  openModal('add-event-modal');
 }
 
-function renderHotLeads(){
-  document.getElementById('hl-seq').innerHTML = hlEmails.map(e=>`
-    <div class="seq-row" onclick="showModal('modal-script')">
-      <div class="seq-day" style="background:var(--amber-dim);color:var(--amber)">${e.day}</div>
-      <div class="seq-info">
-        <div class="seq-subj">${e.subj}</div>
-        <div class="seq-pre">${e.pre}</div>
-      </div>
-      <div class="seq-links">
-        ${e.progs.map(p=>`<span class="tag ${p==='FF'?'tag-green':p==='7FA'?'tag-purple':'tag-blue'}">${p}</span>`).join('')}
-        ${e.relance?'<span class="tag tag-amber">+Relance</span>':''}
-        ${e.sms?'<span class="tag tag-blue">+SMS</span>':''}
-        ${e.hardclose?'<span class="tag tag-red">Hard Close</span>':''}
-      </div>
-      <div class="open-rate">${e.delay}</div>
-    </div>`).join('');
+function addCalEvent() {
+  const title = document.getElementById('event-title').value.trim();
+  const platform = document.getElementById('event-platform').value;
+  const status = document.getElementById('event-status').value;
+  const day = parseInt(document.getElementById('event-day').value);
+  if (!title) return;
+  if (!calEvents[day]) calEvents[day] = [];
+  calEvents[day].push({ title, platform, status });
+  localStorage.setItem('nx-cal', JSON.stringify(calEvents));
+  renderCalendar();
+  closeModal('add-event-modal');
+  document.getElementById('event-title').value = '';
 }
 
-function renderAMS(niche='mmo'){
-  const data = amsData[niche];
-  document.getElementById('ams-grid').innerHTML = data.map(d=>`
-    <div class="ams-card" style="background:${d.c}12;border-color:${d.c}30">
-      <div class="ams-name" style="color:${d.c}">${d.name}</div>
-      <div class="ams-desc">${d.desc}</div>
-      <div class="ams-rev" style="color:${d.c}">${d.rev}</div>
-      <a href="${d.link}" target="_blank" class="ams-cta" style="background:${d.c};color:#000;text-decoration:none">${d.link==='#'?'Explore →':'Join now →'}</a>
-    </div>`).join('');
+renderCalendar();
+
+// ══ YT STATS ══
+function editYTStat(id, label) {
+  const val = prompt('Update ' + label + ':', document.getElementById(id).textContent);
+  if (val !== null) {
+    document.getElementById(id).textContent = val;
+    ytStats[id] = val;
+    localStorage.setItem('nx-yt', JSON.stringify(ytStats));
+    // Update subs progress
+    const subs = parseInt(val.replace(/[^0-9]/g,'')) || 0;
+    if (id === 'yt-subs') {
+      const pct = Math.min(100, (subs/500)*100);
+      document.getElementById('subs-bar').style.width = pct + '%';
+      document.getElementById('subs-pct').textContent = Math.round(pct) + '%';
+    }
+  }
 }
 
-function renderShopify(){
-  document.getElementById('product-grid').innerHTML = products.map(p=>`
-    <div class="product-card">
-      <div class="product-icon">${p.icon}</div>
-      <div class="product-name">${p.name}</div>
-      <div class="product-price">${p.price}</div>
-      <div class="product-sales">${p.sales} sales this month</div>
-      <div class="product-bar"><div class="product-bar-fill" style="width:${p.sales/p.maxSales*100}%"></div></div>
-    </div>`).join('');
-}
+// Load YT stats
+Object.keys(ytStats).forEach(k => {
+  const el = document.getElementById(k);
+  if (el) el.textContent = ytStats[k];
+});
 
-function renderTikTok(){
-  document.getElementById('tiktok-scripts').innerHTML = tiktokScripts.map(s=>`
-    <div class="script-row">
-      <div class="script-meta">
-        <span class="tag" style="background:${s.typeColor}20;color:${s.typeColor}">${s.type}</span>
-        <span class="script-frame">${s.time}</span>
-      </div>
-      <div class="script-text">"${s.script}"</div>
-      <div class="script-note">⚙️ ${s.note}</div>
-    </div>`).join('');
+// ══ CHECKLIST ══
+const checklistData = [
+  { section: '🔴 Critical — Do First', color: '#ff4d6d', items: [
+    'Set up Systeme.io account and configure funnels',
+    'Create FunnelFreedom affiliate account and get link',
+    'Create 7 Figure Accelerator affiliate account',
+    'Configure NEXUS dashboard with your affiliate links',
+    'Set up email automation sequences in Systeme.io',
+  ]},
+  { section: '🟡 Important — This Week', color: '#ffb340', items: [
+    'Post first TikTok video using HeyGen script',
+    'Launch hot leads email sequence (31 contacts)',
+    'Update Shopify product descriptions and pricing',
+    'Add YouTube channel link to all social bios',
+    'Schedule 8 YouTube Shorts for the next 8 days',
+    'Set up Linktree with all affiliate links',
+  ]},
+  { section: '🟢 Optimization — Ongoing', color: '#00e5a0', items: [
+    'A/B test TikTok hooks weekly',
+    'Review email open rates and optimize subject lines',
+    'Add new products to Shopify store monthly',
+    'Analyze YouTube analytics every Tuesday',
+    'Log all affiliate commissions in Revenue Logger',
+  ]}
+];
 
-  document.getElementById('hook-list').innerHTML = hooks.map(h=>`
-    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 14px;display:flex;align-items:flex-start;gap:12px">
-      <div style="min-width:32px;height:32px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);flex-shrink:0">#${h.num}</div>
-      <div style="flex:1">
-        <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px">${h.text}</div>
-        <div style="font-size:11px;color:var(--muted)">${h.why}</div>
-      </div>
-      <div style="font-family:'DM Mono',monospace;font-size:12px;font-weight:600;color:${h.score>=88?'var(--green)':h.score>=80?'var(--amber)':'var(--blue)'};flex-shrink:0">${h.score}/100</div>
-    </div>`).join('');
-}
-
-function renderChecklist(){
+function renderChecklist() {
+  const container = document.getElementById('checklist-container');
   let total = 0, done = 0;
-  function renderGroup(items, containerId){
-    document.getElementById(containerId).innerHTML = items.map((item,i)=>{
+  checklistData.forEach(s => total += s.items.length);
+
+  container.innerHTML = checklistData.map(section => `
+    <div class="card" style="margin-bottom:16px">
+      <div class="checklist-section-title" style="color:${section.color}">
+        <div class="cl-dot" style="background:${section.color}"></div>
+        ${section.section}
+      </div>
+      ${section.items.map((item, i) => {
+        const key = section.section + i;
+        const checked = checklist[key];
+        if (checked) done++;
+        return `
+          <div class="checklist-item ${checked?'checked':''}" onclick="toggleCheck('${key}',this)">
+            <div class="cl-checkbox">${checked ? '✓' : ''}</div>
+            <div class="cl-text">${item}</div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `).join('');
+
+  const pct = Math.round((done / total) * 100);
+  document.getElementById('cl-progress').style.width = pct + '%';
+  document.getElementById('cl-pct-display').textContent = pct + '%';
+  document.getElementById('cl-nav-badge').textContent = pct + '%';
+}
+
+function toggleCheck(key, el) {
+  checklist[key] = !checklist[key];
+  localStorage.setItem('nx-checklist', JSON.stringify(checklist));
+  el.classList.toggle('checked');
+  const cb = el.querySelector('.cl-checkbox');
+  cb.textContent = checklist[key] ? '✓' : '';
+  // Recalculate
+  let done = 0, total = 0;
+  checklistData.forEach(s => {
+    s.items.forEach((_, i) => {
       total++;
-      return `<div class="check-item" onclick="toggleCheck(this)">
-        <div class="check-box">✓</div>
-        <span>${item}</span>
-      </div>`;
+      if (checklist[s.section + i]) done++;
+    });
+  });
+  const pct = Math.round((done / total) * 100);
+  document.getElementById('cl-progress').style.width = pct + '%';
+  document.getElementById('cl-pct-display').textContent = pct + '%';
+  document.getElementById('cl-nav-badge').textContent = pct + '%';
+}
+
+renderChecklist();
+
+// ══ AI ADS CREATOR ══
+async function generateAd() {
+  const platform = document.getElementById('ads-platform').value;
+  const goal = document.getElementById('ads-goal').value;
+  const product = document.getElementById('ads-product').value;
+  const audience = document.getElementById('ads-audience').value;
+  const tone = document.getElementById('ads-tone').value;
+  const lang = document.getElementById('ads-lang').value;
+
+  document.getElementById('ads-loading').classList.add('show');
+  document.getElementById('ads-output').innerHTML = '';
+  document.getElementById('ads-platform-badge').textContent = platform;
+
+  const prompt = `You are a world-class direct response copywriter specializing in ${platform} ads.
+
+Create a high-converting ${platform} ad for:
+- Product/Offer: ${product}
+- Target Audience: ${audience}
+- Goal: ${goal}
+- Tone: ${tone}
+- Language: ${lang}
+
+Affiliate link to use: https://nexus-dashboard-two-theta.vercel.app/
+
+Format your response EXACTLY like this:
+
+HOOK (0-3 seconds):
+[Write the hook]
+
+MAIN SCRIPT (15-45 seconds):
+[Write the main script]
+
+CALL TO ACTION:
+[Write the CTA]
+
+CAPTION FOR POST:
+[Write the social media caption]
+
+HASHTAGS:
+[Write 10 relevant hashtags]
+
+HOOK ALTERNATIVE 1:
+[Alternative hook]
+
+HOOK ALTERNATIVE 2:
+[Alternative hook]
+
+Keep it punchy, specific, and conversion-focused. Include pauses [pause: Xs] for TikTok/video content.`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    const data = await response.json();
+    const text = data.content?.[0]?.text || 'Error generating ad. Please check your API key configuration.';
+
+    document.getElementById('ads-loading').classList.remove('show');
+
+    const sections = text.split('\n\n').filter(s => s.trim());
+    document.getElementById('ads-output').innerHTML = sections.map(section => {
+      const lines = section.split('\n');
+      const title = lines[0];
+      const body = lines.slice(1).join('\n').trim();
+      return `
+        <div class="ads-result">
+          <div class="ads-result-label">
+            ${title}
+            <button class="copy-btn" onclick="copyText(null,this,'${encodeURIComponent(body)}')">Copy</button>
+          </div>
+          <div class="ads-result-text">${body}</div>
+        </div>
+      `;
     }).join('');
-  }
-  renderGroup(checkCritical,'check-critical');
-  renderGroup(checkImportant,'check-important');
-  renderGroup(checkOptimize,'check-optimize');
-  updateChecklistProgress();
-}
-
-function toggleCheck(el){
-  el.querySelector('.check-box').classList.toggle('done');
-  updateChecklistProgress();
-}
-
-function updateChecklistProgress(){
-  const all = document.querySelectorAll('.check-box');
-  const done = document.querySelectorAll('.check-box.done').length;
-  const el = document.getElementById('checklist-progress');
-  if(el){
-    el.textContent = `${done} / ${all.length} complete`;
-    el.className = `tag ${done===all.length?'tag-green':done>all.length/2?'tag-amber':'tag-red'}`;
+  } catch(e) {
+    document.getElementById('ads-loading').classList.remove('show');
+    document.getElementById('ads-output').innerHTML = `
+      <div class="alert alert-warn">
+        ⚠ API call failed. To use AI Ads Creator, configure your Anthropic API key in the backend settings. Error: ${e.message}
+      </div>`;
   }
 }
 
-// ============ NAVIGATION ============
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  const navMap = {dashboard:0,sequences:1,programs:2,hotleads:3,ams:4,shopify:5,tiktok:6,checklist:7};
-  const items = document.querySelectorAll('.nav-item');
-  if(navMap[id]!==undefined && items[navMap[id]]) items[navMap[id]].classList.add('active');
-  // Lazy render
-  if(id==='ams') renderAMS(document.getElementById('niche-sel').value);
-  if(id==='shopify') renderShopify();
-  if(id==='tiktok') renderTikTok();
-  if(id==='checklist') renderChecklist();
-  if(id==='sequences') renderSequences();
-  if(id==='programs') renderPrograms();
-  if(id==='hotleads') renderHotLeads();
-}
-
-// ============ LAUNCH SEQUENCE ============
-let launched = false;
-function launchSequence(){
-  if(launched) return;
-  launched = true;
-  document.getElementById('launch-btn').textContent = '✓ Launched';
-  document.getElementById('launch-btn').style.background = 'var(--green)';
-  document.getElementById('launch-count').innerHTML = '<span style="color:var(--green)">✓ Sequence active — 31 contacts entering at 9:15 AM EST tomorrow</span>';
-  let o=0,c=0,v=0;
-  const t = setInterval(()=>{
-    o=Math.min(o+1.5,68); c=Math.min(c+0.7,28); v=Math.min(v+0.35,14);
-    const hlOpen=document.getElementById('hl-open');
-    const hlClick=document.getElementById('hl-click');
-    const hlConv=document.getElementById('hl-conv');
-    if(hlOpen) hlOpen.textContent=Math.round(o)+'%';
-    if(hlClick) hlClick.textContent=Math.round(c)+'%';
-    if(hlConv) hlConv.textContent=v.toFixed(1)+'%';
-    if(o>=68) clearInterval(t);
-  },30);
-}
-
-// ============ MODALS ============
-function showModal(id){document.getElementById(id).classList.add('open')}
-function closeModal(id){document.getElementById(id).classList.remove('open')}
-document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
-
-function copyModalScript(){
-  const txt = document.getElementById('modal-script-text').textContent;
-  navigator.clipboard.writeText(txt).then(()=>{
-    const btn = event.target;
-    btn.textContent = '✓ Copied to clipboard!';
-    setTimeout(()=>btn.textContent='Copy Script to Clipboard',2000);
+// ══ COPY ══
+function copyText(id, btn, encodedText) {
+  const text = encodedText ? decodeURIComponent(encodedText) : document.getElementById(id)?.textContent;
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
   });
 }
 
-// ============ INIT ============
-renderDashboard();
+// ── Set today's date in revenue form ──
+const today = new Date().toISOString().split('T')[0];
+document.getElementById('rev-date').value = today;
 </script>
-<!-- update -->
+
 </body>
 </html>
-
-
-
-
