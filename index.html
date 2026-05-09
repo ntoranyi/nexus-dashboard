@@ -813,6 +813,18 @@ body::before {
     </div>
 
     <div class="nav-section">
+      <div class="nav-label">Marketing</div>
+      <div class="nav-item" onclick="showPanel('adsmanager',this)">
+        <span class="nav-icon">📊</span> Ads Manager
+        <span class="nav-badge blue">FB/IG/G</span>
+      </div>
+      <div class="nav-item" onclick="showPanel('klaviyo',this)">
+        <span class="nav-icon">📧</span> Klaviyo Stats
+        <span class="nav-badge green">Live</span>
+      </div>
+    </div>
+
+    <div class="nav-section">
       <div class="nav-label">System</div>
       <div class="nav-item" onclick="showPanel('checklist',this)">
         <span class="nav-icon">✓</span> Launch Checklist
@@ -834,7 +846,7 @@ body::before {
   <div class="topbar">
     <div>
       <span class="topbar-title" id="topbar-title">Dashboard</span>
-      <span class="topbar-sub">— Alex · Brussels → US Market</span>
+      <span class="topbar-sub">— Joseph · Brussels → US Market</span>
     </div>
     <div class="topbar-right">
       <a href="https://www.systeme-4l.com/agent-tiktok?sa=sa01050568776871bba42db33d6becbce23ce2bd1a" target="_blank" class="topbar-btn">
@@ -1944,7 +1956,355 @@ function copyText(id, btn, encodedText) {
 // ── Set today's date in revenue form ──
 const today = new Date().toISOString().split('T')[0];
 document.getElementById('rev-date').value = today;
+
+// ══ ADS MANAGER ══
+let adCampaigns = JSON.parse(localStorage.getItem('nx-campaigns') || '[]');
+
+function addCampaign() {
+  const name = document.getElementById('camp-name').value.trim();
+  const platform = document.getElementById('camp-platform').value;
+  const budget = parseFloat(document.getElementById('camp-budget').value) || 0;
+  const spent = parseFloat(document.getElementById('camp-spent').value) || 0;
+  const clicks = parseInt(document.getElementById('camp-clicks').value) || 0;
+  const conversions = parseInt(document.getElementById('camp-conv').value) || 0;
+  const revenue = parseFloat(document.getElementById('camp-revenue').value) || 0;
+  const status = document.getElementById('camp-status').value;
+  if (!name) return;
+  const roas = spent > 0 ? (revenue / spent).toFixed(2) : 0;
+  adCampaigns.push({ name, platform, budget, spent, clicks, conversions, revenue, status, roas, id: Date.now() });
+  localStorage.setItem('nx-campaigns', JSON.stringify(adCampaigns));
+  renderCampaigns();
+  closeModal('add-campaign-modal');
+  ['camp-name','camp-budget','camp-spent','camp-clicks','camp-conv','camp-revenue'].forEach(id => document.getElementById(id).value = '');
+}
+
+function deleteCampaign(id) {
+  adCampaigns = adCampaigns.filter(c => c.id !== id);
+  localStorage.setItem('nx-campaigns', JSON.stringify(adCampaigns));
+  renderCampaigns();
+}
+
+function renderCampaigns() {
+  const list = document.getElementById('campaigns-list');
+  const totalSpent = adCampaigns.reduce((s,c) => s + c.spent, 0);
+  const totalRev = adCampaigns.reduce((s,c) => s + c.revenue, 0);
+  const totalClicks = adCampaigns.reduce((s,c) => s + c.clicks, 0);
+  const totalConv = adCampaigns.reduce((s,c) => s + c.conversions, 0);
+  const avgRoas = totalSpent > 0 ? (totalRev / totalSpent).toFixed(2) : 0;
+
+  const elS=document.getElementById('ads-total-spent'); if(elS) elS.textContent = '$' + totalSpent.toLocaleString();
+  document.getElementById('ads-total-rev').textContent = '$' + totalRev.toLocaleString();
+  document.getElementById('ads-total-clicks').textContent = totalClicks.toLocaleString();
+  document.getElementById('ads-avg-roas').textContent = avgRoas + 'x';
+
+  const platIcons = { Facebook:'🔵', Instagram:'📸', 'Google Ads':'🔴', TikTok:'⚫' };
+  const statusColors = { Active:'badge-green', Paused:'badge-gold', Draft:'badge-red' };
+
+  if (!adCampaigns.length) {
+    list.innerHTML = '<div style="text-align:center;padding:32px;color:var(--text3);font-family:\'JetBrains Mono\',monospace;font-size:11px">No campaigns yet.<br>Click "+ Add Campaign" to start.</div>';
+    return;
+  }
+
+  list.innerHTML = adCampaigns.map(c => `
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 80px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+      <div>
+        <div style="font-size:13px;font-weight:600">${platIcons[c.platform]||'📊'} ${c.name}</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3)">${c.platform}</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:13px;font-weight:700;color:var(--red)">$${c.spent.toLocaleString()}</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text3)">Spent</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:13px;font-weight:700;color:var(--green)">$${c.revenue.toLocaleString()}</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text3)">Revenue</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:13px;font-weight:700;color:var(--gold)">${c.roas}x</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text3)">ROAS</div>
+      </div>
+      <div style="text-align:center"><span class="card-badge ${statusColors[c.status]||'badge-blue'}">${c.status}</span></div>
+      <div style="text-align:right"><button class="rev-delete" onclick="deleteCampaign(${c.id})">✕</button></div>
+    </div>
+  `).join('');
+}
+renderCampaigns();
+
+// ══ KLAVIYO ══
+let klaviyoData = JSON.parse(localStorage.getItem('nx-klaviyo') || JSON.stringify({
+  subscribers: 247, openRate: 68, clickRate: 28, convRate: 14, revenue: 0,
+  sequences: [
+    { name:'Welcome Sequence', emails:5, openRate:72, clickRate:32, status:'Active' },
+    { name:'Abandoned Cart', emails:3, openRate:65, clickRate:28, status:'Active' },
+    { name:'Post Purchase', emails:4, openRate:58, clickRate:22, status:'Active' },
+  ]
+}));
+
+function saveKlaviyo() {
+  klaviyoData.subscribers = parseInt(document.getElementById('kl-subs').value) || klaviyoData.subscribers;
+  klaviyoData.openRate = parseFloat(document.getElementById('kl-open').value) || klaviyoData.openRate;
+  klaviyoData.clickRate = parseFloat(document.getElementById('kl-click').value) || klaviyoData.clickRate;
+  klaviyoData.convRate = parseFloat(document.getElementById('kl-conv').value) || klaviyoData.convRate;
+  klaviyoData.revenue = parseFloat(document.getElementById('kl-rev').value) || klaviyoData.revenue;
+  localStorage.setItem('nx-klaviyo', JSON.stringify(klaviyoData));
+  renderKlaviyo();
+  closeModal('klaviyo-modal');
+}
+
+function renderKlaviyo() {
+  const ids = ['kl-stat-subs','kl-stat-open','kl-stat-click','kl-stat-conv','kl-stat-rev'];
+  const vals = [
+    klaviyoData.subscribers.toLocaleString(),
+    klaviyoData.openRate + '%',
+    klaviyoData.clickRate + '%',
+    klaviyoData.convRate + '%',
+    '$' + klaviyoData.revenue.toLocaleString()
+  ];
+  ids.forEach((id,i) => { const el=document.getElementById(id); if(el) el.textContent=vals[i]; });
+}
+renderKlaviyo();
 </script>
+
+<!-- ══ ADS MANAGER PANEL ══ -->
+<div id="panel-adsmanager" class="panel">
+  <div class="section-header">
+    <div>
+      <div class="section-title">Ads Manager</div>
+      <div class="section-mono">// FACEBOOK · INSTAGRAM · GOOGLE ADS</div>
+    </div>
+    <button class="btn btn-primary" onclick="openModal('add-campaign-modal')">+ Add Campaign</button>
+  </div>
+
+  <div class="metrics-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px">
+    <div class="metric"><div class="metric-val" id="ads-total-spent" style="color:var(--red)">$0</div><div class="metric-lbl">Total Spent</div></div>
+    <div class="metric"><div class="metric-val" id="ads-total-rev" style="color:var(--green)">$0</div><div class="metric-lbl">Total Revenue</div></div>
+    <div class="metric"><div class="metric-val" id="ads-total-clicks">0</div><div class="metric-lbl">Total Clicks</div></div>
+    <div class="metric"><div class="metric-val" id="ads-avg-roas" style="color:var(--gold)">0x</div><div class="metric-lbl">Avg ROAS</div></div>
+  </div>
+
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-header">
+      <div class="card-title">💡 ROAS Guide</div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <span style="font-size:11px;padding:4px 10px;border-radius:20px;background:rgba(255,77,109,0.15);color:var(--red)">❌ ROAS &lt; 1x — Losing money</span>
+      <span style="font-size:11px;padding:4px 10px;border-radius:20px;background:rgba(255,179,64,0.15);color:var(--gold)">⚠ ROAS 1-2x — Break even</span>
+      <span style="font-size:11px;padding:4px 10px;border-radius:20px;background:rgba(0,229,160,0.15);color:var(--green)">✅ ROAS 2-4x — Profitable</span>
+      <span style="font-size:11px;padding:4px 10px;border-radius:20px;background:rgba(79,168,255,0.15);color:var(--blue)">🚀 ROAS 4x+ — Scale it!</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Active Campaigns</div>
+    </div>
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 80px;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);margin-bottom:4px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3)">Campaign</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);text-align:center">Spent</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);text-align:center">Revenue</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);text-align:center">ROAS</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);text-align:center">Status</div>
+      <div></div>
+    </div>
+    <div id="campaigns-list"></div>
+  </div>
+</div>
+
+<!-- ══ KLAVIYO PANEL ══ -->
+<div id="panel-klaviyo" class="panel">
+  <div class="section-header">
+    <div>
+      <div class="section-title">Klaviyo — Email Stats</div>
+      <div class="section-mono">// SHOPIFY EMAIL AUTOMATION</div>
+    </div>
+    <button class="btn btn-primary" onclick="openModal('klaviyo-modal')">✏ Update Stats</button>
+  </div>
+
+  <div class="metrics-row" style="grid-template-columns:repeat(5,1fr);margin-bottom:24px">
+    <div class="metric">
+      <div class="metric-val" id="kl-stat-subs" style="color:var(--blue)">247</div>
+      <div class="metric-lbl">Subscribers</div>
+      <div class="metric-sub trend-up">+12% this week</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val" id="kl-stat-open" style="color:var(--green)">68%</div>
+      <div class="metric-lbl">Open Rate</div>
+      <div class="metric-sub trend-up">Target >40% ✓</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val" id="kl-stat-click" style="color:var(--blue)">28%</div>
+      <div class="metric-lbl">Click Rate</div>
+      <div class="metric-sub trend-up">Target >10% ✓</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val" id="kl-stat-conv" style="color:var(--gold)">14%</div>
+      <div class="metric-lbl">Conversion</div>
+      <div class="metric-sub" style="color:var(--gold)">Target >5% ✓</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val" id="kl-stat-rev" style="color:var(--green)">$0</div>
+      <div class="metric-lbl">Email Revenue</div>
+      <div class="metric-sub trend-up">Attributed</div>
+    </div>
+  </div>
+
+  <div class="alert alert-success" style="margin-bottom:20px">
+    🏆 Your open rate of 68% is <strong>3.4x above industry average</strong> (20%). Klaviyo sequences are performing exceptionally well!
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Active Sequences</div>
+        <span class="card-badge badge-green">3 Active</span>
+      </div>
+      <div class="program-item">
+        <div class="program-dot" style="background:linear-gradient(135deg,var(--blue2),var(--cyan))">W</div>
+        <div>
+          <div class="program-name">Welcome Sequence</div>
+          <div class="program-stat">5 emails · 72% open · 32% click</div>
+        </div>
+        <span class="card-badge badge-green">Active</span>
+      </div>
+      <div class="program-item">
+        <div class="program-dot" style="background:linear-gradient(135deg,var(--red),#c0392b)">A</div>
+        <div>
+          <div class="program-name">Abandoned Cart</div>
+          <div class="program-stat">3 emails · 65% open · 28% click</div>
+        </div>
+        <span class="card-badge badge-green">Active</span>
+      </div>
+      <div class="program-item">
+        <div class="program-dot" style="background:linear-gradient(135deg,var(--green),#00a06b)">P</div>
+        <div>
+          <div class="program-name">Post Purchase</div>
+          <div class="program-stat">4 emails · 58% open · 22% click</div>
+        </div>
+        <span class="card-badge badge-green">Active</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Performance vs Industry</div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Open Rate</span><span style="color:var(--green)">68% vs 20% avg</span></div>
+        <div class="progress-track"><div class="progress-fill green" style="width:68%"></div></div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Click Rate</span><span style="color:var(--blue)">28% vs 8% avg</span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:70%"></div></div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Conversion</span><span style="color:var(--gold)">14% vs 3% avg</span></div>
+        <div class="progress-track"><div class="progress-fill gold" style="width:75%"></div></div>
+      </div>
+      <div class="alert alert-info" style="margin-top:12px">
+        💡 Consider adding a <strong>Win-Back sequence</strong> for inactive subscribers — could recover 15-20% of churned contacts.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Campaign Modal -->
+<div class="modal-overlay" id="add-campaign-modal" onclick="closeModalOutside(event,this)">
+  <div class="modal">
+    <div class="modal-title">
+      Add Ad Campaign
+      <button class="modal-close" onclick="closeModal('add-campaign-modal')">✕</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Campaign Name</label>
+      <input class="form-input" id="camp-name" placeholder="e.g. NEXUS AI — Cold Traffic">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Platform</label>
+        <select class="form-select" id="camp-platform">
+          <option>Facebook</option>
+          <option>Instagram</option>
+          <option>Google Ads</option>
+          <option>TikTok</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        <select class="form-select" id="camp-status">
+          <option>Active</option>
+          <option>Paused</option>
+          <option>Draft</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Budget ($)</label>
+        <input class="form-input" id="camp-budget" placeholder="e.g. 500" type="number">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Amount Spent ($)</label>
+        <input class="form-input" id="camp-spent" placeholder="e.g. 320" type="number">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Clicks</label>
+        <input class="form-input" id="camp-clicks" placeholder="e.g. 450" type="number">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Conversions</label>
+        <input class="form-input" id="camp-conv" placeholder="e.g. 12" type="number">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Revenue Generated ($)</label>
+      <input class="form-input" id="camp-revenue" placeholder="e.g. 960" type="number">
+    </div>
+    <div style="display:flex;gap:10px;margin-top:8px">
+      <button class="btn btn-outline" style="flex:1;justify-content:center" onclick="closeModal('add-campaign-modal')">Cancel</button>
+      <button class="btn btn-primary" style="flex:2;justify-content:center" onclick="addCampaign()">Add Campaign</button>
+    </div>
+  </div>
+</div>
+
+<!-- Klaviyo Update Modal -->
+<div class="modal-overlay" id="klaviyo-modal" onclick="closeModalOutside(event,this)">
+  <div class="modal">
+    <div class="modal-title">
+      Update Klaviyo Stats
+      <button class="modal-close" onclick="closeModal('klaviyo-modal')">✕</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Subscribers</label>
+        <input class="form-input" id="kl-subs" type="number" placeholder="247">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Open Rate (%)</label>
+        <input class="form-input" id="kl-open" type="number" placeholder="68">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Click Rate (%)</label>
+        <input class="form-input" id="kl-click" type="number" placeholder="28">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Conversion Rate (%)</label>
+        <input class="form-input" id="kl-conv" type="number" placeholder="14">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Attributed Revenue ($)</label>
+      <input class="form-input" id="kl-rev" type="number" placeholder="0">
+    </div>
+    <div style="display:flex;gap:10px;margin-top:8px">
+      <button class="btn btn-outline" style="flex:1;justify-content:center" onclick="closeModal('klaviyo-modal')">Cancel</button>
+      <button class="btn btn-green" style="flex:2;justify-content:center" onclick="saveKlaviyo()">Save Stats</button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
