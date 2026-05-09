@@ -733,6 +733,23 @@ body::before {
 /* ── SEPARATOR ── */
 .sep { height: 1px; background: var(--border); margin: 20px 0; }
 
+
+/* ── LANGUAGE TOGGLE ── */
+.lang-toggle {
+  display: flex; align-items: center;
+  background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: 8px; overflow: hidden; margin-right: 10px;
+}
+.lang-btn {
+  padding: 6px 12px; font-size: 12px; font-weight: 600;
+  cursor: pointer; border: none; background: transparent;
+  color: var(--text2); font-family: 'Syne', sans-serif;
+  transition: all .2s;
+}
+.lang-btn.active {
+  background: linear-gradient(135deg, var(--blue2), var(--cyan));
+  color: #fff;
+}
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -853,7 +870,11 @@ body::before {
       <span class="topbar-sub">— Joseph · Brussels → US Market</span>
     </div>
     <div class="topbar-right">
-      <a href="https://www.systeme-4l.com/agent-tiktok?sa=sa01050568776871bba42db33d6becbce23ce2bd1a" target="_blank" class="topbar-btn">
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="lang-en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" id="lang-fr" onclick="setLang('fr')">FR</button>
+      </div>
+      <a href="https://www.systeme-4l.com/agent-tiktok?sa=sa01050568776871bba42db33d6becbce23ce2bd1a" target="_blank" class="topbar-btn" id="main-cta">
         🚀 Start Making Money
       </a>
     </div>
