@@ -470,30 +470,30 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
         <div class="sc" data-c="gold"><div class="sc-lbl"><div class="sc-dot" style="background:var(--g)"></div><span data-i18n="auto_s2">Déclenchements / 7j</span></div><div class="sc-val">284</div><div class="sc-chg up">↑ +12%</div></div>
         <div class="sc" data-c="vio"><div class="sc-lbl"><div class="sc-dot" style="background:var(--v)"></div><span data-i18n="auto_s3">Revenus générés</span></div><div class="sc-val">$1.8K</div><div class="sc-chg up">↑ Ce mois</div></div>
       </div>
-      <div class="auto-card">
+      <div class="auto-card" style="cursor:pointer" onclick="openModal('auto-detail-1')">
         <div class="auto-ico" style="background:var(--vd);border:1px solid var(--vb)">🎯</div>
         <div class="auto-info"><strong data-i18n="auto1_name">Séquence Email Onboarding</strong><span data-i18n="auto1_desc">5 emails · Déclencheur: Nouveau lead · 3 contacts actifs</span></div>
-        <div class="auto-meta"><span class="auto-tag tag tag-t" data-i18n="auto_on">Actif</span><label class="sw"><input type="checkbox" checked onchange="toggleAuto(this)"><div class="sw-track"></div></label></div>
+        <div class="auto-meta"><span class="auto-tag tag tag-t" data-i18n="auto_on">Actif</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="toggleAuto(this)"><div class="sw-track"></div></label></div>
       </div>
-      <div class="auto-card">
+      <div class="auto-card" style="cursor:pointer" onclick="openModal('auto-detail-2')">
         <div class="auto-ico" style="background:var(--gd);border:1px solid var(--gb)">📱</div>
         <div class="auto-info"><strong data-i18n="auto2_name">Posts TikTok Auto-génération</strong><span data-i18n="auto2_desc">IA génère 3 posts/jour · Niche IA Business · TikTok @7figuredad</span></div>
-        <div class="auto-meta"><span class="auto-tag tag tag-t" data-i18n="auto_on">Actif</span><label class="sw"><input type="checkbox" checked onchange="toggleAuto(this)"><div class="sw-track"></div></label></div>
+        <div class="auto-meta"><span class="auto-tag tag tag-t" data-i18n="auto_on">Actif</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="toggleAuto(this)"><div class="sw-track"></div></label></div>
       </div>
-      <div class="auto-card">
+      <div class="auto-card" style="cursor:pointer" onclick="openModal('auto-detail-3')">
         <div class="auto-ico" style="background:var(--tld);border:1px solid var(--tlb)">💳</div>
         <div class="auto-info"><strong data-i18n="auto3_name">Relance Panier Abandonné</strong><span data-i18n="auto3_desc">Shopify · Délai 1h → SMS + Email · Taux récupération: 18%</span></div>
-        <div class="auto-meta"><span class="auto-tag tag tag-t" data-i18n="auto_on">Actif</span><label class="sw"><input type="checkbox" checked onchange="toggleAuto(this)"><div class="sw-track"></div></label></div>
+        <div class="auto-meta"><span class="auto-tag tag tag-t" data-i18n="auto_on">Actif</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="toggleAuto(this)"><div class="sw-track"></div></label></div>
       </div>
-      <div class="auto-card">
+      <div class="auto-card" style="cursor:pointer" onclick="openModal('auto-detail-4')">
         <div class="auto-ico" style="background:var(--bld);border:1px solid var(--blb)">🤝</div>
         <div class="auto-info"><strong data-i18n="auto4_name">Affiliation — Commission Auto</strong><span data-i18n="auto4_desc">Détection conversion · Paiement Stripe · Config requise</span></div>
-        <div class="auto-meta"><span class="auto-tag tag tag-r" data-i18n="auto_off">Inactif</span><label class="sw"><input type="checkbox" onchange="toggleAuto(this)"><div class="sw-track"></div></label></div>
+        <div class="auto-meta"><span class="auto-tag tag tag-r" data-i18n="auto_off">Inactif</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" onchange="toggleAuto(this)"><div class="sw-track"></div></label></div>
       </div>
-      <div class="auto-card">
+      <div class="auto-card" style="cursor:pointer" onclick="openModal('auto-detail-5')">
         <div class="auto-ico" style="background:var(--rsd);border:1px solid var(--rsb)">📊</div>
         <div class="auto-info"><strong data-i18n="auto5_name">Rapport Hebdomadaire IA</strong><span data-i18n="auto5_desc">Synthèse performances · Email chaque lundi 8h · Config requise</span></div>
-        <div class="auto-meta"><span class="auto-tag tag tag-r" data-i18n="auto_off">Inactif</span><label class="sw"><input type="checkbox" onchange="toggleAuto(this)"><div class="sw-track"></div></label></div>
+        <div class="auto-meta"><span class="auto-tag tag tag-r" data-i18n="auto_off">Inactif</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" onchange="toggleAuto(this)"><div class="sw-track"></div></label></div>
       </div>
     </div>
 
@@ -573,11 +573,11 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
         <table class="tbl">
           <thead><tr><th>Nom</th><th>Plateforme</th><th>Budget</th><th>Leads</th><th>CPC</th><th>Statut</th></tr></thead>
           <tbody>
-            <tr><td style="color:var(--w);font-weight:500">IA Business #4</td><td>TikTok Ads</td><td>$800</td><td style="color:var(--gl)">312</td><td>$2.56</td><td><span class="tag tag-t">Active</span></td></tr>
-            <tr><td style="color:var(--w);font-weight:500">NEXUS Awareness</td><td>Meta Ads</td><td>$600</td><td style="color:var(--gl)">248</td><td>$2.41</td><td><span class="tag tag-t">Active</span></td></tr>
-            <tr><td style="color:var(--w);font-weight:500">Retargeting SaaS</td><td>Meta Ads</td><td>$400</td><td style="color:var(--gl)">187</td><td>$2.13</td><td><span class="tag tag-t">Active</span></td></tr>
-            <tr><td style="color:var(--w);font-weight:500">Affiliation Q2</td><td>TikTok Ads</td><td>$100</td><td style="color:var(--gl)">100</td><td>$1.00</td><td><span class="tag tag-t">Active</span></td></tr>
-            <tr><td style="color:var(--w);font-weight:500">Test Shopify</td><td>Google</td><td>$0</td><td>0</td><td>—</td><td><span class="tag tag-r">Brouillon</span></td></tr>
+            <tr style="cursor:pointer" onclick="openModal('camp-detail')"><td style="color:var(--w);font-weight:500">IA Business #4</td><td>TikTok Ads</td><td>$800</td><td style="color:var(--gl)">312</td><td>$2.56</td><td><span class="tag tag-t">Active</span></td></tr>
+            <tr style="cursor:pointer" onclick="openModal('camp-detail')"><td style="color:var(--w);font-weight:500">NEXUS Awareness</td><td>Meta Ads</td><td>$600</td><td style="color:var(--gl)">248</td><td>$2.41</td><td><span class="tag tag-t">Active</span></td></tr>
+            <tr style="cursor:pointer" onclick="openModal('camp-detail')"><td style="color:var(--w);font-weight:500">Retargeting SaaS</td><td>Meta Ads</td><td>$400</td><td style="color:var(--gl)">187</td><td>$2.13</td><td><span class="tag tag-t">Active</span></td></tr>
+            <tr style="cursor:pointer" onclick="openModal('camp-detail')"><td style="color:var(--w);font-weight:500">Affiliation Q2</td><td>TikTok Ads</td><td>$100</td><td style="color:var(--gl)">100</td><td>$1.00</td><td><span class="tag tag-t">Active</span></td></tr>
+            <tr style="cursor:pointer" onclick="openModal('camp-edit')"><td style="color:var(--vl);font-weight:500">Test Shopify ✏️</td><td>Google</td><td>$0</td><td>0</td><td>—</td><td><span class="tag tag-r">Brouillon</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -587,7 +587,7 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
     <div class="pg" id="pg-content">
       <div class="pg-head">
         <div class="pg-title-wrap"><h1>✍️ <span class="hl" data-i18n="nav_content">Contenu</span></h1><p data-i18n="cont_sub">Studio IA · Générateur de posts, scripts &amp; visuels</p></div>
-        <div class="hdr-acts"><button class="btn-sm" data-i18n="cont_gen">✨ Générer</button></div>
+        <div class="hdr-acts"><button class="btn-sm" onclick="generateContent()">✨ Générer</button></div>
       </div>
       <div class="stats s3" style="margin-bottom:20px">
         <div class="sc" data-c="vio"><div class="sc-lbl"><div class="sc-dot" style="background:var(--v)"></div>Posts créés</div><div class="sc-val">127</div><div class="sc-chg up">↑ Ce mois</div></div>
@@ -609,7 +609,7 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
           <div class="gen-result" id="gen-result"></div>
         </div>
         <div class="dc">
-          <div class="dc-head"><div class="dc-title">📋 Posts récents</div><div class="dc-act" data-i18n="cont_all">Bibliothèque →</div></div>
+          <div class="dc-head"><div class="dc-title">📋 Posts récents</div><div class="dc-act" onclick="openModal('library')" data-i18n="cont_all">Bibliothèque →</div></div>
           <div class="act-item"><div class="act-ico" style="background:var(--vd);border:1px solid var(--vb)">📱</div><div class="act-txt"><strong>«&nbsp;L'IA m'a remplacé mon équipe...&nbsp;»</strong><span>TikTok · 142K vues · <span style="color:#6EE7B7">+2.1K follows</span></span></div></div>
           <div class="act-item"><div class="act-ico" style="background:var(--gd);border:1px solid var(--gb)">🎬</div><div class="act-txt"><strong>«&nbsp;Ce SaaS m'a fait $12K en 30 jours&nbsp;»</strong><span>TikTok · 89K vues · <span style="color:#6EE7B7">+890 leads</span></span></div></div>
           <div class="act-item"><div class="act-ico" style="background:var(--tld);border:1px solid var(--tlb)">✉️</div><div class="act-txt"><strong>Newsletter #47 — Automation IA</strong><span>Email · 3 847 envois · 42% open rate</span></div></div>
@@ -622,7 +622,7 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
     <div class="pg" id="pg-ecommerce">
       <div class="pg-head">
         <div class="pg-title-wrap"><h1>🛒 <span class="hl">E-commerce</span></h1><p data-i18n="eco_sub">Shopify · Stripe · 12 produits actifs</p></div>
-        <div class="hdr-acts"><button class="btn-sm gold" data-i18n="eco_prod">+ Produit</button></div>
+        <div class="hdr-acts"><button class="btn-sm gold" onclick="openModal('add-product')"><span data-i18n="eco_prod">+ Produit</span></button></div>
       </div>
       <div class="stats" style="margin-bottom:20px">
         <div class="sc" data-c="gold"><div class="sc-lbl"><div class="sc-dot" style="background:var(--g)"></div>CA boutique</div><div class="sc-val">$4.2K</div><div class="sc-chg up">↑ +31%</div></div>
@@ -653,11 +653,11 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
         <table class="tbl">
           <thead><tr><th>Programme</th><th>Commission</th><th>Clics</th><th>Conversions</th><th>Revenus</th><th>Statut</th></tr></thead>
           <tbody>
-            <tr><td style="color:var(--w);font-weight:500">ClickFunnels 2.0</td><td>40% récurrent</td><td>2 840</td><td style="color:var(--gl)">87</td><td style="color:var(--gl)">$840</td><td><span class="tag tag-t">Actif</span></td></tr>
-            <tr><td style="color:var(--w);font-weight:500">Shopify Partners</td><td>$58/vente</td><td>1 920</td><td style="color:var(--gl)">42</td><td style="color:var(--gl)">$640</td><td><span class="tag tag-t">Actif</span></td></tr>
-            <tr><td style="color:var(--w);font-weight:500">GetResponse</td><td>33% récurrent</td><td>1 340</td><td style="color:var(--gl)">38</td><td style="color:var(--gl)">$380</td><td><span class="tag tag-t">Actif</span></td></tr>
-            <tr><td><a href="https://systeme.io" target="_blank" rel="noopener" style="color:var(--vl);font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:color .15s" onmouseover="this.style.color='var(--gl)'" onmouseout="this.style.color='var(--vl)'">Systeme.io <span style="font-size:10px;opacity:.7">↗</span></a></td><td>40% récurrent</td><td>2 320</td><td style="color:var(--gl)">61</td><td style="color:var(--gl)">$240</td><td><span class="tag tag-t">Actif</span></td></tr>
-            <tr><td style="color:var(--w);font-weight:500">Claude / Anthropic</td><td>En attente</td><td>—</td><td>—</td><td>—</td><td><span class="tag tag-r">Config requise</span></td></tr>
+            <tr style="cursor:pointer" onclick="openModal('affil-cf')"><td style="color:var(--w);font-weight:500">ClickFunnels 2.0</td><td>40% récurrent</td><td>2 840</td><td style="color:var(--gl)">87</td><td style="color:var(--gl)">$840</td><td><span class="tag tag-t">Actif</span></td></tr>
+            <tr style="cursor:pointer" onclick="openModal('affil-shopify')"><td style="color:var(--w);font-weight:500">Shopify Partners</td><td>$58/vente</td><td>1 920</td><td style="color:var(--gl)">42</td><td style="color:var(--gl)">$640</td><td><span class="tag tag-t">Actif</span></td></tr>
+            <tr style="cursor:pointer" onclick="openModal('affil-gr')"><td style="color:var(--w);font-weight:500">GetResponse</td><td>33% récurrent</td><td>1 340</td><td style="color:var(--gl)">38</td><td style="color:var(--gl)">$380</td><td><span class="tag tag-t">Actif</span></td></tr>
+            <tr><td><a href="https://www.systeme-4l.com/agent-tiktok?sa=sa01050568776871bba42db33d6becbce23ce2bd1a" target="_blank" rel="noopener" style="color:var(--vl);font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:color .15s" onmouseover="this.style.color='var(--gl)'" onmouseout="this.style.color='var(--vl)'">Systeme.io <span style="font-size:10px;opacity:.7">↗</span></a></td><td>40% récurrent</td><td>2 320</td><td style="color:var(--gl)">61</td><td style="color:var(--gl)">$240</td><td><span class="tag tag-t">Actif</span></td></tr>
+            <tr id="claude-affil-row"><td style="color:var(--w);font-weight:500">Claude / Anthropic</td><td style="color:var(--m)">En attente</td><td>—</td><td>—</td><td>—</td><td><button class="btn-sm" id="claude-affil-btn" style="height:26px;padding:0 12px;font-size:10.5px" onclick="connectClaudeAffil()">Connecter</button></td></tr>
           </tbody>
         </table>
       </div>
@@ -708,6 +708,229 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
 </div><!-- end #screen-db -->
 
 </div><!-- end #app -->
+
+<!-- ── MODAL: CONTENT LIBRARY ── -->
+<div class="modal-ov" id="modal-library" onclick="closeModalOnBg(event,'modal-library')">
+  <div class="modal" style="max-width:540px">
+    <div class="modal-hd"><h3>📚 <span class="hl">Bibliothèque de contenu</span></h3><button class="modal-cls" onclick="closeModal('modal-library')">✕</button></div>
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+      <button class="btn-sm" style="height:28px;padding:0 12px;font-size:11px;background:var(--vd);color:var(--vl);border:1px solid var(--vb)">TikTok</button>
+      <button class="btn-sm" style="height:28px;padding:0 12px;font-size:11px;background:var(--s1);color:var(--m);border:1px solid var(--bd)">Instagram</button>
+      <button class="btn-sm" style="height:28px;padding:0 12px;font-size:11px;background:var(--s1);color:var(--m);border:1px solid var(--bd)">X/Twitter</button>
+      <button class="btn-sm" style="height:28px;padding:0 12px;font-size:11px;background:var(--s1);color:var(--m);border:1px solid var(--bd)">Email</button>
+    </div>
+    <div class="act-item" style="cursor:pointer;border-radius:10px;padding:10px" onmouseover="this.style.background='var(--s1)'" onmouseout="this.style.background=''">
+      <div class="act-ico" style="background:var(--vd);border:1px solid var(--vb)">📱</div>
+      <div class="act-txt"><strong>«&nbsp;L'IA m'a remplacé mon équipe...&nbsp;»</strong><span>TikTok · 142K vues · +2.1K follows · <span style="color:var(--g)">22 Mai 2026</span></span></div>
+      <div style="color:var(--vl);font-size:11px;flex-shrink:0;cursor:pointer" onclick="toast('📋','Post copié dans le presse-papier !','vio')">Copier →</div>
+    </div>
+    <div class="act-item" style="cursor:pointer;border-radius:10px;padding:10px" onmouseover="this.style.background='var(--s1)'" onmouseout="this.style.background=''">
+      <div class="act-ico" style="background:var(--gd);border:1px solid var(--gb)">🎬</div>
+      <div class="act-txt"><strong>«&nbsp;Ce SaaS m'a fait $12K en 30 jours&nbsp;»</strong><span>TikTok · 89K vues · +890 leads · <span style="color:var(--g)">20 Mai 2026</span></span></div>
+      <div style="color:var(--vl);font-size:11px;flex-shrink:0;cursor:pointer" onclick="toast('📋','Post copié dans le presse-papier !','vio')">Copier →</div>
+    </div>
+    <div class="act-item" style="cursor:pointer;border-radius:10px;padding:10px" onmouseover="this.style.background='var(--s1)'" onmouseout="this.style.background=''">
+      <div class="act-ico" style="background:var(--tld);border:1px solid var(--tlb)">✉️</div>
+      <div class="act-txt"><strong>Newsletter #47 — Automation IA</strong><span>Email · 3 847 envois · 42% open rate · <span style="color:var(--g)">18 Mai 2026</span></span></div>
+      <div style="color:var(--vl);font-size:11px;flex-shrink:0;cursor:pointer" onclick="toast('📋','Newsletter copiée !','vio')">Copier →</div>
+    </div>
+    <div class="act-item" style="cursor:pointer;border-radius:10px;padding:10px" onmouseover="this.style.background='var(--s1)'" onmouseout="this.style.background=''">
+      <div class="act-ico" style="background:var(--bld);border:1px solid var(--blb)">🐦</div>
+      <div class="act-txt"><strong>Thread: 10 outils IA en 2026</strong><span>X/Twitter · 28K impressions · <span style="color:var(--g)">15 Mai 2026</span></span></div>
+      <div style="color:var(--vl);font-size:11px;flex-shrink:0;cursor:pointer" onclick="toast('📋','Thread copié !','vio')">Copier →</div>
+    </div>
+    <div class="modal-foot"><button class="btn-sm" style="justify-content:center" onclick="closeModal('modal-library')">Fermer</button></div>
+  </div>
+</div>
+
+<!-- ── MODAL: ADD PRODUCT ── -->
+<div class="modal-ov" id="modal-add-product" onclick="closeModalOnBg(event,'modal-add-product')">
+  <div class="modal" style="max-width:460px">
+    <div class="modal-hd"><h3>🛒 <span class="hl">Nouveau produit</span></h3><button class="modal-cls" onclick="closeModal('modal-add-product')">✕</button></div>
+    <div class="form-row"><label class="form-lbl">Nom du produit</label><input class="form-inp" id="prod-name" type="text" placeholder="ex: Pack TikTok Viral..."></div>
+    <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div><label class="form-lbl">Prix ($)</label><input class="form-inp" id="prod-price" type="number" placeholder="97"></div>
+      <div><label class="form-lbl">Type</label><select class="form-inp" id="prod-type"><option>SaaS / Abonnement</option><option>Digital / One-time</option><option>Formation</option><option>Service</option></select></div>
+    </div>
+    <div class="form-row"><label class="form-lbl">Description courte</label><input class="form-inp" id="prod-desc" type="text" placeholder="ex: Accès lifetime, 50 templates..."></div>
+    <div class="form-row"><label class="form-lbl">Plateforme de vente</label>
+      <select class="form-inp"><option>Shopify</option><option>Stripe / Direct</option><option>Gumroad</option><option>ThriveCart</option></select>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeModal('modal-add-product')">Annuler</button>
+      <button class="btn-sm gold" style="justify-content:center;color:#0A0A1A" onclick="addProduct()">Créer le produit →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: AUTOMATION DETAIL 1 ── -->
+<div class="modal-ov" id="modal-auto-detail-1" onclick="closeModalOnBg(event,'modal-auto-detail-1')">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-hd"><h3>🎯 <span class="hl">Séquence Email Onboarding</span></h3><button class="modal-cls" onclick="closeModal('modal-auto-detail-1')">✕</button></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px">
+      <div style="background:var(--tld);border:1px solid var(--tlb);border-radius:10px;padding:12px;text-align:center"><div style="font-family:var(--fs);font-size:24px;color:#6EE7B7">3</div><div style="font-size:10.5px;color:var(--m)">Contacts actifs</div></div>
+      <div style="background:var(--vd);border:1px solid var(--vb);border-radius:10px;padding:12px;text-align:center"><div style="font-family:var(--fs);font-size:24px;color:var(--vl)">68%</div><div style="font-size:10.5px;color:var(--m)">Open rate</div></div>
+      <div style="background:var(--gd);border:1px solid var(--gb);border-radius:10px;padding:12px;text-align:center"><div style="font-family:var(--fs);font-size:24px;color:var(--gl)">24%</div><div style="font-size:10.5px;color:var(--m)">Clic rate</div></div>
+    </div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:10px">Séquence — 5 emails</div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Email 1 — Bienvenue &amp; accès immédiat</span></div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Email 2 — Premier pas avec NEXUS AI (J+1)</span></div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Email 3 — Cas d'usage &amp; résultats (J+3)</span></div>
+    <div class="cl-item"><div class="cl-box"></div><span>Email 4 — Offre de mise à niveau (J+7)</span></div>
+    <div class="cl-item"><div class="cl-box"></div><span>Email 5 — Témoignages &amp; social proof (J+14)</span></div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeModal('modal-auto-detail-1')">Fermer</button>
+      <button class="btn-sm" style="justify-content:center" onclick="closeModal('modal-auto-detail-1');toast('✏️','Automation ouverte en édition','vio')">Modifier →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: AUTOMATION DETAIL 2 ── -->
+<div class="modal-ov" id="modal-auto-detail-2" onclick="closeModalOnBg(event,'modal-auto-detail-2')">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-hd"><h3>📱 <span class="hl">Posts TikTok Auto-génération</span></h3><button class="modal-cls" onclick="closeModal('modal-auto-detail-2')">✕</button></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px">
+      <div style="background:var(--gd);border:1px solid var(--gb);border-radius:10px;padding:12px;text-align:center"><div style="font-family:var(--fs);font-size:24px;color:var(--gl)">127</div><div style="font-size:10.5px;color:var(--m)">Posts générés</div></div>
+      <div style="background:var(--vd);border:1px solid var(--vb);border-radius:10px;padding:12px;text-align:center"><div style="font-family:var(--fs);font-size:24px;color:var(--vl)">842K</div><div style="font-size:10.5px;color:var(--m)">Vues totales</div></div>
+      <div style="background:var(--tld);border:1px solid var(--tlb);border-radius:10px;padding:12px;text-align:center"><div style="font-family:var(--fs);font-size:24px;color:#6EE7B7">8.4%</div><div style="font-size:10.5px;color:var(--m)">Engagement</div></div>
+    </div>
+    <div class="set-row"><div class="set-info"><strong>Fréquence</strong><span>3 posts/jour · 9h, 14h, 20h</span></div><span class="tag tag-t">Actif</span></div>
+    <div class="set-row"><div class="set-info"><strong>Niche</strong><span>IA Business · SaaS · Affiliation</span></div></div>
+    <div class="set-row"><div class="set-info"><strong>Compte TikTok</strong><span>@7figuredad · 42K followers</span></div></div>
+    <div class="set-row"><div class="set-info"><strong>Format</strong><span>Script 60s + Hook viral + CTA</span></div></div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeModal('modal-auto-detail-2')">Fermer</button>
+      <button class="btn-sm gold" style="justify-content:center;color:#0A0A1A" onclick="closeModal('modal-auto-detail-2');toast('✏️','Automation ouverte en édition','gold')">Modifier →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: AUTOMATION DETAIL 3 ── -->
+<div class="modal-ov" id="modal-auto-detail-3" onclick="closeModalOnBg(event,'modal-auto-detail-3')">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-hd"><h3>💳 <span class="hl">Relance Panier Abandonné</span></h3><button class="modal-cls" onclick="closeModal('modal-auto-detail-3')">✕</button></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px">
+      <div style="background:var(--tld);border:1px solid var(--tlb);border-radius:10px;padding:12px;text-align:center"><div style="font-family:var(--fs);font-size:24px;color:#6EE7B7">18%</div><div style="font-size:10.5px;color:var(--m)">Récupération</div></div>
+      <div style="background:var(--gd);border:1px solid var(--gb);border-radius:10px;padding:12px;text-align:center"><div style="font-family:var(--fs);font-size:24px;color:var(--gl)">$420</div><div style="font-size:10.5px;color:var(--m)">CA récupéré</div></div>
+      <div style="background:var(--vd);border:1px solid var(--vb);border-radius:10px;padding:12px;text-align:center"><div style="font-family:var(--fs);font-size:24px;color:var(--vl)">33</div><div style="font-size:10.5px;color:var(--m)">Paniers sauvés</div></div>
+    </div>
+    <div class="set-row"><div class="set-info"><strong>Canal 1</strong><span>SMS · Template: "Votre panier vous attend..."</span></div><span class="tag tag-t">Actif</span></div>
+    <div class="set-row"><div class="set-info"><strong>Canal 2</strong><span>Email · Relance J+1 avec code promo -10%</span></div><span class="tag tag-t">Actif</span></div>
+    <div class="set-row"><div class="set-info"><strong>Intégration</strong><span>Shopify · nexusai.com</span></div></div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeModal('modal-auto-detail-3')">Fermer</button>
+      <button class="btn-sm teal" style="justify-content:center" onclick="closeModal('modal-auto-detail-3');toast('✏️','Automation ouverte en édition','teal')">Modifier →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: AUTOMATION DETAIL 4 ── -->
+<div class="modal-ov" id="modal-auto-detail-4" onclick="closeModalOnBg(event,'modal-auto-detail-4')">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-hd"><h3>🤝 <span class="hl">Affiliation — Commission Auto</span></h3><button class="modal-cls" onclick="closeModal('modal-auto-detail-4')">✕</button></div>
+    <div style="background:var(--rsd);border:1px solid var(--rsb);border-radius:12px;padding:14px;margin-bottom:18px;font-size:12.5px;color:#FDA4AF">⚠️ Configuration incomplète — Connectez Stripe pour activer le paiement automatique des commissions.</div>
+    <div class="set-row"><div class="set-info"><strong>Déclencheur</strong><span>Conversion détectée via lien affilié</span></div></div>
+    <div class="set-row"><div class="set-info"><strong>Paiement</strong><span>Stripe — Non connecté</span></div><span class="tag tag-r">Inactif</span></div>
+    <div class="set-row"><div class="set-info"><strong>Commission</strong><span>30% sur chaque vente générée</span></div></div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeModal('modal-auto-detail-4')">Fermer</button>
+      <button class="btn-sm" style="justify-content:center" onclick="closeModal('modal-auto-detail-4');navigate('settings');toast('🔗','Allez dans Paramètres → Intégrations','vio')">Connecter Stripe →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: AUTOMATION DETAIL 5 ── -->
+<div class="modal-ov" id="modal-auto-detail-5" onclick="closeModalOnBg(event,'modal-auto-detail-5')">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-hd"><h3>📊 <span class="hl">Rapport Hebdomadaire IA</span></h3><button class="modal-cls" onclick="closeModal('modal-auto-detail-5')">✕</button></div>
+    <div style="background:var(--rsd);border:1px solid var(--rsb);border-radius:12px;padding:14px;margin-bottom:18px;font-size:12.5px;color:#FDA4AF">⚠️ Inactive — Configurez l'adresse email de réception pour activer.</div>
+    <div class="form-row"><label class="form-lbl">Email de réception</label><input class="form-inp" type="email" value="jeff@nexus-ai.com"></div>
+    <div class="set-row"><div class="set-info"><strong>Fréquence</strong><span>Chaque lundi à 8h00 (heure belge)</span></div></div>
+    <div class="set-row"><div class="set-info"><strong>Contenu</strong><span>CA · Leads · Posts · Conversions · Clics affiliés</span></div></div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeModal('modal-auto-detail-5')">Fermer</button>
+      <button class="btn-sm" style="justify-content:center" onclick="closeModal('modal-auto-detail-5');toast('✅','Rapport hebdo activé — Premier envoi lundi','green')">Activer →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: CAMP DETAIL ── -->
+<div class="modal-ov" id="modal-camp-detail" onclick="closeModalOnBg(event,'modal-camp-detail')">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-hd"><h3>🎯 <span class="hl">Détails campagne</span></h3><button class="modal-cls" onclick="closeModal('modal-camp-detail')">✕</button></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px">
+      <div style="background:var(--gd);border:1px solid var(--gb);border-radius:10px;padding:12px;text-align:center"><div style="font-family:var(--fs);font-size:24px;color:var(--gl)">312</div><div style="font-size:10.5px;color:var(--m)">Leads générés</div></div>
+      <div style="background:var(--vd);border:1px solid var(--vb);border-radius:10px;padding:12px;text-align:center"><div style="font-family:var(--fs);font-size:24px;color:var(--vl)">$2.56</div><div style="font-size:10.5px;color:var(--m)">Coût par lead</div></div>
+    </div>
+    <div class="set-row"><div class="set-info"><strong>Plateforme</strong><span>TikTok Ads</span></div><span class="tag tag-t">Active</span></div>
+    <div class="set-row"><div class="set-info"><strong>Budget</strong><span>$800/mois · $26/jour</span></div></div>
+    <div class="set-row"><div class="set-info"><strong>ROI</strong><span>+340% · $800 → $3 200 générés</span></div><span style="color:#6EE7B7">🔥</span></div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeModal('modal-camp-detail')">Fermer</button>
+      <button class="btn-sm" style="justify-content:center" onclick="closeModal('modal-camp-detail');toast('✏️','Campagne ouverte en édition','vio')">Modifier →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: CAMP EDIT BROUILLON ── -->
+<div class="modal-ov" id="modal-camp-edit" onclick="closeModalOnBg(event,'modal-camp-edit')">
+  <div class="modal" style="max-width:460px">
+    <div class="modal-hd"><h3>✏️ <span class="hl">Éditer — Test Shopify</span></h3><button class="modal-cls" onclick="closeModal('modal-camp-edit')">✕</button></div>
+    <div class="form-row"><label class="form-lbl">Nom de la campagne</label><input class="form-inp" type="text" value="Test Shopify"></div>
+    <div class="form-row"><label class="form-lbl">Plateforme</label><select class="form-inp"><option selected>Google Ads</option><option>TikTok Ads</option><option>Meta Ads</option></select></div>
+    <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div><label class="form-lbl">Budget ($)</label><input class="form-inp" type="number" placeholder="500"></div>
+      <div><label class="form-lbl">Objectif</label><select class="form-inp"><option>Trafic</option><option>Leads</option><option>Conversions</option></select></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeModal('modal-camp-edit')">Annuler</button>
+      <button class="btn-sm gold" style="justify-content:center;color:#0A0A1A" onclick="closeModal('modal-camp-edit');toast('🚀','Campagne Test Shopify lancée !','gold')">Lancer →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: AFFIL DETAIL — CLICKFUNNELS ── -->
+<div class="modal-ov" id="modal-affil-cf" onclick="closeModalOnBg(event,'modal-affil-cf')">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-hd"><h3>💰 <span class="hl">ClickFunnels 2.0</span></h3><button class="modal-cls" onclick="closeModal('modal-affil-cf')">✕</button></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px">
+      <div style="background:var(--gd);border:1px solid var(--gb);border-radius:10px;padding:12px;text-align:center"><div style="font-family:var(--fs);font-size:22px;color:var(--gl)">$840</div><div style="font-size:10px;color:var(--m)">Commissions</div></div>
+      <div style="background:var(--vd);border:1px solid var(--vb);border-radius:10px;padding:12px;text-align:center"><div style="font-family:var(--fs);font-size:22px;color:var(--vl)">2 840</div><div style="font-size:10px;color:var(--m)">Clics</div></div>
+      <div style="background:var(--tld);border:1px solid var(--tlb);border-radius:10px;padding:12px;text-align:center"><div style="font-family:var(--fs);font-size:22px;color:#6EE7B7">87</div><div style="font-size:10px;color:var(--m)">Conversions</div></div>
+    </div>
+    <div class="set-row"><div class="set-info"><strong>Commission</strong><span>40% récurrent par mois</span></div><span class="tag tag-t">Actif</span></div>
+    <div class="set-row"><div class="set-info"><strong>Taux conversion</strong><span>3.06% · Top programme du mois</span></div><span style="color:#6EE7B7">🔥</span></div>
+    <div class="modal-foot"><button class="btn-sm" style="justify-content:center" onclick="closeModal('modal-affil-cf')">Fermer</button></div>
+  </div>
+</div>
+
+<!-- ── MODAL: AFFIL DETAIL — SHOPIFY ── -->
+<div class="modal-ov" id="modal-affil-shopify" onclick="closeModalOnBg(event,'modal-affil-shopify')">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-hd"><h3>🛒 <span class="hl">Shopify Partners</span></h3><button class="modal-cls" onclick="closeModal('modal-affil-shopify')">✕</button></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px">
+      <div style="background:var(--gd);border:1px solid var(--gb);border-radius:10px;padding:12px;text-align:center"><div style="font-family:var(--fs);font-size:22px;color:var(--gl)">$640</div><div style="font-size:10px;color:var(--m)">Commissions</div></div>
+      <div style="background:var(--vd);border:1px solid var(--vb);border-radius:10px;padding:12px;text-align:center"><div style="font-family:var(--fs);font-size:22px;color:var(--vl)">1 920</div><div style="font-size:10px;color:var(--m)">Clics</div></div>
+      <div style="background:var(--tld);border:1px solid var(--tlb);border-radius:10px;padding:12px;text-align:center"><div style="font-family:var(--fs);font-size:22px;color:#6EE7B7">42</div><div style="font-size:10px;color:var(--m)">Conversions</div></div>
+    </div>
+    <div class="set-row"><div class="set-info"><strong>Commission</strong><span>$58 par nouveau marchand actif</span></div><span class="tag tag-t">Actif</span></div>
+    <div class="modal-foot"><button class="btn-sm" style="justify-content:center" onclick="closeModal('modal-affil-shopify')">Fermer</button></div>
+  </div>
+</div>
+
+<!-- ── MODAL: AFFIL DETAIL — GETRESPONSE ── -->
+<div class="modal-ov" id="modal-affil-gr" onclick="closeModalOnBg(event,'modal-affil-gr')">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-hd"><h3>📧 <span class="hl">GetResponse</span></h3><button class="modal-cls" onclick="closeModal('modal-affil-gr')">✕</button></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px">
+      <div style="background:var(--gd);border:1px solid var(--gb);border-radius:10px;padding:12px;text-align:center"><div style="font-family:var(--fs);font-size:22px;color:var(--gl)">$380</div><div style="font-size:10px;color:var(--m)">Commissions</div></div>
+      <div style="background:var(--vd);border:1px solid var(--vb);border-radius:10px;padding:12px;text-align:center"><div style="font-family:var(--fs);font-size:22px;color:var(--vl)">1 340</div><div style="font-size:10px;color:var(--m)">Clics</div></div>
+      <div style="background:var(--tld);border:1px solid var(--tlb);border-radius:10px;padding:12px;text-align:center"><div style="font-family:var(--fs);font-size:22px;color:#6EE7B7">38</div><div style="font-size:10px;color:var(--m)">Conversions</div></div>
+    </div>
+    <div class="set-row"><div class="set-info"><strong>Commission</strong><span>33% récurrent par mois</span></div><span class="tag tag-t">Actif</span></div>
+    <div class="modal-foot"><button class="btn-sm" style="justify-content:center" onclick="closeModal('modal-affil-gr')">Fermer</button></div>
+  </div>
+</div>
 
 <!-- ── MODAL: TRAFFIC DETAIL ── -->
 <div class="modal-ov" id="modal-traffic-detail" onclick="closeModalOnBg(event,'modal-traffic-detail')">
@@ -1378,6 +1601,32 @@ function advanceSetup() {
     if (pbTop) pbTop.textContent = step.done + ' / 5 ' + (lang === 'fr' ? 'complétés' : 'completed');
     toast('✅', lang === 'fr' ? 'Étape complétée !' : 'Step completed!', 'green');
   }
+}
+
+/* ── ADD PRODUCT ── */
+function addProduct() {
+  const name  = document.getElementById('prod-name') ? document.getElementById('prod-name').value.trim() : '';
+  const price = document.getElementById('prod-price') ? document.getElementById('prod-price').value.trim() : '';
+  if (!name) { const el = document.getElementById('prod-name'); if(el){el.style.borderColor='var(--rose)';el.focus();} return; }
+  closeModal('modal-add-product');
+  ['prod-name','prod-price','prod-desc'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
+  toast('🛒', name + (price ? ' · $'+price : '') + ' créé !', 'gold');
+}
+
+/* ── CONNECT CLAUDE AFFIL ROW ── */
+function connectClaudeAffil() {
+  const btn = document.getElementById('claude-affil-btn');
+  if (!btn) return;
+  btn.textContent = '⏳'; btn.style.opacity = '.6'; btn.style.pointerEvents = 'none';
+  setTimeout(() => {
+    const row = document.getElementById('claude-affil-row');
+    if (row && row.cells) {
+      row.cells[1].textContent = '20% récurrent';
+      row.cells[4].innerHTML = '<span style="color:var(--gl)">$0</span>';
+      row.cells[5].innerHTML = '<span class="tag tag-t">Actif</span>';
+    }
+    toast('🤖', 'Claude / Anthropic affilié activé !', 'vio');
+  }, 1600);
 }
 </script>
 </body>
