@@ -52,10 +52,10 @@ html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);
 
 /* === ONBOARDING SCREEN === */
 #screen-ob{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow-y:auto;z-index:1}
-.ob-card{position:relative;background:rgba(9,9,24,.88);backdrop-filter:blur(24px);border:1px solid var(--bd);border-radius:24px;padding:44px 48px;width:100%;max-width:580px;z-index:2}
+.ob-card{position:relative;background:rgba(9,9,24,.88);backdrop-filter:blur(24px);border:1px solid var(--bd);border-radius:24px;padding:52px 48px 44px;width:100%;max-width:580px;z-index:2}
 .ob-card::before{content:'';position:absolute;inset:0;border-radius:24px;background:linear-gradient(135deg,rgba(124,58,237,.05) 0%,transparent 60%);pointer-events:none}
 
-.logo-row{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:32px}
+.logo-row{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:28px;padding-top:4px}
 .logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--v) 0%,var(--g) 100%);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:17px;font-weight:800;color:#fff;letter-spacing:-.02em}
 .logo-name{font-family:var(--fd);font-size:19px;font-weight:700;letter-spacing:.04em}
 .logo-name b{background:linear-gradient(135deg,var(--vl),var(--gl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -552,11 +552,16 @@ function setLang(lang) {
    GOAL SELECTION
 ================== */
 function selectGoal(card) {
-  document.querySelectorAll('.gc').forEach(c => c.classList.remove('sel'));
-  card.classList.add('sel');
+  card.classList.toggle('sel');
+  const count = document.querySelectorAll('.gc.sel').length;
   const btn = document.getElementById('cta-btn');
-  btn.disabled = false;
-  btn.className = 'btn btn-g au d4';
+  if (count > 0) {
+    btn.disabled = false;
+    btn.className = 'btn btn-g au d4';
+  } else {
+    btn.disabled = true;
+    btn.className = 'btn btn-v au d4';
+  }
 }
 
 /* ==================
