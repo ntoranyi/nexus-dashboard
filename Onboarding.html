@@ -24,11 +24,39 @@
 html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);overflow:hidden}
 
 /* ── LANG SWITCHER ── */
-.lang-sw{position:fixed;top:20px;right:24px;z-index:9999;display:flex;align-items:center;background:rgba(9,9,26,.92);backdrop-filter:blur(20px);border:1px solid var(--bd2);border-radius:100px;padding:4px;gap:2px;box-shadow:0 4px 20px rgba(0,0,0,.4)}
-.lang-btn{height:28px;padding:0 14px;border-radius:100px;border:none;font-family:var(--fd);font-size:11.5px;font-weight:700;letter-spacing:.06em;cursor:pointer;transition:all .22s cubic-bezier(.4,0,.2,1);color:var(--m);background:transparent}
+.lang-sw{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;align-items:center;background:rgba(9,9,26,.95);backdrop-filter:blur(20px);border:1px solid var(--bd2);border-radius:100px;padding:4px;gap:2px;box-shadow:0 4px 24px rgba(0,0,0,.5)}
+.lang-btn{height:28px;padding:0 16px;border-radius:100px;border:none;font-family:var(--fd);font-size:11.5px;font-weight:700;letter-spacing:.06em;cursor:pointer;transition:all .22s cubic-bezier(.4,0,.2,1);color:var(--m);background:transparent}
 .lang-btn.active{background:var(--v);color:#fff;box-shadow:0 2px 12px rgba(124,58,237,.45)}
 .lang-btn:not(.active):hover{color:var(--vl);background:var(--vd)}
 .lang-sep{width:1px;height:14px;background:var(--bd2);flex-shrink:0}
+
+/* ── MODAL ── */
+.modal-ov{position:fixed;inset:0;z-index:8888;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .22s ease}
+.modal-ov.open{opacity:1;pointer-events:all}
+.modal{background:rgba(12,12,30,.98);border:1px solid var(--bd2);border-radius:20px;padding:28px 32px;width:100%;max-width:460px;position:relative;transform:translateY(12px);transition:transform .28s cubic-bezier(.4,0,.2,1)}
+.modal-ov.open .modal{transform:translateY(0)}
+.modal-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.modal-hd h3{font-family:var(--fd);font-size:17px;font-weight:800}
+.modal-cls{width:30px;height:30px;border-radius:8px;background:var(--s1);border:1px solid var(--bd);color:var(--m);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s}
+.modal-cls:hover{background:var(--s2);color:var(--w)}
+.modal-foot{display:flex;gap:10px;margin-top:22px}
+.modal-foot .btn-sm{flex:1;justify-content:center;height:40px;font-size:13px}
+.btn-ghost{background:var(--s1);border:1px solid var(--bd);color:var(--m);height:40px;padding:0 18px;border-radius:9px;font-family:var(--fd);font-size:13px;font-weight:700;cursor:pointer;transition:all .18s;flex:1}
+.btn-ghost:hover{background:var(--s2);color:var(--w)}
+
+/* ── TOAST ── */
+.toast-wrap{position:fixed;bottom:28px;right:24px;z-index:9998;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:rgba(12,12,30,.97);border:1px solid var(--bd2);border-radius:12px;padding:12px 18px;font-size:12.5px;display:flex;align-items:center;gap:10px;transform:translateX(120%);transition:transform .3s cubic-bezier(.4,0,.2,1);pointer-events:none;min-width:220px;box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.toast.show{transform:translateX(0)}
+.toast-ico{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+
+/* ── CONTENT RESULT ── */
+.gen-result{background:var(--s1);border:1px solid var(--vb);border-radius:12px;padding:16px;margin-top:14px;font-size:12.5px;line-height:1.7;color:var(--w);display:none}
+.gen-result.visible{display:block;animation:fadeUp .3s ease forwards}
+.gen-loader{display:none;align-items:center;gap:10px;padding:12px 0;color:var(--m);font-size:12.5px}
+.gen-loader.visible{display:flex}
+.spin{width:16px;height:16px;border:2px solid var(--vb);border-top-color:var(--vl);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
 
 /* ── BACKGROUNDS ── */
 .bg-aura{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
@@ -54,7 +82,7 @@ html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);
 .page-in{animation:pageIn .28s cubic-bezier(.4,0,.2,1) forwards}
 
 /* ── ONBOARDING SCREEN ── */
-#screen-ob{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow-y:auto;z-index:1}
+#screen-ob{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:76px 24px 24px;overflow-y:auto;z-index:1}
 .ob-card{position:relative;background:rgba(9,9,24,.88);backdrop-filter:blur(24px);border:1px solid var(--bd);border-radius:24px;padding:52px 48px 44px;width:100%;max-width:580px;z-index:2}
 .ob-card::before{content:'';position:absolute;inset:0;border-radius:24px;background:linear-gradient(135deg,rgba(124,58,237,.05) 0%,transparent 60%);pointer-events:none}
 .logo-row{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:28px;padding-top:4px}
@@ -260,8 +288,8 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
   .db-grid{grid-template-columns:1fr}
   .banner{flex-direction:column;align-items:flex-start}
   .banner-pct{display:none}
-  .lang-sw{top:14px;right:14px}
   .stats.s2,.stats.s3,.stats{grid-template-columns:1fr 1fr}
+  #screen-ob{padding:72px 16px 24px}
 }
 @media(max-width:480px){
   .ob-card{padding:28px 20px;border-radius:18px}
@@ -332,7 +360,7 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
         <div class="gc-desc" data-i18n="c4_desc">Stratégie complète multi-canal &amp; automation</div>
       </div>
     </div>
-    <button class="btn btn-v au d4" id="cta-btn" disabled onclick="goToDashboard()">
+    <button class="btn btn-v au d4" id="cta-btn" disabled onclick="goToDashboard()" style="margin-top:8px">
       <span data-i18n="cta_btn">Continuer</span>
       <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
@@ -393,7 +421,7 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
           <p data-i18n="banner_sub">Connectez vos comptes TikTok &amp; Shopify pour activer toutes les automations</p>
         </div>
         <div class="banner-pct" id="banner-pct">0%</div>
-        <button class="btn-sm"><span data-i18n="banner_btn">Continuer</span> <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6H10M10 6L7 3M10 6L7 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="btn-sm" onclick="advanceSetup()"><span data-i18n="banner_btn">Continuer</span> <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6H10M10 6L7 3M10 6L7 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </div>
       <div class="stats au d2">
         <div class="sc" data-c="gold"><div class="sc-lbl"><div class="sc-dot" style="background:var(--g)"></div><span data-i18n="stat1_lbl">Revenu Total</span></div><div class="sc-val" id="s-rev">$0</div><div class="sc-chg up" data-i18n="stat1_chg">↑ +23% ce mois</div></div>
@@ -429,37 +457,37 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
     <div class="pg" id="pg-automations">
       <div class="pg-head">
         <div class="pg-title-wrap"><h1>⚡ <span class="hl" data-i18n="nav_auto">Automations</span></h1><p data-i18n="auto_sub">3 automations actives · 2 en attente de configuration</p></div>
-        <div class="hdr-acts"><button class="btn-sm" data-i18n="auto_new">+ Nouvelle automation</button></div>
+        <div class="hdr-acts"><button class="btn-sm" onclick="openModal('auto')"><span data-i18n="auto_new">+ Nouvelle automation</span></button></div>
       </div>
       <div class="stats s3" style="margin-bottom:20px">
-        <div class="sc" data-c="teal"><div class="sc-lbl"><div class="sc-dot" style="background:var(--teal)"></div><span data-i18n="auto_s1">Actives</span></div><div class="sc-val">3</div><div class="sc-chg up">↑ Opérationnel</div></div>
+        <div class="sc" data-c="teal"><div class="sc-lbl"><div class="sc-dot" style="background:var(--teal)"></div><span data-i18n="auto_s1">Actives</span></div><div class="sc-val" id="auto-active-count">3</div><div class="sc-chg up">↑ Opérationnel</div></div>
         <div class="sc" data-c="gold"><div class="sc-lbl"><div class="sc-dot" style="background:var(--g)"></div><span data-i18n="auto_s2">Déclenchements / 7j</span></div><div class="sc-val">284</div><div class="sc-chg up">↑ +12%</div></div>
         <div class="sc" data-c="vio"><div class="sc-lbl"><div class="sc-dot" style="background:var(--v)"></div><span data-i18n="auto_s3">Revenus générés</span></div><div class="sc-val">$1.8K</div><div class="sc-chg up">↑ Ce mois</div></div>
       </div>
       <div class="auto-card">
         <div class="auto-ico" style="background:var(--vd);border:1px solid var(--vb)">🎯</div>
         <div class="auto-info"><strong data-i18n="auto1_name">Séquence Email Onboarding</strong><span data-i18n="auto1_desc">5 emails · Déclencheur: Nouveau lead · 3 contacts actifs</span></div>
-        <div class="auto-meta"><span class="tag tag-t" data-i18n="auto_on">Actif</span><label class="sw"><input type="checkbox" checked><div class="sw-track"></div></label></div>
+        <div class="auto-meta"><span class="auto-tag tag tag-t" data-i18n="auto_on">Actif</span><label class="sw"><input type="checkbox" checked onchange="toggleAuto(this)"><div class="sw-track"></div></label></div>
       </div>
       <div class="auto-card">
         <div class="auto-ico" style="background:var(--gd);border:1px solid var(--gb)">📱</div>
         <div class="auto-info"><strong data-i18n="auto2_name">Posts TikTok Auto-génération</strong><span data-i18n="auto2_desc">IA génère 3 posts/jour · Niche IA Business · TikTok @7figuredad</span></div>
-        <div class="auto-meta"><span class="tag tag-t" data-i18n="auto_on">Actif</span><label class="sw"><input type="checkbox" checked><div class="sw-track"></div></label></div>
+        <div class="auto-meta"><span class="auto-tag tag tag-t" data-i18n="auto_on">Actif</span><label class="sw"><input type="checkbox" checked onchange="toggleAuto(this)"><div class="sw-track"></div></label></div>
       </div>
       <div class="auto-card">
         <div class="auto-ico" style="background:var(--tld);border:1px solid var(--tlb)">💳</div>
         <div class="auto-info"><strong data-i18n="auto3_name">Relance Panier Abandonné</strong><span data-i18n="auto3_desc">Shopify · Délai 1h → SMS + Email · Taux récupération: 18%</span></div>
-        <div class="auto-meta"><span class="tag tag-t" data-i18n="auto_on">Actif</span><label class="sw"><input type="checkbox" checked><div class="sw-track"></div></label></div>
+        <div class="auto-meta"><span class="auto-tag tag tag-t" data-i18n="auto_on">Actif</span><label class="sw"><input type="checkbox" checked onchange="toggleAuto(this)"><div class="sw-track"></div></label></div>
       </div>
       <div class="auto-card">
         <div class="auto-ico" style="background:var(--bld);border:1px solid var(--blb)">🤝</div>
         <div class="auto-info"><strong data-i18n="auto4_name">Affiliation — Commission Auto</strong><span data-i18n="auto4_desc">Détection conversion · Paiement Stripe · Config requise</span></div>
-        <div class="auto-meta"><span class="tag tag-r" data-i18n="auto_off">Inactif</span><label class="sw"><input type="checkbox"><div class="sw-track"></div></label></div>
+        <div class="auto-meta"><span class="auto-tag tag tag-r" data-i18n="auto_off">Inactif</span><label class="sw"><input type="checkbox" onchange="toggleAuto(this)"><div class="sw-track"></div></label></div>
       </div>
       <div class="auto-card">
         <div class="auto-ico" style="background:var(--rsd);border:1px solid var(--rsb)">📊</div>
         <div class="auto-info"><strong data-i18n="auto5_name">Rapport Hebdomadaire IA</strong><span data-i18n="auto5_desc">Synthèse performances · Email chaque lundi 8h · Config requise</span></div>
-        <div class="auto-meta"><span class="tag tag-r" data-i18n="auto_off">Inactif</span><label class="sw"><input type="checkbox"><div class="sw-track"></div></label></div>
+        <div class="auto-meta"><span class="auto-tag tag tag-r" data-i18n="auto_off">Inactif</span><label class="sw"><input type="checkbox" onchange="toggleAuto(this)"><div class="sw-track"></div></label></div>
       </div>
     </div>
 
@@ -510,7 +538,7 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
     <div class="pg" id="pg-campaigns">
       <div class="pg-head">
         <div class="pg-title-wrap"><h1>🎯 <span class="hl" data-i18n="nav_camps">Campagnes</span></h1><p data-i18n="camp_sub">4 campagnes actives · Budget total: $2 400/mois</p></div>
-        <div class="hdr-acts"><button class="btn-sm gold" data-i18n="camp_new">+ Créer campagne</button></div>
+        <div class="hdr-acts"><button class="btn-sm gold" onclick="openModal('campaign')"><span data-i18n="camp_new">+ Créer campagne</span></button></div>
       </div>
       <div class="stats s2" style="margin-bottom:20px">
         <div class="sc" data-c="gold"><div class="sc-lbl"><div class="sc-dot" style="background:var(--g)"></div>Budget dépensé</div><div class="sc-val">$1.9K</div><div class="sc-chg">Sur $2.4K alloués</div></div>
@@ -552,7 +580,9 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
           <div class="form-row"><label class="form-lbl" data-i18n="cont_tone">Ton</label>
             <select class="form-inp"><option>Viral Hook</option><option>Éducatif</option><option>Storytelling</option><option>Persuasif</option></select>
           </div>
-          <button class="btn-sm" style="width:100%;justify-content:center;height:40px;font-size:13px" data-i18n="cont_gen">✨ Générer le contenu</button>
+          <button class="btn-sm" style="width:100%;justify-content:center;height:40px;font-size:13px" id="gen-btn" onclick="generateContent()"><span data-i18n="cont_gen">✨ Générer le contenu</span></button>
+          <div class="gen-loader" id="gen-loader"><div class="spin"></div><span id="gen-loader-txt">L'IA génère votre contenu...</span></div>
+          <div class="gen-result" id="gen-result"></div>
         </div>
         <div class="dc">
           <div class="dc-head"><div class="dc-title">📋 Posts récents</div><div class="dc-act" data-i18n="cont_all">Bibliothèque →</div></div>
@@ -625,8 +655,8 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
         </div>
         <div class="dc">
           <div class="dc-head"><div class="dc-title">🔗 Intégrations</div></div>
-          <div class="set-row"><div class="set-info"><strong>TikTok Business</strong><span>Connecter pour activer la synchro</span></div><button class="btn-sm" style="height:30px;padding:0 14px;font-size:11px" data-i18n="set_connect">Connecter</button></div>
-          <div class="set-row"><div class="set-info"><strong>Shopify</strong><span>Connecter pour les automations e-com</span></div><button class="btn-sm" style="height:30px;padding:0 14px;font-size:11px" data-i18n="set_connect">Connecter</button></div>
+          <div class="set-row" id="conn-tiktok"><div class="set-info"><strong>TikTok Business</strong><span id="conn-tiktok-sub">Connecter pour activer la synchro</span></div><button class="btn-sm" id="conn-tiktok-btn" style="height:30px;padding:0 14px;font-size:11px" onclick="connectService('tiktok')"><span data-i18n="set_connect">Connecter</span></button></div>
+          <div class="set-row" id="conn-shopify"><div class="set-info"><strong>Shopify</strong><span id="conn-shopify-sub">Connecter pour les automations e-com</span></div><button class="btn-sm" id="conn-shopify-btn" style="height:30px;padding:0 14px;font-size:11px" onclick="connectService('shopify')"><span data-i18n="set_connect">Connecter</span></button></div>
           <div class="set-row"><div class="set-info"><strong>Stripe</strong><span style="color:#6EE7B7">● Connecté · stripe@nexusai.com</span></div><span class="tag tag-t">Actif</span></div>
           <div class="set-row"><div class="set-info"><strong>Meta Ads</strong><span style="color:#6EE7B7">● Connecté · Compte #48291</span></div><span class="tag tag-t">Actif</span></div>
           <div class="set-row"><div class="set-info"><strong>Claude / Anthropic API</strong><span style="color:#6EE7B7">● Connecté · claude-sonnet-4-6</span></div><span class="tag tag-t">Actif</span></div>
@@ -655,7 +685,58 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
 
 </div><!-- end #app -->
 
+<!-- ── TOAST CONTAINER ── -->
+<div class="toast-wrap" id="toast-wrap"></div>
+
+<!-- ── MODAL: NEW AUTOMATION ── -->
+<div class="modal-ov" id="modal-auto" onclick="closeModalOnBg(event,'modal-auto')">
+  <div class="modal">
+    <div class="modal-hd">
+      <h3>⚡ <span class="hl">Nouvelle automation</span></h3>
+      <button class="modal-cls" onclick="closeModal('modal-auto')">✕</button>
+    </div>
+    <div class="form-row"><label class="form-lbl">Nom de l'automation</label><input class="form-inp" type="text" placeholder="ex: Séquence welcome VIP..."></div>
+    <div class="form-row"><label class="form-lbl">Déclencheur</label>
+      <select class="form-inp"><option>Nouveau lead</option><option>Achat effectué</option><option>Panier abandonné</option><option>Formulaire soumis</option><option>Tag ajouté</option></select>
+    </div>
+    <div class="form-row"><label class="form-lbl">Canal</label>
+      <select class="form-inp"><option>Email</option><option>SMS</option><option>TikTok</option><option>WhatsApp</option><option>Multi-canal</option></select>
+    </div>
+    <div class="form-row"><label class="form-lbl">Délai avant déclenchement</label>
+      <select class="form-inp"><option>Immédiat</option><option>30 minutes</option><option>1 heure</option><option>24 heures</option><option>3 jours</option></select>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeModal('modal-auto')">Annuler</button>
+      <button class="btn-sm" style="justify-content:center" onclick="createAutomation()">Créer l'automation →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: NEW CAMPAIGN ── -->
+<div class="modal-ov" id="modal-campaign" onclick="closeModalOnBg(event,'modal-campaign')">
+  <div class="modal">
+    <div class="modal-hd">
+      <h3>🎯 <span class="hl">Nouvelle campagne</span></h3>
+      <button class="modal-cls" onclick="closeModal('modal-campaign')">✕</button>
+    </div>
+    <div class="form-row"><label class="form-lbl">Nom de la campagne</label><input class="form-inp" type="text" placeholder="ex: NEXUS Launch Q3..."></div>
+    <div class="form-row"><label class="form-lbl">Plateforme</label>
+      <select class="form-inp"><option>TikTok Ads</option><option>Meta Ads</option><option>Google Ads</option><option>YouTube Ads</option></select>
+    </div>
+    <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div><label class="form-lbl">Budget / jour ($)</label><input class="form-inp" type="number" placeholder="50"></div>
+      <div><label class="form-lbl">Objectif</label><select class="form-inp"><option>Leads</option><option>Conversions</option><option>Trafic</option><option>Notoriété</option></select></div>
+    </div>
+    <div class="form-row"><label class="form-lbl">Audience cible</label><input class="form-inp" type="text" placeholder="ex: entrepreneurs 25-40, intérêt IA..."></div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeModal('modal-campaign')">Annuler</button>
+      <button class="btn-sm gold" style="justify-content:center;color:#0A0A1A" onclick="createCampaign()">Lancer la campagne →</button>
+    </div>
+  </div>
+</div>
+
 <script>
+
 /* ── TRANSLATIONS ── */
 const T = {
   fr: {
@@ -844,6 +925,160 @@ function animateBars() {
     const w = b.dataset.w;
     setTimeout(() => { b.style.width = w + '%'; }, 60);
   });
+}
+
+/* ── TOAST ── */
+function toast(icon, msg, color) {
+  const wrap = document.getElementById('toast-wrap');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  const bg = color === 'green' ? 'rgba(16,185,129,.15)' : color === 'gold' ? 'rgba(245,158,11,.15)' : 'var(--vd)';
+  const bc = color === 'green' ? 'rgba(16,185,129,.4)' : color === 'gold' ? 'rgba(245,158,11,.4)' : 'var(--vb)';
+  t.innerHTML = `<div class="toast-ico" style="background:${bg};border:1px solid ${bc}">${icon}</div><span style="color:var(--w)">${msg}</span>`;
+  wrap.appendChild(t);
+  requestAnimationFrame(() => { setTimeout(() => t.classList.add('show'), 20); });
+  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 320); }, 3200);
+}
+
+/* ── MODAL ── */
+function openModal(type) {
+  document.getElementById('modal-' + type).classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+function closeModalOnBg(e, id) {
+  if (e.target === e.currentTarget) closeModal(id);
+}
+
+/* ── AUTOMATION TOGGLE ── */
+function toggleAuto(cb) {
+  const meta = cb.closest('.auto-meta');
+  const tag = meta.querySelector('.auto-tag');
+  const isOn = cb.checked;
+  tag.className = 'auto-tag tag ' + (isOn ? 'tag-t' : 'tag-r');
+  const lang = document.documentElement.lang || 'fr';
+  tag.textContent = isOn ? (lang === 'fr' ? 'Actif' : 'Active') : (lang === 'fr' ? 'Inactif' : 'Inactive');
+  const name = cb.closest('.auto-card').querySelector('strong').textContent;
+  const shortName = name.length > 28 ? name.slice(0,28)+'…' : name;
+  if (isOn) {
+    toast('✅', shortName + ' activée', 'green');
+    updateAutoCount(1);
+  } else {
+    toast('⏸️', shortName + ' désactivée', 'rose');
+    updateAutoCount(-1);
+  }
+}
+function updateAutoCount(delta) {
+  const el = document.getElementById('auto-active-count');
+  if (el) el.textContent = Math.max(0, parseInt(el.textContent) + delta);
+}
+
+/* ── NEW AUTOMATION MODAL ACTION ── */
+function createAutomation() {
+  const name = document.querySelector('#modal-auto .form-inp').value.trim();
+  closeModal('modal-auto');
+  toast('⚡', (name || 'Automation') + ' créée !', 'vio');
+  updateAutoCount(1);
+}
+
+/* ── CONNECT SERVICES ── */
+const connStates = {};
+function connectService(id) {
+  if (connStates[id]) return;
+  const btn = document.getElementById('conn-' + id + '-btn');
+  const sub = document.getElementById('conn-' + id + '-sub');
+  btn.textContent = '...';
+  btn.style.opacity = '.6';
+  setTimeout(() => {
+    connStates[id] = true;
+    btn.outerHTML = `<span class="tag tag-t">Connecté ✓</span>`;
+    sub.innerHTML = `<span style="color:#6EE7B7">● Connecté avec succès</span>`;
+    const label = id === 'tiktok' ? 'TikTok Business' : 'Shopify';
+    toast('🔗', label + ' connecté !', 'green');
+  }, 1400);
+}
+
+/* ── CONTENT GENERATOR ── */
+const generated = {
+  fr: [
+    `🎬 <b>Hook viral TikTok — IA Business</b><br><br>«&nbsp;J'ai remplacé mon équipe marketing entière par 3 outils IA… voici comment j'ai doublé mon CA en 30 jours sans embaucher personne.&nbsp;»<br><br>📌 Sous-titre: Montre l'interface NEXUS AI<br>🎵 Son tendance: beats lo-fi<br>⏱ Durée suggérée: 58 secondes`,
+    `📱 <b>Caption Instagram — Affiliation</b><br><br>Tu passes des heures à créer du contenu pour gagner $0 en affiliation ?<br><br>❌ Mauvaise stratégie → contenu aléatoire<br>✅ Bonne stratégie → automatiser avec l'IA<br><br>NEXUS AI génère tes posts, trackle tes liens et te paie pendant que tu dors. 💰<br><br>#IA #AffiliationMarketing #7FigureDad`,
+    `🧵 <b>Thread X/Twitter — SaaS</b><br><br>1/ J'ai lancé un SaaS à $97/mois avec 0 employé.<br>Voici les 5 outils IA qui font tout tourner 🧵<br><br>2/ @NEXUSAI gère les automations et le contenu.<br>3/ Claude rédige mes emails et scripts.<br>4/ Stripe encaisse automatiquement.<br>5/ TikTok Ads apporte les leads à $2/lead.`
+  ],
+  en: [
+    `🎬 <b>TikTok Viral Hook — AI Business</b><br><br>"I replaced my entire marketing team with 3 AI tools… here's how I doubled my revenue in 30 days without hiring anyone."<br><br>📌 Subtitle: Show NEXUS AI interface<br>🎵 Trending sound: lo-fi beats<br>⏱ Suggested duration: 58 seconds`,
+    `📱 <b>Instagram Caption — Affiliate</b><br><br>Spending hours creating content for $0 in affiliate revenue?<br><br>❌ Wrong strategy → random content<br>✅ Right strategy → automate with AI<br><br>NEXUS AI generates your posts, tracks your links and pays you while you sleep. 💰<br><br>#AI #AffiliateMarketing #7FigureDad`,
+    `🧵 <b>X/Twitter Thread — SaaS</b><br><br>1/ I launched a $97/month SaaS with 0 employees.<br>Here are the 5 AI tools that run everything 🧵<br><br>2/ @NEXUSAI handles automations and content.<br>3/ Claude writes my emails and scripts.<br>4/ Stripe collects payments automatically.<br>5/ TikTok Ads brings leads at $2/lead.`
+  ]
+};
+let genIdx = 0;
+function generateContent() {
+  const btn = document.getElementById('gen-btn');
+  const loader = document.getElementById('gen-loader');
+  const result = document.getElementById('gen-result');
+  const lang = document.documentElement.lang || 'fr';
+  btn.style.opacity = '.5'; btn.style.pointerEvents = 'none';
+  result.classList.remove('visible'); result.style.display = 'none';
+  loader.classList.add('visible');
+  document.getElementById('gen-loader-txt').textContent = lang === 'fr' ? "L'IA génère votre contenu..." : "AI is generating your content...";
+  setTimeout(() => {
+    loader.classList.remove('visible');
+    result.innerHTML = generated[lang][genIdx % generated[lang].length];
+    result.style.display = 'block';
+    result.classList.add('visible');
+    btn.style.opacity = ''; btn.style.pointerEvents = '';
+    btn.querySelector('span').textContent = lang === 'fr' ? '✨ Régénérer' : '✨ Regenerate';
+    genIdx++;
+    toast('✨', lang === 'fr' ? 'Contenu généré !' : 'Content generated!', 'vio');
+  }, 1800);
+}
+
+/* ── NEW CAMPAIGN MODAL ACTION ── */
+function createCampaign() {
+  const name = document.querySelector('#modal-campaign .form-inp').value.trim();
+  closeModal('modal-campaign');
+  toast('🎯', (name || 'Campagne') + ' créée !', 'gold');
+}
+
+/* ── SETUP BANNER STEPPER ── */
+const setupSteps = [
+  { txt_fr: 'Connectez TikTok Business →', txt_en: 'Connect TikTok Business →', pct: 60, done: 2 },
+  { txt_fr: 'Connectez Shopify / Stripe →', txt_en: 'Connect Shopify / Stripe →', pct: 80, done: 3 },
+  { txt_fr: 'Lancez votre 1ère automation →', txt_en: 'Launch your 1st automation →', pct: 100, done: 4 },
+  { txt_fr: '🎉 Configuration terminée !', txt_en: '🎉 Setup complete!', pct: 100, done: 5 }
+];
+let setupIdx = 0;
+function advanceSetup() {
+  if (setupIdx >= setupSteps.length) return;
+  const step = setupSteps[setupIdx];
+  const lang = document.documentElement.lang || 'fr';
+  setupIdx++;
+  const fill = document.getElementById('pb-fill');
+  const pct = document.getElementById('banner-pct');
+  const title = document.querySelector('[data-i18n="banner_title"]');
+  const sub = document.querySelector('[data-i18n="banner_sub"]');
+  if (fill) fill.style.width = step.pct + '%';
+  if (pct) pct.textContent = step.pct + '%';
+  const clItems = document.querySelectorAll('.cl-item');
+  for (let i = 0; i < Math.min(step.done, clItems.length); i++) {
+    const box = clItems[i].querySelector('.cl-box');
+    if (box && !box.classList.contains('done') && !box.classList.contains('star')) {
+      box.classList.add('done'); box.textContent = '✓';
+    }
+  }
+  if (step.pct === 100) {
+    if (title) title.textContent = step.txt_fr;
+    if (sub) sub.textContent = lang === 'fr' ? 'Toutes les étapes sont complètes. NEXUS AI est opérationnel à 100%.' : 'All steps complete. NEXUS AI is fully operational.';
+    const pbTop = document.querySelector('[data-i18n="pb_count"]');
+    if (pbTop) pbTop.textContent = lang === 'fr' ? '5 / 5 complétés' : '5 / 5 completed';
+    toast('🎉', lang === 'fr' ? 'Configuration terminée !' : 'Setup complete!', 'green');
+  } else {
+    if (title) title.textContent = (lang === 'fr' ? step.txt_fr : step.txt_en);
+    const pbTop = document.querySelector('[data-i18n="pb_count"]');
+    if (pbTop) pbTop.textContent = step.done + ' / 5 ' + (lang === 'fr' ? 'complétés' : 'completed');
+    toast('✅', lang === 'fr' ? 'Étape complétée !' : 'Step completed!', 'green');
+  }
 }
 </script>
 </body>
