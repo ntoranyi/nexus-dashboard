@@ -1,39 +1,31 @@
 <!DOCTYPE html>
-<!-- saved from url=(0057)file:///C:/Users/user/Downloads/onboarding.html.%201.html -->
-<html lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NEXUS AI — Onboarding</title>
-<link rel="preconnect" href="https://fonts.googleapis.com/">
-<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
-<link href="./Onboarding_files/css2" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #070713;
-  --bg2: #0C0C1E;
-  --bg3: #111128;
-  --s1: rgba(255,255,255,0.03);
-  --s2: rgba(255,255,255,0.06);
-  --s3: rgba(255,255,255,0.09);
-  --v: #7C3AED;
-  --vl: #A78BFA;
-  --vd: rgba(124,58,237,0.13);
-  --vb: rgba(124,58,237,0.35);
-  --g: #F59E0B;
-  --gl: #FCD34D;
-  --gd: rgba(245,158,11,0.12);
-  --gb: rgba(245,158,11,0.38);
-  --w: #F1F5F9;
-  --m: #94A3B8;
-  --dim: #475569;
-  --bd: rgba(255,255,255,0.07);
-  --bd2: rgba(255,255,255,0.13);
-  --fd: 'Syne', sans-serif;
-  --fb: 'DM Sans', sans-serif;
-  --fs: 'Bebas Neue', cursive;
+  --bg: #070713;--bg2: #0C0C1E;--bg3: #111128;
+  --s1: rgba(255,255,255,0.03);--s2: rgba(255,255,255,0.06);--s3: rgba(255,255,255,0.09);
+  --v: #7C3AED;--vl: #A78BFA;--vd: rgba(124,58,237,0.13);--vb: rgba(124,58,237,0.35);
+  --g: #F59E0B;--gl: #FCD34D;--gd: rgba(245,158,11,0.12);--gb: rgba(245,158,11,0.38);
+  --w: #F1F5F9;--m: #94A3B8;--dim: #475569;
+  --bd: rgba(255,255,255,0.07);--bd2: rgba(255,255,255,0.13);
+  --fd: 'Syne', sans-serif;--fb: 'DM Sans', sans-serif;--fs: 'Bebas Neue', cursive;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);overflow:hidden}
+
+/* === LANG SWITCHER === */
+.lang-sw{position:fixed;top:20px;right:24px;z-index:9999;display:flex;align-items:center;background:rgba(9,9,26,.92);backdrop-filter:blur(20px);border:1px solid var(--bd2);border-radius:100px;padding:4px;gap:2px;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.lang-btn{position:relative;height:28px;padding:0 14px;border-radius:100px;border:none;font-family:var(--fd);font-size:11.5px;font-weight:700;letter-spacing:.06em;cursor:pointer;transition:all .22s cubic-bezier(.4,0,.2,1);color:var(--m);background:transparent}
+.lang-btn.active{background:var(--v);color:#fff;box-shadow:0 2px 12px rgba(124,58,237,.45)}
+.lang-btn:not(.active):hover{color:var(--vl);background:var(--vd)}
+.lang-sep{width:1px;height:14px;background:var(--bd2);flex-shrink:0}
 
 /* === BACKGROUNDS === */
 .bg-aura{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
@@ -54,34 +46,33 @@ html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);
 .au{animation:fadeUp .5s cubic-bezier(.4,0,.2,1) forwards}
 .d1{animation-delay:.08s;opacity:0}.d2{animation-delay:.16s;opacity:0}.d3{animation-delay:.24s;opacity:0}.d4{animation-delay:.34s;opacity:0}.d5{animation-delay:.44s;opacity:0}
 
+/* Text swap flash */
+@keyframes textFlash{0%{opacity:0;transform:translateY(4px)}100%{opacity:1;transform:translateY(0)}}
+.lang-flash{animation:textFlash .22s cubic-bezier(.4,0,.2,1) forwards}
+
 /* === ONBOARDING SCREEN === */
 #screen-ob{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow-y:auto;z-index:1}
 .ob-card{position:relative;background:rgba(9,9,24,.88);backdrop-filter:blur(24px);border:1px solid var(--bd);border-radius:24px;padding:44px 48px;width:100%;max-width:580px;z-index:2}
 .ob-card::before{content:'';position:absolute;inset:0;border-radius:24px;background:linear-gradient(135deg,rgba(124,58,237,.05) 0%,transparent 60%);pointer-events:none}
 
-/* Logo */
 .logo-row{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:32px}
 .logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--v) 0%,var(--g) 100%);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:17px;font-weight:800;color:#fff;letter-spacing:-.02em}
 .logo-name{font-family:var(--fd);font-size:19px;font-weight:700;letter-spacing:.04em}
 .logo-name b{background:linear-gradient(135deg,var(--vl),var(--gl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 
-/* Progress */
 .steps{display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:30px}
 .step{height:3px;border-radius:2px;transition:all .3s ease}
 .step.on{width:30px;background:linear-gradient(90deg,var(--v),var(--g))}
 .step.off{width:14px;background:var(--bd2)}
 
-/* Badge */
 .badge{display:inline-flex;align-items:center;gap:7px;background:var(--vd);border:1px solid var(--vb);border-radius:100px;padding:6px 14px;font-size:11px;color:var(--vl);font-weight:500;letter-spacing:.06em;text-transform:uppercase}
 .blink{width:6px;height:6px;border-radius:50%;background:var(--vl);animation:blink 2s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.75)}}
 
-/* Heading */
 .ob-title{font-family:var(--fd);font-size:31px;font-weight:800;text-align:center;line-height:1.2;margin:16px 0 10px}
 .ob-title .hl{background:linear-gradient(135deg,var(--vl),var(--gl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .ob-sub{font-size:14px;color:var(--m);text-align:center;margin-bottom:34px;line-height:1.65}
 
-/* Goal Cards */
 .goals{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:28px}
 .gc{position:relative;background:var(--s1);border:1px solid var(--bd);border-radius:15px;padding:18px;cursor:pointer;transition:all .23s cubic-bezier(.4,0,.2,1);overflow:hidden}
 .gc::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--vd),transparent);opacity:0;transition:opacity .23s ease;pointer-events:none}
@@ -99,7 +90,6 @@ html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);
 .gc-title{font-family:var(--fd);font-size:13.5px;font-weight:700;margin-bottom:3px;line-height:1.3}
 .gc-desc{font-size:11.5px;color:var(--m);line-height:1.5}
 
-/* Buttons */
 .btn{width:100%;height:50px;border-radius:13px;border:none;font-family:var(--fd);font-size:14.5px;font-weight:700;letter-spacing:.02em;cursor:pointer;position:relative;overflow:hidden;transition:all .24s ease;display:flex;align-items:center;justify-content:center;gap:8px}
 .btn-v{background:linear-gradient(135deg,#7C3AED,#5B21B6 50%,#6D28D9);color:#fff}
 .btn-v::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.11),transparent 55%)}
@@ -112,7 +102,6 @@ html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);
 /* === DASHBOARD === */
 #screen-db{display:flex;z-index:1}
 
-/* Sidebar */
 .sb{width:216px;min-width:216px;height:100vh;background:rgba(8,8,22,.96);border-right:1px solid var(--bd);display:flex;flex-direction:column;padding:22px 14px;z-index:2;position:relative}
 .sb-logo{display:flex;align-items:center;gap:8px;margin-bottom:28px;padding:0 8px}
 .sb-lm{width:26px;height:26px;background:linear-gradient(135deg,var(--v),var(--g));border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:13px;font-weight:800;color:#fff}
@@ -130,7 +119,6 @@ html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);
 .u-name{font-size:12px;font-weight:500}
 .u-plan{font-size:10px;color:var(--g)}
 
-/* Dashboard Main */
 .dm{flex:1;overflow-y:auto;padding:28px 28px 32px;z-index:1;position:relative}
 .dm-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
 .dm-greet h1{font-family:var(--fd);font-size:25px;font-weight:800;margin-bottom:3px}
@@ -143,7 +131,6 @@ html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);
 .ai-dot{width:7px;height:7px;border-radius:50%;background:var(--g);animation:pulse-g 2s ease-in-out infinite}
 @keyframes pulse-g{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.45)}50%{box-shadow:0 0 0 6px rgba(245,158,11,0)}}
 
-/* Banner */
 .banner{background:linear-gradient(120deg,rgba(124,58,237,.1),rgba(245,158,11,.07));border:1px solid rgba(124,58,237,.28);border-radius:15px;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px}
 .banner-txt h3{font-family:var(--fd);font-size:14px;font-weight:700;margin-bottom:3px}
 .banner-txt p{font-size:11.5px;color:var(--m)}
@@ -151,7 +138,6 @@ html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);
 .btn-sm{height:34px;padding:0 18px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--v),#5B21B6);color:#fff;font-family:var(--fd);font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap;flex-shrink:0}
 .btn-sm:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(124,58,237,.38)}
 
-/* Stats */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
 .sc{background:rgba(10,10,26,.85);border:1px solid var(--bd);border-radius:15px;padding:18px;position:relative;overflow:hidden;transition:all .22s ease}
 .sc:hover{border-color:var(--bd2);transform:translateY(-2px)}
@@ -165,7 +151,6 @@ html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);
 .sc-chg{font-size:11px;color:var(--m);display:flex;align-items:center;gap:4px}
 .sc-chg.up{color:#6EE7B7}
 
-/* Bottom Grid */
 .db-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .dc{background:rgba(10,10,26,.85);border:1px solid var(--bd);border-radius:15px;padding:22px;transition:border-color .2s}
 .dc:hover{border-color:var(--bd2)}
@@ -174,7 +159,6 @@ html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);
 .dc-act{font-size:11.5px;color:var(--vl);cursor:pointer;transition:color .18s}
 .dc-act:hover{color:var(--w)}
 
-/* Checklist */
 .cl-item{display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid var(--bd);font-size:12.5px;color:var(--m);transition:color .18s;cursor:default}
 .cl-item:last-child{border-bottom:none}
 .cl-item:hover{color:var(--w)}
@@ -182,20 +166,17 @@ html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);
 .cl-box.done{background:var(--v);border-color:var(--v);color:#fff}
 .cl-box.star{background:var(--g);border-color:var(--g);color:#0A0A1A}
 
-/* Progress bar */
 .pb-wrap{margin-top:14px}
 .pb-top{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);margin-bottom:6px}
 .pb-track{height:3px;background:var(--s2);border-radius:2px;overflow:hidden}
 .pb-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--v),var(--g));transition:width 1.6s cubic-bezier(.4,0,.2,1);width:0}
 
-/* Activity */
 .act-item{display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px solid var(--bd)}
 .act-item:last-child{border-bottom:none}
 .act-ico{width:28px;height:28px;min-width:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px}
 .act-txt strong{display:block;font-size:12px;font-weight:500;margin-bottom:2px}
 .act-txt span{font-size:11px;color:var(--dim)}
 
-/* Back link */
 .back-link{text-align:center;margin-top:16px}
 .back-link button{background:var(--s1);border:1px solid var(--bd);color:var(--m);padding:7px 18px;border-radius:9px;cursor:pointer;font-family:var(--fb);font-size:11.5px;transition:all .18s}
 .back-link button:hover{background:var(--s2);color:var(--w);border-color:var(--bd2)}
@@ -216,6 +197,7 @@ html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);
   .db-grid{grid-template-columns:1fr}
   .banner{flex-direction:column;align-items:flex-start}
   .banner-pct{display:none}
+  .lang-sw{top:14px;right:14px}
 }
 @media(max-width:480px){
   .ob-card{padding:28px 20px;border-radius:18px}
@@ -228,14 +210,19 @@ html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);
 </head>
 <body>
 
+<!-- Language Switcher -->
+<div class="lang-sw" id="lang-sw">
+  <button class="lang-btn active" id="btn-fr" onclick="setLang('fr')">FR</button>
+  <div class="lang-sep"></div>
+  <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+</div>
+
 <div class="bg-aura"></div>
 <div class="bg-grid"></div>
 
 <div id="app">
 
-  <!-- ============================
-       SCREEN 1 · ONBOARDING
-  ============================ -->
+  <!-- SCREEN 1 · ONBOARDING -->
   <div id="screen-ob" class="screen active">
     <div class="ob-card">
 
@@ -251,72 +238,61 @@ html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);
       </div>
 
       <div style="display:flex;justify-content:center;margin-bottom:15px" class="au d2">
-        <div class="badge"><div class="blink"></div>Configuration initiale</div>
+        <div class="badge"><div class="blink"></div><span data-i18n="badge">Configuration initiale</span></div>
       </div>
 
-      <h1 class="ob-title au d2">Bienvenue, <span class="hl">Jeff</span> 👋</h1>
-      <p class="ob-sub au d3">Quel est votre objectif principal avec NEXUS AI ?<br>Votre dashboard sera personnalisé en conséquence.</p>
+      <h1 class="ob-title au d2"><span data-i18n="ob_title">Bienvenue, <span class="hl">Jeff</span> 👋</span></h1>
+      <p class="ob-sub au d3" data-i18n="ob_sub">Quel est votre objectif principal avec NEXUS AI ?<br>Votre dashboard sera personnalisé en conséquence.</p>
 
       <div class="goals au d3" id="goals-grid">
 
         <div class="gc" data-goal="tiktok" onclick="selectGoal(this)">
-          <div class="gc-check">
-            <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 3.5L4 6.5L9 1" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-          </div>
+          <div class="gc-check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 3.5L4 6.5L9 1" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="gc-icon">🚀</div>
-          <div class="gc-tag">Traffic</div>
-          <div class="gc-title">Scaler le trafic TikTok</div>
-          <div class="gc-desc">Automatiser &amp; amplifier votre reach organique</div>
+          <div class="gc-tag" data-i18n="c1_tag">Traffic</div>
+          <div class="gc-title" data-i18n="c1_title">Scaler le trafic TikTok</div>
+          <div class="gc-desc" data-i18n="c1_desc">Automatiser &amp; amplifier votre reach organique</div>
         </div>
 
         <div class="gc" data-goal="affiliate" onclick="selectGoal(this)">
-          <div class="gc-check">
-            <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 3.5L4 6.5L9 1" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-          </div>
+          <div class="gc-check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 3.5L4 6.5L9 1" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="gc-icon">💰</div>
-          <div class="gc-tag">Revenu</div>
-          <div class="gc-title">Automatiser l'affiliation</div>
-          <div class="gc-desc">Générer des commissions passives 24/7</div>
+          <div class="gc-tag" data-i18n="c2_tag">Revenu</div>
+          <div class="gc-title" data-i18n="c2_title">Automatiser l'affiliation</div>
+          <div class="gc-desc" data-i18n="c2_desc">Générer des commissions passives 24/7</div>
         </div>
 
         <div class="gc" data-goal="content" onclick="selectGoal(this)">
-          <div class="gc-check">
-            <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 3.5L4 6.5L9 1" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-          </div>
+          <div class="gc-check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 3.5L4 6.5L9 1" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="gc-icon">🎯</div>
-          <div class="gc-tag">Contenu</div>
-          <div class="gc-title">Créer du contenu viral</div>
-          <div class="gc-desc">IA générative pour posts &amp; vidéos performants</div>
+          <div class="gc-tag" data-i18n="c3_tag">Contenu</div>
+          <div class="gc-title" data-i18n="c3_title">Créer du contenu viral</div>
+          <div class="gc-desc" data-i18n="c3_desc">IA générative pour posts &amp; vidéos performants</div>
         </div>
 
         <div class="gc" data-goal="all" onclick="selectGoal(this)">
-          <div class="gc-check">
-            <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 3.5L4 6.5L9 1" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-          </div>
+          <div class="gc-check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 3.5L4 6.5L9 1" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="gc-icon">⚡</div>
-          <div class="gc-tag">Full Stack</div>
-          <div class="gc-title">Tout optimiser avec l'IA</div>
-          <div class="gc-desc">Stratégie complète multi-canal &amp; automation</div>
+          <div class="gc-tag" data-i18n="c4_tag">Full Stack</div>
+          <div class="gc-title" data-i18n="c4_title">Tout optimiser avec l'IA</div>
+          <div class="gc-desc" data-i18n="c4_desc">Stratégie complète multi-canal &amp; automation</div>
         </div>
 
       </div>
 
-      <button class="btn btn-v au d4" id="cta-btn" disabled="" onclick="goToDashboard()">
-        Continuer
-        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      <button class="btn btn-v au d4" id="cta-btn" disabled onclick="goToDashboard()">
+        <span data-i18n="cta_btn">Continuer</span>
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
 
-      <p class="ob-hint au d5">Modifiable à tout moment dans les paramètres</p>
+      <p class="ob-hint au d5" data-i18n="ob_hint">Modifiable à tout moment dans les paramètres</p>
 
     </div>
   </div>
 
-  <!-- ============================
-       SCREEN 2 · DASHBOARD
-  ============================ -->
+  <!-- SCREEN 2 · DASHBOARD -->
   <div id="screen-db" class="screen">
 
-    <!-- Sidebar -->
     <div class="sb">
       <div class="sb-logo">
         <div class="sb-lm">N</div>
@@ -324,17 +300,17 @@ html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);
       </div>
 
       <div class="sb-nav-wrap" id="sb-nav">
-        <div class="sb-lbl">Principal</div>
-        <div class="sb-item on"><span class="sb-ico">⊞</span><span>Dashboard</span></div>
-        <div class="sb-item"><span class="sb-ico">⚡</span><span>Automations</span><span class="sb-badge">3</span></div>
-        <div class="sb-item"><span class="sb-ico">📈</span><span>Analytics</span></div>
-        <div class="sb-item"><span class="sb-ico">🎯</span><span>Campagnes</span></div>
-        <div class="sb-lbl">Outils IA</div>
-        <div class="sb-item"><span class="sb-ico">✍️</span><span>Contenu</span></div>
+        <div class="sb-lbl" data-i18n="nav_main">Principal</div>
+        <div class="sb-item on"><span class="sb-ico">⊞</span><span data-i18n="nav_dashboard">Dashboard</span></div>
+        <div class="sb-item"><span class="sb-ico">⚡</span><span data-i18n="nav_auto">Automations</span><span class="sb-badge">3</span></div>
+        <div class="sb-item"><span class="sb-ico">📈</span><span data-i18n="nav_analytics">Analytics</span></div>
+        <div class="sb-item"><span class="sb-ico">🎯</span><span data-i18n="nav_camps">Campagnes</span></div>
+        <div class="sb-lbl" data-i18n="nav_ai_tools">Outils IA</div>
+        <div class="sb-item"><span class="sb-ico">✍️</span><span data-i18n="nav_content">Contenu</span></div>
         <div class="sb-item"><span class="sb-ico">🛒</span><span>E-commerce</span></div>
-        <div class="sb-item"><span class="sb-ico">🤝</span><span>Affiliation</span></div>
-        <div class="sb-lbl">Compte</div>
-        <div class="sb-item"><span class="sb-ico">⚙️</span><span>Paramètres</span></div>
+        <div class="sb-item"><span class="sb-ico">🤝</span><span data-i18n="nav_affil">Affiliation</span></div>
+        <div class="sb-lbl" data-i18n="nav_account">Compte</div>
+        <div class="sb-item"><span class="sb-ico">⚙️</span><span data-i18n="nav_settings">Paramètres</span></div>
       </div>
 
       <div class="sb-bot">
@@ -348,106 +324,100 @@ html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);
       </div>
     </div>
 
-    <!-- Main Content -->
     <div class="dm">
 
       <div class="dm-head au">
         <div class="dm-greet">
-          <h1>Bonjour, <span class="hl">Jeff</span> 👋</h1>
-          <p>Vendredi 22 Mai 2026 · Votre IA est opérationnelle</p>
+          <h1><span data-i18n="db_greet">Bonjour, <span class="hl">Jeff</span> 👋</span></h1>
+          <p data-i18n="db_date">Vendredi 22 Mai 2026 · Votre IA est opérationnelle</p>
         </div>
         <div class="hdr-acts">
-          <div class="ic-btn" title="Notifications">🔔</div>
-          <div class="ic-btn" title="Paramètres">⚙️</div>
-          <div class="ai-pill"><div class="ai-dot"></div>IA Active</div>
+          <div class="ic-btn">🔔</div>
+          <div class="ic-btn">⚙️</div>
+          <div class="ai-pill"><div class="ai-dot"></div><span data-i18n="ai_status">IA Active</span></div>
         </div>
       </div>
 
-      <!-- Setup Banner -->
       <div class="banner au d1">
         <div class="banner-txt">
-          <h3>🚀 Finalisez votre configuration — 2 étapes restantes</h3>
-          <p>Connectez vos comptes TikTok &amp; Shopify pour activer toutes les automations</p>
+          <h3 data-i18n="banner_title">🚀 Finalisez votre configuration — 2 étapes restantes</h3>
+          <p data-i18n="banner_sub">Connectez vos comptes TikTok &amp; Shopify pour activer toutes les automations</p>
         </div>
         <div class="banner-pct" id="banner-pct">0%</div>
         <button class="btn-sm">
-          Continuer
-          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6H10M10 6L7 3M10 6L7 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          <span data-i18n="banner_btn">Continuer</span>
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6H10M10 6L7 3M10 6L7 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </div>
 
-      <!-- Stats Row -->
       <div class="stats au d2">
         <div class="sc">
-          <div class="sc-lbl"><div class="sc-dot" style="background:var(--g)"></div>Revenu Total</div>
+          <div class="sc-lbl"><div class="sc-dot" style="background:var(--g)"></div><span data-i18n="stat1_lbl">Revenu Total</span></div>
           <div class="sc-val" id="s-rev">$0</div>
-          <div class="sc-chg up">↑ +23% ce mois</div>
+          <div class="sc-chg up" data-i18n="stat1_chg">↑ +23% ce mois</div>
         </div>
         <div class="sc">
-          <div class="sc-lbl"><div class="sc-dot" style="background:var(--v)"></div>Leads Générés</div>
+          <div class="sc-lbl"><div class="sc-dot" style="background:var(--v)"></div><span data-i18n="stat2_lbl">Leads Générés</span></div>
           <div class="sc-val" id="s-leads">0</div>
-          <div class="sc-chg up">↑ +18% cette semaine</div>
+          <div class="sc-chg up" data-i18n="stat2_chg">↑ +18% cette semaine</div>
         </div>
         <div class="sc">
-          <div class="sc-lbl"><div class="sc-dot" style="background:#10B981"></div>Taux Automation</div>
+          <div class="sc-lbl"><div class="sc-dot" style="background:#10B981"></div><span data-i18n="stat3_lbl">Taux Automation</span></div>
           <div class="sc-val" id="s-auto">0%</div>
-          <div class="sc-chg up">↑ Optimal</div>
+          <div class="sc-chg up" data-i18n="stat3_chg">↑ Optimal</div>
         </div>
         <div class="sc">
-          <div class="sc-lbl"><div class="sc-dot" style="background:#3B82F6"></div>Posts Créés</div>
+          <div class="sc-lbl"><div class="sc-dot" style="background:#3B82F6"></div><span data-i18n="stat4_lbl">Posts Créés</span></div>
           <div class="sc-val" id="s-posts">0</div>
-          <div class="sc-chg">Ce mois · TikTok + IG</div>
+          <div class="sc-chg" data-i18n="stat4_chg">Ce mois · TikTok + IG</div>
         </div>
       </div>
 
-      <!-- Bottom Grid -->
       <div class="db-grid au d3">
 
-        <!-- Checklist -->
         <div class="dc">
           <div class="dc-head">
-            <div class="dc-title">🗺️ Guide de démarrage</div>
-            <div class="dc-act">Voir tout →</div>
+            <div class="dc-title" data-i18n="cl_title">🗺️ Guide de démarrage</div>
+            <div class="dc-act" data-i18n="cl_see">Voir tout →</div>
           </div>
-          <div class="cl-item"><div class="cl-box star">★</div><span style="color:var(--w)">Compte NEXUS AI créé</span></div>
-          <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Objectif défini · TikTok Traffic</span></div>
-          <div class="cl-item"><div class="cl-box"></div>Connecter votre compte TikTok</div>
-          <div class="cl-item"><div class="cl-box"></div>Connecter Shopify / Stripe</div>
-          <div class="cl-item"><div class="cl-box"></div>Lancer votre 1ère automation</div>
+          <div class="cl-item"><div class="cl-box star">★</div><span style="color:var(--w)" data-i18n="cl1">Compte NEXUS AI créé</span></div>
+          <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)" data-i18n="cl2">Objectif défini · TikTok Traffic</span></div>
+          <div class="cl-item"><div class="cl-box"></div><span data-i18n="cl3">Connecter votre compte TikTok</span></div>
+          <div class="cl-item"><div class="cl-box"></div><span data-i18n="cl4">Connecter Shopify / Stripe</span></div>
+          <div class="cl-item"><div class="cl-box"></div><span data-i18n="cl5">Lancer votre 1ère automation</span></div>
           <div class="pb-wrap">
-            <div class="pb-top"><span>Progression</span><span>2 / 5 complétés</span></div>
+            <div class="pb-top"><span data-i18n="pb_prog">Progression</span><span data-i18n="pb_count">2 / 5 complétés</span></div>
             <div class="pb-track"><div class="pb-fill" id="pb-fill"></div></div>
           </div>
         </div>
 
-        <!-- Activity -->
         <div class="dc">
           <div class="dc-head">
-            <div class="dc-title">⚡ Activité IA récente</div>
-            <div class="dc-act">Historique →</div>
+            <div class="dc-title" data-i18n="act_title">⚡ Activité IA récente</div>
+            <div class="dc-act" data-i18n="act_hist">Historique →</div>
           </div>
           <div class="act-item">
             <div class="act-ico" style="background:var(--vd);border:1px solid var(--vb)">✍️</div>
-            <div class="act-txt"><strong>5 posts TikTok générés</strong><span>Niche : IA Business · Il y a 2 min</span></div>
+            <div class="act-txt"><strong data-i18n="a1_strong">5 posts TikTok générés</strong><span data-i18n="a1_sub">Niche : IA Business · Il y a 2 min</span></div>
           </div>
           <div class="act-item">
             <div class="act-ico" style="background:var(--gd);border:1px solid var(--gb)">💰</div>
-            <div class="act-txt"><strong>Nouveau lead qualifié · $47</strong><span>Via TikTok Ads · Campaign #4</span></div>
+            <div class="act-txt"><strong data-i18n="a2_strong">Nouveau lead qualifié · $47</strong><span data-i18n="a2_sub">Via TikTok Ads · Campaign #4</span></div>
           </div>
           <div class="act-item">
             <div class="act-ico" style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3)">🔄</div>
-            <div class="act-txt"><strong>Automation email déclenchée</strong><span>Séquence onboarding · 3 contacts</span></div>
+            <div class="act-txt"><strong data-i18n="a3_strong">Automation email déclenchée</strong><span data-i18n="a3_sub">Séquence onboarding · 3 contacts</span></div>
           </div>
           <div class="act-item">
             <div class="act-ico" style="background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.28)">📊</div>
-            <div class="act-txt"><strong>Rapport hebdo disponible</strong><span>Semaine 20 · +32% conversions</span></div>
+            <div class="act-txt"><strong data-i18n="a4_strong">Rapport hebdo disponible</strong><span data-i18n="a4_sub">Semaine 20 · +32% conversions</span></div>
           </div>
         </div>
 
       </div>
 
       <div class="back-link">
-        <button onclick="goBack()">← Retour à l'onboarding</button>
+        <button onclick="goBack()"><span data-i18n="back_btn">← Retour à l'onboarding</span></button>
       </div>
 
     </div>
@@ -456,6 +426,131 @@ html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);
 </div>
 
 <script>
+/* ==================
+   TRANSLATIONS
+================== */
+const T = {
+  fr: {
+    badge:        'Configuration initiale',
+    ob_title:     'Bienvenue, <span class="hl">Jeff</span> 👋',
+    ob_sub:       'Quel est votre objectif principal avec NEXUS AI ?<br>Votre dashboard sera personnalisé en conséquence.',
+    c1_tag:       'Traffic', c1_title: 'Scaler le trafic TikTok',
+    c1_desc:      'Automatiser &amp; amplifier votre reach organique',
+    c2_tag:       'Revenu', c2_title: "Automatiser l'affiliation",
+    c2_desc:      'Générer des commissions passives 24/7',
+    c3_tag:       'Contenu', c3_title: 'Créer du contenu viral',
+    c3_desc:      'IA générative pour posts &amp; vidéos performants',
+    c4_tag:       'Full Stack', c4_title: "Tout optimiser avec l'IA",
+    c4_desc:      'Stratégie complète multi-canal &amp; automation',
+    cta_btn:      'Continuer',
+    ob_hint:      'Modifiable à tout moment dans les paramètres',
+    nav_main:     'Principal', nav_dashboard: 'Dashboard',
+    nav_auto:     'Automations', nav_analytics: 'Analytics',
+    nav_camps:    'Campagnes', nav_ai_tools: 'Outils IA',
+    nav_content:  'Contenu', nav_affil: 'Affiliation',
+    nav_account:  'Compte', nav_settings: 'Paramètres',
+    db_greet:     'Bonjour, <span class="hl">Jeff</span> 👋',
+    db_date:      'Vendredi 22 Mai 2026 · Votre IA est opérationnelle',
+    ai_status:    'IA Active',
+    banner_title: '🚀 Finalisez votre configuration — 2 étapes restantes',
+    banner_sub:   'Connectez vos comptes TikTok &amp; Shopify pour activer toutes les automations',
+    banner_btn:   'Continuer',
+    stat1_lbl:    'Revenu Total',    stat1_chg: '↑ +23% ce mois',
+    stat2_lbl:    'Leads Générés',   stat2_chg: '↑ +18% cette semaine',
+    stat3_lbl:    'Taux Automation', stat3_chg: '↑ Optimal',
+    stat4_lbl:    'Posts Créés',     stat4_chg: 'Ce mois · TikTok + IG',
+    cl_title:     '🗺️ Guide de démarrage', cl_see: 'Voir tout →',
+    cl1: 'Compte NEXUS AI créé',
+    cl2: 'Objectif défini · TikTok Traffic',
+    cl3: 'Connecter votre compte TikTok',
+    cl4: 'Connecter Shopify / Stripe',
+    cl5: "Lancer votre 1ère automation",
+    pb_prog:      'Progression', pb_count: '2 / 5 complétés',
+    act_title:    '⚡ Activité IA récente', act_hist: 'Historique →',
+    a1_strong:    '5 posts TikTok générés',
+    a1_sub:       'Niche : IA Business · Il y a 2 min',
+    a2_strong:    'Nouveau lead qualifié · $47',
+    a2_sub:       'Via TikTok Ads · Campaign #4',
+    a3_strong:    'Automation email déclenchée',
+    a3_sub:       'Séquence onboarding · 3 contacts',
+    a4_strong:    'Rapport hebdo disponible',
+    a4_sub:       'Semaine 20 · +32% conversions',
+    back_btn:     '← Retour à l\'onboarding'
+  },
+  en: {
+    badge:        'Initial Setup',
+    ob_title:     'Welcome, <span class="hl">Jeff</span> 👋',
+    ob_sub:       'What is your main goal with NEXUS AI?<br>Your dashboard will be customized accordingly.',
+    c1_tag:       'Traffic', c1_title: 'Scale TikTok traffic',
+    c1_desc:      'Automate &amp; amplify your organic reach',
+    c2_tag:       'Revenue', c2_title: 'Automate affiliate marketing',
+    c2_desc:      'Generate passive commissions 24/7',
+    c3_tag:       'Content', c3_title: 'Create viral content',
+    c3_desc:      'Generative AI for high-performing posts &amp; videos',
+    c4_tag:       'Full Stack', c4_title: 'Optimize everything with AI',
+    c4_desc:      'Complete multi-channel strategy &amp; automation',
+    cta_btn:      'Continue',
+    ob_hint:      'Can be changed anytime in settings',
+    nav_main:     'Main', nav_dashboard: 'Dashboard',
+    nav_auto:     'Automations', nav_analytics: 'Analytics',
+    nav_camps:    'Campaigns', nav_ai_tools: 'AI Tools',
+    nav_content:  'Content', nav_affil: 'Affiliation',
+    nav_account:  'Account', nav_settings: 'Settings',
+    db_greet:     'Hello, <span class="hl">Jeff</span> 👋',
+    db_date:      'Friday May 22, 2026 · Your AI is operational',
+    ai_status:    'AI Active',
+    banner_title: '🚀 Complete your setup — 2 steps remaining',
+    banner_sub:   'Connect your TikTok &amp; Shopify accounts to activate all automations',
+    banner_btn:   'Continue',
+    stat1_lbl:    'Total Revenue',      stat1_chg: '↑ +23% this month',
+    stat2_lbl:    'Leads Generated',    stat2_chg: '↑ +18% this week',
+    stat3_lbl:    'Automation Rate',    stat3_chg: '↑ Optimal',
+    stat4_lbl:    'Posts Created',      stat4_chg: 'This month · TikTok + IG',
+    cl_title:     '🗺️ Getting Started', cl_see: 'See all →',
+    cl1: 'NEXUS AI account created',
+    cl2: 'Goal set · TikTok Traffic',
+    cl3: 'Connect your TikTok account',
+    cl4: 'Connect Shopify / Stripe',
+    cl5: 'Launch your 1st automation',
+    pb_prog:      'Progress', pb_count: '2 / 5 completed',
+    act_title:    '⚡ Recent AI Activity', act_hist: 'History →',
+    a1_strong:    '5 TikTok posts generated',
+    a1_sub:       'Niche: AI Business · 2 min ago',
+    a2_strong:    'New qualified lead · $47',
+    a2_sub:       'Via TikTok Ads · Campaign #4',
+    a3_strong:    'Email automation triggered',
+    a3_sub:       'Onboarding sequence · 3 contacts',
+    a4_strong:    'Weekly report available',
+    a4_sub:       'Week 20 · +32% conversions',
+    back_btn:     '← Back to onboarding'
+  }
+};
+
+let currentLang = 'fr';
+
+function setLang(lang) {
+  if (lang === currentLang) return;
+  currentLang = lang;
+
+  document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.documentElement.lang = lang;
+
+  const dict = T[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (dict[key] !== undefined) {
+      el.innerHTML = dict[key];
+      el.classList.remove('lang-flash');
+      void el.offsetWidth;
+      el.classList.add('lang-flash');
+    }
+  });
+}
+
+/* ==================
+   GOAL SELECTION
+================== */
 function selectGoal(card) {
   document.querySelectorAll('.gc').forEach(c => c.classList.remove('sel'));
   card.classList.add('sel');
@@ -464,6 +559,9 @@ function selectGoal(card) {
   btn.className = 'btn btn-g au d4';
 }
 
+/* ==================
+   SCREEN TRANSITIONS
+================== */
 function goToDashboard() {
   const s1 = document.getElementById('screen-ob');
   const s2 = document.getElementById('screen-db');
@@ -483,6 +581,9 @@ function goBack() {
   setTimeout(() => s1.classList.add('active'), 60);
 }
 
+/* ==================
+   ANIMATED COUNTERS
+================== */
 function counter(id, target, pre, suf, dur) {
   const el = document.getElementById(id);
   const t0 = performance.now();
@@ -497,10 +598,10 @@ function counter(id, target, pre, suf, dur) {
 }
 
 function animateStats() {
-  counter('s-rev',  12450, '$',  '', 1900);
-  setTimeout(() => counter('s-leads', 3847, '',   '', 1700), 120);
-  setTimeout(() => counter('s-auto',  94,   '',  '%', 1500), 240);
-  setTimeout(() => counter('s-posts', 127,  '',   '', 1300), 360);
+  counter('s-rev',   12450, '$', '',  1900);
+  setTimeout(() => counter('s-leads', 3847, '', '',   1700), 120);
+  setTimeout(() => counter('s-auto',  94,   '', '%',  1500), 240);
+  setTimeout(() => counter('s-posts', 127,  '', '',   1300), 360);
 }
 
 function animateProgress() {
@@ -515,6 +616,5 @@ function animateProgress() {
   }, 28);
 }
 </script>
-
-
-</body></html>
+</body>
+</html>
