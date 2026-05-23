@@ -24,7 +24,7 @@
 html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);overflow:hidden}
 
 /* ── LANG SWITCHER ── */
-.lang-sw{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;align-items:center;background:rgba(9,9,26,.95);backdrop-filter:blur(20px);border:1px solid var(--bd2);border-radius:100px;padding:4px;gap:2px;box-shadow:0 4px 24px rgba(0,0,0,.5)}
+.lang-sw{position:fixed;top:18px;right:24px;z-index:9999;display:flex;align-items:center;background:rgba(9,9,26,.95);backdrop-filter:blur(20px);border:1px solid var(--bd2);border-radius:100px;padding:4px;gap:2px;box-shadow:0 4px 24px rgba(0,0,0,.5)}
 .lang-btn{height:28px;padding:0 16px;border-radius:100px;border:none;font-family:var(--fd);font-size:11.5px;font-weight:700;letter-spacing:.06em;cursor:pointer;transition:all .22s cubic-bezier(.4,0,.2,1);color:var(--m);background:transparent}
 .lang-btn.active{background:var(--v);color:#fff;box-shadow:0 2px 12px rgba(124,58,237,.45)}
 .lang-btn:not(.active):hover{color:var(--vl);background:var(--vd)}
@@ -82,10 +82,10 @@ html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);
 .page-in{animation:pageIn .28s cubic-bezier(.4,0,.2,1) forwards}
 
 /* ── ONBOARDING SCREEN ── */
-#screen-ob{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:76px 24px 24px;overflow-y:auto;z-index:1}
-.ob-card{position:relative;background:rgba(9,9,24,.88);backdrop-filter:blur(24px);border:1px solid var(--bd);border-radius:24px;padding:52px 48px 44px;width:100%;max-width:580px;z-index:2}
+#screen-ob{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow-y:auto;z-index:1}
+.ob-card{position:relative;background:rgba(9,9,24,.88);backdrop-filter:blur(24px);border:1px solid var(--bd);border-radius:24px;padding:60px 48px 44px;width:100%;max-width:580px;z-index:2}
 .ob-card::before{content:'';position:absolute;inset:0;border-radius:24px;background:linear-gradient(135deg,rgba(124,58,237,.05) 0%,transparent 60%);pointer-events:none}
-.logo-row{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:28px;padding-top:4px}
+.logo-row{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:28px}
 .logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--v) 0%,var(--g) 100%);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:17px;font-weight:800;color:#fff;letter-spacing:-.02em}
 .logo-name{font-family:var(--fd);font-size:19px;font-weight:700;letter-spacing:.04em}
 .logo-name b{background:linear-gradient(135deg,var(--vl),var(--gl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -658,6 +658,21 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
             <tr style="cursor:pointer" onclick="openModal('affil-gr')"><td style="color:var(--w);font-weight:500">GetResponse</td><td>33% récurrent</td><td>1 340</td><td style="color:var(--gl)">38</td><td style="color:var(--gl)">$380</td><td><span class="tag tag-t">Actif</span></td></tr>
             <tr><td><a href="https://www.systeme-4l.com/agent-tiktok?sa=sa01050568776871bba42db33d6becbce23ce2bd1a" target="_blank" rel="noopener" style="color:var(--vl);font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:color .15s" onmouseover="this.style.color='var(--gl)'" onmouseout="this.style.color='var(--vl)'">Systeme.io <span style="font-size:10px;opacity:.7">↗</span></a></td><td>40% récurrent</td><td>2 320</td><td style="color:var(--gl)">61</td><td style="color:var(--gl)">$240</td><td><span class="tag tag-t">Actif</span></td></tr>
             <tr id="claude-affil-row"><td style="color:var(--w);font-weight:500">Claude / Anthropic</td><td style="color:var(--m)">En attente</td><td>—</td><td>—</td><td>—</td><td><button class="btn-sm" id="claude-affil-btn" style="height:26px;padding:0 12px;font-size:10.5px" onclick="connectClaudeAffil()">Connecter</button></td></tr>
+            <tr style="cursor:pointer" onclick="window.open('https://miracledoneforyousystem.com/join-free?affiliate_id=ntoranyijo','_blank')">
+              <td><span style="color:var(--vl);font-weight:500;display:inline-flex;align-items:center;gap:5px">FunnelFreedom <span style="font-size:10px;opacity:.7">↗</span></span></td>
+              <td>40% récurrent</td><td>—</td><td style="color:var(--dim)">—</td><td style="color:var(--dim)">—</td>
+              <td><span class="tag tag-t">Actif</span></td>
+            </tr>
+            <tr style="cursor:pointer" onclick="window.open('https://miracledoneforyousystem.com/join-now?affiliate_id=ntoranyijo','_blank')">
+              <td><span style="color:var(--vl);font-weight:500;display:inline-flex;align-items:center;gap:5px">7 Figure Accelerator <span style="font-size:10px;opacity:.7">↗</span></span></td>
+              <td>40% récurrent</td><td>—</td><td style="color:var(--dim)">—</td><td style="color:var(--dim)">—</td>
+              <td><span class="tag tag-t">Actif</span></td>
+            </tr>
+            <tr style="cursor:pointer" onclick="window.open('https://shop.nextgenaimake.com/','_blank')">
+              <td><span style="color:var(--gl);font-weight:500;display:inline-flex;align-items:center;gap:5px">Shopify Digital Store <span style="font-size:10px;opacity:.7">↗</span></span></td>
+              <td style="color:var(--m)">Boutique</td><td>—</td><td style="color:var(--dim)">—</td><td style="color:var(--dim)">—</td>
+              <td><span class="tag tag-g">Boutique</span></td>
+            </tr>
           </tbody>
         </table>
       </div>
