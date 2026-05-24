@@ -24,7 +24,7 @@
 html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);overflow:hidden}
 
 /* ── LANG SWITCHER ── */
-.lang-sw{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;align-items:center;gap:2px;background:rgba(9,9,26,.95);backdrop-filter:blur(20px);border:1px solid var(--bd2);border-radius:100px;padding:4px;box-shadow:0 4px 24px rgba(0,0,0,.5)}
+.lang-sw{display:flex;justify-content:center;align-items:center;gap:2px;background:rgba(9,9,26,.88);backdrop-filter:blur(16px);border:1px solid var(--bd2);border-radius:100px;padding:4px;width:fit-content;margin:0 auto 20px}
 .lang-sw-dm{display:none;justify-content:center;align-items:center;gap:2px;background:rgba(9,9,26,.88);backdrop-filter:blur(16px);border:1px solid var(--bd2);border-radius:100px;padding:4px;width:fit-content;margin:14px auto 4px}
 .lang-btn{height:28px;padding:0 16px;border-radius:100px;border:none;font-family:var(--fd);font-size:11.5px;font-weight:700;letter-spacing:.06em;cursor:pointer;transition:all .22s cubic-bezier(.4,0,.2,1);color:var(--m);background:transparent}
 .lang-btn.active{background:var(--v);color:#fff;box-shadow:0 2px 12px rgba(124,58,237,.45)}
@@ -317,14 +317,13 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
 <!-- ═══════════════════════════════
      SCREEN 1 · ONBOARDING
 ═══════════════════════════════ -->
-<div class="lang-sw" id="lang-sw">
-  <button class="lang-btn active" id="btn-fr" onclick="setLang('fr')">FR</button>
-  <div class="lang-sep"></div>
-  <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
-</div>
-
 <div id="screen-ob" class="screen active">
   <div class="ob-card">
+    <div class="lang-sw" id="lang-sw">
+      <button class="lang-btn active" id="btn-fr" onclick="setLang('fr')">FR</button>
+      <div class="lang-sep"></div>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+    </div>
     <div class="logo-row au">
       <div class="logo-mark">N</div>
       <div class="logo-name"><b>NEXUS</b> AI</div>
