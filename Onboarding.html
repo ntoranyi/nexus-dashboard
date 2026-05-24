@@ -24,7 +24,7 @@
 html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);overflow:hidden}
 
 /* ── LANG SWITCHER ── */
-.lang-sw{position:fixed;top:18px;right:24px;z-index:9999;display:flex;align-items:center;background:rgba(9,9,26,.95);backdrop-filter:blur(20px);border:1px solid var(--bd2);border-radius:100px;padding:4px;gap:2px;box-shadow:0 4px 24px rgba(0,0,0,.5)}
+.lang-sw{position:fixed;top:18px;left:50%;transform:translateX(-50%);right:auto!important;z-index:9999;display:flex;align-items:center;background:rgba(9,9,26,.95);backdrop-filter:blur(20px);border:1px solid var(--bd2);border-radius:100px;padding:4px;gap:2px;box-shadow:0 4px 24px rgba(0,0,0,.5)}
 .lang-btn{height:28px;padding:0 16px;border-radius:100px;border:none;font-family:var(--fd);font-size:11.5px;font-weight:700;letter-spacing:.06em;cursor:pointer;transition:all .22s cubic-bezier(.4,0,.2,1);color:var(--m);background:transparent}
 .lang-btn.active{background:var(--v);color:#fff;box-shadow:0 2px 12px rgba(124,58,237,.45)}
 .lang-btn:not(.active):hover{color:var(--vl);background:var(--vd)}
@@ -395,6 +395,7 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
       <div class="sb-item" data-page="content" onclick="navigate('content')"><span class="sb-ico">✍️</span><span data-i18n="nav_content">Contenu</span></div>
       <div class="sb-item" data-page="ecommerce" onclick="navigate('ecommerce')"><span class="sb-ico">🛒</span><span>E-commerce</span></div>
       <div class="sb-item" data-page="affiliation" onclick="navigate('affiliation')"><span class="sb-ico">🤝</span><span data-i18n="nav_affil">Affiliation</span></div>
+      <div class="sb-item" data-page="ads-budget" onclick="navigate('ads-budget')"><span class="sb-ico">💸</span><span data-i18n="nav_ads">Ads Budget</span></div>
       <div class="sb-lbl" data-i18n="nav_account">Compte</div>
       <div class="sb-item" data-page="settings" onclick="navigate('settings')"><span class="sb-ico">⚙️</span><span data-i18n="nav_settings">Paramètres</span></div>
     </div>
@@ -456,6 +457,59 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
           <div class="act-item"><div class="act-ico" style="background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.28)">📊</div><div class="act-txt"><strong data-i18n="a4_strong">Rapport hebdo disponible</strong><span data-i18n="a4_sub">Semaine 20 · +32% conversions</span></div></div>
         </div>
       </div>
+      <!-- ── CARD: BUDGET PUBLICITAIRE ── -->
+      <div class="dc full au d4" style="margin-top:14px">
+        <div class="dc-head">
+          <div class="dc-title">💰 Budget Publicitaire</div>
+          <button class="btn-sm" style="background:linear-gradient(135deg,var(--v),#5B21B6);height:30px;padding:0 14px;font-size:11.5px" onclick="openModal('db-fund-budget')">💳 Alimenter le budget</button>
+        </div>
+
+        <!-- Total + barre globale -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div>
+            <div style="font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Budget total alloué</div>
+            <div style="font-family:var(--fs);font-size:32px;color:var(--gl)">$2,400<span style="font-family:var(--fb);font-size:11px;color:var(--m)">/mois</span></div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Budget restant</div>
+            <div style="font-family:var(--fs);font-size:28px;color:#6EE7B7">$500</div>
+          </div>
+        </div>
+        <div style="margin-bottom:16px">
+          <div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--dim);margin-bottom:5px">
+            <span>Dépensé : $1,900</span><span style="color:var(--gl)">79% utilisé</span>
+          </div>
+          <div style="height:6px;background:var(--s2);border-radius:3px;overflow:hidden">
+            <div class="db-budget-bar" style="height:100%;width:79%;border-radius:3px;background:linear-gradient(90deg,var(--v),var(--g))"></div>
+          </div>
+        </div>
+
+        <!-- Répartition par canal -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+          <div style="background:var(--s1);border:1px solid var(--bd);border-radius:11px;padding:13px;text-align:center">
+            <div style="font-size:13px;margin-bottom:5px">📱</div>
+            <div style="font-size:10.5px;color:var(--dim);margin-bottom:4px">TikTok Ads</div>
+            <div style="font-family:var(--fs);font-size:22px;color:var(--gl)">$800</div>
+            <div style="height:3px;background:var(--s2);border-radius:2px;margin-top:8px;overflow:hidden"><div style="height:100%;width:85%;background:linear-gradient(90deg,var(--g),#D97706);border-radius:2px"></div></div>
+            <div style="font-size:10px;color:var(--dim);margin-top:4px">$680 dépensé</div>
+          </div>
+          <div style="background:var(--s1);border:1px solid var(--bd);border-radius:11px;padding:13px;text-align:center">
+            <div style="font-size:13px;margin-bottom:5px">📘</div>
+            <div style="font-size:10.5px;color:var(--dim);margin-bottom:4px">Meta Ads</div>
+            <div style="font-family:var(--fs);font-size:22px;color:var(--vl)">$600</div>
+            <div style="height:3px;background:var(--s2);border-radius:2px;margin-top:8px;overflow:hidden"><div style="height:100%;width:70%;background:linear-gradient(90deg,var(--v),#5B21B6);border-radius:2px"></div></div>
+            <div style="font-size:10px;color:var(--dim);margin-top:4px">$420 dépensé</div>
+          </div>
+          <div style="background:var(--s1);border:1px solid var(--bd);border-radius:11px;padding:13px;text-align:center">
+            <div style="font-size:13px;margin-bottom:5px">🔍</div>
+            <div style="font-size:10.5px;color:var(--dim);margin-bottom:4px">Google Ads</div>
+            <div style="font-family:var(--fs);font-size:22px;color:#6EE7B7">$400</div>
+            <div style="height:3px;background:var(--s2);border-radius:2px;margin-top:8px;overflow:hidden"><div style="height:100%;width:50%;background:linear-gradient(90deg,var(--teal),#0D9488);border-radius:2px"></div></div>
+            <div style="font-size:10px;color:var(--dim);margin-top:4px">$200 dépensé</div>
+          </div>
+        </div>
+      </div>
+
       <div class="back-link"><button onclick="goBack()"><span data-i18n="back_btn">← Retour à l'onboarding</span></button></div>
     </div>
 
@@ -673,6 +727,128 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
               <td style="color:var(--m)">Boutique</td><td>—</td><td style="color:var(--dim)">—</td><td style="color:var(--dim)">—</td>
               <td><span class="tag tag-g">Boutique</span></td>
             </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── PAGE: ADS BUDGET ── -->
+    <div class="pg" id="pg-ads-budget">
+      <div class="pg-head">
+        <div class="pg-title-wrap"><h1>💸 <span class="hl" data-i18n="nav_ads">Ads Budget</span></h1><p data-i18n="ads_sub">Gestion du budget publicitaire · Mai 2026</p></div>
+        <div class="hdr-acts"><button class="btn-sm gold" onclick="openModal('fund-budget')"><span data-i18n="ads_fund">+ Alimenter le budget</span></button></div>
+      </div>
+
+      <!-- KPI stats -->
+      <div class="stats s3" style="margin-bottom:20px">
+        <div class="sc" data-c="gold">
+          <div class="sc-lbl"><div class="sc-dot" style="background:var(--g)"></div><span data-i18n="ads_s1">Budget Total Alloué</span></div>
+          <div class="sc-val" id="ads-total-val">$2 400</div>
+          <div class="sc-chg" data-i18n="ads_s1_sub">Ce mois · tous canaux</div>
+        </div>
+        <div class="sc" data-c="teal">
+          <div class="sc-lbl"><div class="sc-dot" style="background:var(--teal)"></div><span data-i18n="ads_s2">Budget Restant</span></div>
+          <div class="sc-val" id="ads-remaining-val">$500</div>
+          <div class="sc-chg up" id="ads-remaining-pct">↑ 21% disponible</div>
+        </div>
+        <div class="sc" data-c="rose">
+          <div class="sc-lbl"><div class="sc-dot" style="background:var(--rose)"></div><span data-i18n="ads_s3">Dépensé</span></div>
+          <div class="sc-val" id="ads-spent-val">$1 900</div>
+          <div class="sc-chg" data-i18n="ads_s3_sub">79% du budget utilisé</div>
+        </div>
+      </div>
+
+      <!-- Main card -->
+      <div class="dc full" style="margin-bottom:14px">
+        <div class="dc-head">
+          <div class="dc-title">📊 Budget Publicitaire</div>
+          <button class="btn-sm" style="height:28px;padding:0 14px;font-size:11px" onclick="openModal('edit-budget')"><span data-i18n="ads_edit">Modifier</span></button>
+        </div>
+
+        <!-- Total alloué editable -->
+        <div style="background:linear-gradient(135deg,var(--gd),rgba(245,158,11,.05));border:1px solid var(--gb);border-radius:14px;padding:20px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+          <div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:6px" data-i18n="ads_alloc">Montant Total Alloué</div>
+            <div style="font-family:var(--fs);font-size:42px;color:var(--gl)" id="ads-total-display">$2 400</div>
+            <div style="font-size:11.5px;color:var(--m);margin-top:4px" data-i18n="ads_month">Budget mensuel · Mai 2026</div>
+          </div>
+          <button class="btn-sm gold" style="height:36px;padding:0 18px;color:#0A0A1A;flex-shrink:0" onclick="openModal('fund-budget')">
+            <span data-i18n="ads_fund">+ Alimenter</span>
+          </button>
+        </div>
+
+        <!-- Progress bar global -->
+        <div style="margin-bottom:22px">
+          <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--m);margin-bottom:8px">
+            <span data-i18n="ads_progress">Progression des dépenses</span>
+            <span id="ads-pct-label" style="color:var(--gl)">79% · $1 900 / $2 400</span>
+          </div>
+          <div style="height:8px;background:var(--s2);border-radius:4px;overflow:hidden">
+            <div id="ads-global-bar" style="height:100%;border-radius:4px;background:linear-gradient(90deg,var(--g),#D97706);width:0;transition:width 1.4s cubic-bezier(.4,0,.2,1)"></div>
+          </div>
+        </div>
+
+        <!-- Répartition par canal -->
+        <div style="font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);margin-bottom:14px" data-i18n="ads_breakdown">Répartition par canal</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+
+          <!-- TikTok Ads -->
+          <div style="background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:18px;transition:all .2s" onmouseover="this.style.borderColor='var(--gb)'" onmouseout="this.style.borderColor='var(--bd)'">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+              <div style="width:32px;height:32px;background:var(--gd);border:1px solid var(--gb);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px">📱</div>
+              <div><div style="font-family:var(--fd);font-size:12.5px;font-weight:700">TikTok Ads</div><span class="tag tag-t" style="font-size:9.5px;padding:2px 8px">Actif</span></div>
+            </div>
+            <div style="font-family:var(--fs);font-size:30px;color:var(--gl);margin-bottom:6px" id="ads-tiktok-val">$800</div>
+            <div style="margin-bottom:8px">
+              <div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--dim);margin-bottom:4px"><span data-i18n="ads_spent_lbl">Dépensé</span><span id="ads-tiktok-spent">$680</span></div>
+              <div style="height:4px;background:var(--s2);border-radius:2px;overflow:hidden"><div style="height:100%;border-radius:2px;background:linear-gradient(90deg,var(--g),#D97706);width:85%" id="ads-tiktok-bar"></div></div>
+            </div>
+            <div style="font-size:10.5px;color:var(--m)">ROI · <span style="color:#6EE7B7">+340%</span></div>
+          </div>
+
+          <!-- Meta Ads -->
+          <div style="background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:18px;transition:all .2s" onmouseover="this.style.borderColor='var(--vb)'" onmouseout="this.style.borderColor='var(--bd)'">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+              <div style="width:32px;height:32px;background:var(--vd);border:1px solid var(--vb);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px">📘</div>
+              <div><div style="font-family:var(--fd);font-size:12.5px;font-weight:700">Meta Ads</div><span class="tag tag-t" style="font-size:9.5px;padding:2px 8px">Actif</span></div>
+            </div>
+            <div style="font-family:var(--fs);font-size:30px;color:var(--vl);margin-bottom:6px" id="ads-meta-val">$1 000</div>
+            <div style="margin-bottom:8px">
+              <div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--dim);margin-bottom:4px"><span data-i18n="ads_spent_lbl">Dépensé</span><span id="ads-meta-spent">$920</span></div>
+              <div style="height:4px;background:var(--s2);border-radius:2px;overflow:hidden"><div style="height:100%;border-radius:2px;background:linear-gradient(90deg,var(--v),#5B21B6);width:92%" id="ads-meta-bar"></div></div>
+            </div>
+            <div style="font-size:10.5px;color:var(--m)">ROI · <span style="color:#6EE7B7">+120%</span></div>
+          </div>
+
+          <!-- Google Ads -->
+          <div style="background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:18px;transition:all .2s" onmouseover="this.style.borderColor='var(--tlb)'" onmouseout="this.style.borderColor='var(--bd)'">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+              <div style="width:32px;height:32px;background:var(--tld);border:1px solid var(--tlb);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px">🔍</div>
+              <div><div style="font-family:var(--fd);font-size:12.5px;font-weight:700">Google Ads</div><span class="tag tag-r" style="font-size:9.5px;padding:2px 8px">Brouillon</span></div>
+            </div>
+            <div style="font-family:var(--fs);font-size:30px;color:#6EE7B7;margin-bottom:6px" id="ads-google-val">$600</div>
+            <div style="margin-bottom:8px">
+              <div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--dim);margin-bottom:4px"><span data-i18n="ads_spent_lbl">Dépensé</span><span id="ads-google-spent">$300</span></div>
+              <div style="height:4px;background:var(--s2);border-radius:2px;overflow:hidden"><div style="height:100%;border-radius:2px;background:linear-gradient(90deg,var(--teal),#0D9488);width:50%" id="ads-google-bar"></div></div>
+            </div>
+            <div style="font-size:10.5px;color:var(--m)">ROI · <span style="color:var(--dim)">En cours</span></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Historique des alimentations -->
+      <div class="dc full">
+        <div class="dc-head">
+          <div class="dc-title">🕐 Historique des alimentations</div>
+          <div class="dc-act" onclick="toast('📥','Export en cours...','gold')">Export →</div>
+        </div>
+        <table class="tbl">
+          <thead><tr><th data-i18n="ads_h_date">Date</th><th data-i18n="ads_h_canal">Canal</th><th data-i18n="ads_h_amount">Montant</th><th data-i18n="ads_h_method">Méthode</th><th data-i18n="ads_h_status">Statut</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--m)">01 Mai 2026</td><td>TikTok Ads</td><td style="color:var(--gl)">+$800</td><td>Stripe ···4242</td><td><span class="tag tag-t">Confirmé</span></td></tr>
+            <tr><td style="color:var(--m)">01 Mai 2026</td><td>Meta Ads</td><td style="color:var(--gl)">+$1 000</td><td>Stripe ···4242</td><td><span class="tag tag-t">Confirmé</span></td></tr>
+            <tr><td style="color:var(--m)">01 Mai 2026</td><td>Google Ads</td><td style="color:var(--gl)">+$600</td><td>Stripe ···4242</td><td><span class="tag tag-t">Confirmé</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -1147,6 +1323,100 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
 
 <div class="toast-wrap" id="toast-wrap"></div>
 
+<!-- ── MODAL: DB FUND BUDGET (Dashboard card) ── -->
+<div class="modal-ov" id="modal-db-fund-budget" onclick="closeModalOnBg(event,'modal-db-fund-budget')">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-hd"><h3>💳 <span class="hl">Alimenter le budget</span></h3><button class="modal-cls" onclick="closeModal('modal-db-fund-budget')">✕</button></div>
+    <div class="form-row">
+      <label class="form-lbl">Canal publicitaire</label>
+      <select class="form-inp" id="db-fund-canal">
+        <option>TikTok Ads</option>
+        <option>Meta Ads</option>
+        <option>Google Ads</option>
+        <option>Tous les canaux</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label class="form-lbl">Montant à ajouter ($)</label>
+      <div style="position:relative">
+        <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:14px">$</span>
+        <input class="form-inp" id="db-fund-amount" type="number" min="1" placeholder="500" style="padding-left:32px">
+      </div>
+    </div>
+    <div style="background:var(--vd);border:1px solid var(--vb);border-radius:10px;padding:11px 14px;font-size:11.5px;color:var(--vl);margin-bottom:4px">
+      💡 Le montant sera crédité immédiatement sur le canal sélectionné.
+    </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeModal('modal-db-fund-budget')">Annuler</button>
+      <button class="btn-sm" style="justify-content:center" onclick="dbFundBudget()">Confirmer →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: FUND BUDGET ── -->
+<div class="modal-ov" id="modal-fund-budget" onclick="closeModalOnBg(event,'modal-fund-budget')">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-hd"><h3>💸 <span class="hl" data-i18n="ads_fund_title">Alimenter le budget</span></h3><button class="modal-cls" onclick="closeModal('modal-fund-budget')">✕</button></div>
+    <div class="form-row">
+      <label class="form-lbl" data-i18n="ads_fund_canal">Canal publicitaire</label>
+      <select class="form-inp" id="fund-canal">
+        <option>TikTok Ads</option>
+        <option>Meta Ads</option>
+        <option>Google Ads</option>
+        <option>Tous les canaux</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label class="form-lbl" data-i18n="ads_fund_amount">Montant à ajouter ($)</label>
+      <div style="position:relative">
+        <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:14px">$</span>
+        <input class="form-inp" id="fund-amount" type="number" min="1" placeholder="500" style="padding-left:32px">
+      </div>
+    </div>
+    <div class="form-row">
+      <label class="form-lbl" data-i18n="ads_fund_method">Méthode de paiement</label>
+      <select class="form-inp">
+        <option>Stripe ···4242 (défaut)</option>
+        <option>Ajouter une carte</option>
+      </select>
+    </div>
+    <div style="background:var(--vd);border:1px solid var(--vb);border-radius:10px;padding:12px;font-size:11.5px;color:var(--vl);margin-bottom:4px" data-i18n="ads_fund_note">
+      💡 Le montant sera débité immédiatement et crédité sur le canal sélectionné.
+    </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeModal('modal-fund-budget')">Annuler</button>
+      <button class="btn-sm gold" style="justify-content:center;color:#0A0A1A" onclick="fundBudget()"><span data-i18n="ads_fund_cta">Confirmer le paiement →</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: EDIT BUDGET ── -->
+<div class="modal-ov" id="modal-edit-budget" onclick="closeModalOnBg(event,'modal-edit-budget')">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-hd"><h3>✏️ <span class="hl" data-i18n="ads_edit_title">Modifier la répartition</span></h3><button class="modal-cls" onclick="closeModal('modal-edit-budget')">✕</button></div>
+    <div class="form-row">
+      <label class="form-lbl">TikTok Ads ($)</label>
+      <input class="form-inp" id="edit-tiktok" type="number" value="800">
+    </div>
+    <div class="form-row">
+      <label class="form-lbl">Meta Ads ($)</label>
+      <input class="form-inp" id="edit-meta" type="number" value="1000">
+    </div>
+    <div class="form-row">
+      <label class="form-lbl">Google Ads ($)</label>
+      <input class="form-inp" id="edit-google" type="number" value="600">
+    </div>
+    <div style="background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:12px;font-size:11.5px;color:var(--m);display:flex;align-items:center;justify-content:space-between">
+      <span data-i18n="ads_edit_total">Nouveau total :</span>
+      <span style="font-family:var(--fs);font-size:20px;color:var(--gl)" id="edit-total-preview">$2 400</span>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeModal('modal-edit-budget')">Annuler</button>
+      <button class="btn-sm" style="justify-content:center" onclick="applyBudgetEdit()"><span data-i18n="ads_edit_cta">Appliquer →</span></button>
+    </div>
+  </div>
+</div>
+
 <!-- ── MODAL: NEW AUTOMATION ── -->
 <div class="modal-ov" id="modal-auto" onclick="closeModalOnBg(event,'modal-auto')">
   <div class="modal">
@@ -1234,7 +1504,16 @@ const T = {
     eco_sub:'Shopify · Stripe · 12 produits actifs',eco_prod:'+ Produit',
     affil_sub:'Programmes partenaires · Commissions passives',affil_add:'+ Ajouter programme',
     set_sub:'Compte, intégrations &amp; préférences',set_save:'Sauvegarder',set_connect:'Connecter',
-    set_n1:'Nouveau lead',set_n2:'Rapport hebdo',set_n3:'Alertes automation',set_n4:'Mises à jour produit'
+    set_n1:'Nouveau lead',set_n2:'Rapport hebdo',set_n3:'Alertes automation',set_n4:'Mises à jour produit',
+    nav_ads:'Ads Budget',ads_sub:'Gestion du budget publicitaire · Mai 2026',ads_fund:'+ Alimenter le budget',
+    ads_s1:'Budget Total Alloué',ads_s1_sub:'Ce mois · tous canaux',ads_s2:'Budget Restant',ads_s3:'Dépensé',ads_s3_sub:'79% du budget utilisé',
+    ads_edit:'Modifier',ads_alloc:'Montant Total Alloué',ads_month:'Budget mensuel · Mai 2026',
+    ads_progress:'Progression des dépenses',ads_breakdown:'Répartition par canal',ads_spent_lbl:'Dépensé',
+    ads_h_date:'Date',ads_h_canal:'Canal',ads_h_amount:'Montant',ads_h_method:'Méthode',ads_h_status:'Statut',
+    ads_fund_title:'Alimenter le budget',ads_fund_canal:'Canal publicitaire',ads_fund_amount:'Montant à ajouter ($)',
+    ads_fund_method:'Méthode de paiement',ads_fund_note:'💡 Le montant sera débité immédiatement et crédité sur le canal sélectionné.',
+    ads_fund_cta:'Confirmer le paiement →',ads_edit_title:'Modifier la répartition',
+    ads_edit_total:'Nouveau total :',ads_edit_cta:'Appliquer →'
   },
   en: {
     badge:'Initial Setup',ob_title:'Welcome, <span class="hl">Jeff</span> 👋',
@@ -1272,7 +1551,16 @@ const T = {
     eco_sub:'Shopify · Stripe · 12 active products',eco_prod:'+ Product',
     affil_sub:'Partner programs · Passive commissions',affil_add:'+ Add program',
     set_sub:'Account, integrations &amp; preferences',set_save:'Save changes',set_connect:'Connect',
-    set_n1:'New lead',set_n2:'Weekly report',set_n3:'Automation alerts',set_n4:'Product updates'
+    set_n1:'New lead',set_n2:'Weekly report',set_n3:'Automation alerts',set_n4:'Product updates',
+    nav_ads:'Ads Budget',ads_sub:'Ad spend management · May 2026',ads_fund:'+ Fund budget',
+    ads_s1:'Total Budget Allocated',ads_s1_sub:'This month · all channels',ads_s2:'Remaining Budget',ads_s3:'Spent',ads_s3_sub:'79% of budget used',
+    ads_edit:'Edit',ads_alloc:'Total Allocated Amount',ads_month:'Monthly budget · May 2026',
+    ads_progress:'Spending progress',ads_breakdown:'Breakdown by channel',ads_spent_lbl:'Spent',
+    ads_h_date:'Date',ads_h_canal:'Channel',ads_h_amount:'Amount',ads_h_method:'Method',ads_h_status:'Status',
+    ads_fund_title:'Fund budget',ads_fund_canal:'Ad channel',ads_fund_amount:'Amount to add ($)',
+    ads_fund_method:'Payment method',ads_fund_note:'💡 The amount will be charged immediately and credited to the selected channel.',
+    ads_fund_cta:'Confirm payment →',ads_edit_title:'Edit allocation',
+    ads_edit_total:'New total:',ads_edit_cta:'Apply →'
   }
 };
 
@@ -1617,6 +1905,89 @@ function advanceSetup() {
     toast('✅', lang === 'fr' ? 'Étape complétée !' : 'Step completed!', 'green');
   }
 }
+
+/* ── DB BUDGET CARD (Dashboard) ── */
+function dbFundBudget() {
+  const amount = parseFloat(document.getElementById('db-fund-amount').value);
+  const inp = document.getElementById('db-fund-amount');
+  if (!amount || amount <= 0) { inp.style.borderColor = 'var(--rose)'; inp.focus(); return; }
+  closeModal('modal-db-fund-budget');
+  inp.value = '';
+  toast('✅', 'Budget mis à jour ✅ +$' + amount, 'green');
+}
+
+/* ── ADS BUDGET ── */
+let adsBudget = { total: 2400, tiktok: 800, meta: 1000, google: 600, tiktokSpent: 680, metaSpent: 920, googleSpent: 300 };
+
+function updateAdsBudgetUI() {
+  const spent = adsBudget.tiktokSpent + adsBudget.metaSpent + adsBudget.googleSpent;
+  const remaining = adsBudget.total - spent;
+  const pct = Math.round((spent / adsBudget.total) * 100);
+  const fmt = n => '$' + n.toLocaleString('fr-FR');
+  const el = id => document.getElementById(id);
+  if (el('ads-total-val')) el('ads-total-val').textContent = fmt(adsBudget.total);
+  if (el('ads-remaining-val')) el('ads-remaining-val').textContent = fmt(remaining);
+  if (el('ads-remaining-pct')) el('ads-remaining-pct').textContent = '↑ ' + (100 - pct) + '% disponible';
+  if (el('ads-spent-val')) el('ads-spent-val').textContent = fmt(spent);
+  if (el('ads-total-display')) el('ads-total-display').textContent = fmt(adsBudget.total);
+  if (el('ads-pct-label')) el('ads-pct-label').textContent = pct + '% · ' + fmt(spent) + ' / ' + fmt(adsBudget.total);
+  if (el('ads-global-bar')) setTimeout(() => { el('ads-global-bar').style.width = pct + '%'; }, 80);
+  if (el('ads-tiktok-val')) el('ads-tiktok-val').textContent = fmt(adsBudget.tiktok);
+  if (el('ads-meta-val')) el('ads-meta-val').textContent = fmt(adsBudget.meta);
+  if (el('ads-google-val')) el('ads-google-val').textContent = fmt(adsBudget.google);
+  if (el('ads-tiktok-spent')) el('ads-tiktok-spent').textContent = fmt(adsBudget.tiktokSpent);
+  if (el('ads-meta-spent')) el('ads-meta-spent').textContent = fmt(adsBudget.metaSpent);
+  if (el('ads-google-spent')) el('ads-google-spent').textContent = fmt(adsBudget.googleSpent);
+  if (el('ads-tiktok-bar')) el('ads-tiktok-bar').style.width = Math.round((adsBudget.tiktokSpent / adsBudget.tiktok) * 100) + '%';
+  if (el('ads-meta-bar')) el('ads-meta-bar').style.width = Math.round((adsBudget.metaSpent / adsBudget.meta) * 100) + '%';
+  if (el('ads-google-bar')) el('ads-google-bar').style.width = Math.round((adsBudget.googleSpent / adsBudget.google) * 100) + '%';
+}
+
+function fundBudget() {
+  const amount = parseFloat(document.getElementById('fund-amount').value);
+  const canal = document.getElementById('fund-canal').value;
+  if (!amount || amount <= 0) { document.getElementById('fund-amount').style.borderColor = 'var(--rose)'; document.getElementById('fund-amount').focus(); return; }
+  if (canal === 'TikTok Ads') adsBudget.tiktok += amount;
+  else if (canal === 'Meta Ads') adsBudget.meta += amount;
+  else if (canal === 'Google Ads') adsBudget.google += amount;
+  else { adsBudget.tiktok += amount / 3; adsBudget.meta += amount / 3; adsBudget.google += amount / 3; }
+  adsBudget.total = adsBudget.tiktok + adsBudget.meta + adsBudget.google;
+  closeModal('modal-fund-budget');
+  document.getElementById('fund-amount').value = '';
+  updateAdsBudgetUI();
+  const lang = document.documentElement.lang || 'fr';
+  toast('💸', (lang === 'fr' ? canal + ' alimenté · +$' + amount : canal + ' funded · +$' + amount), 'gold');
+}
+
+function applyBudgetEdit() {
+  const t = parseFloat(document.getElementById('edit-tiktok').value) || 0;
+  const m = parseFloat(document.getElementById('edit-meta').value) || 0;
+  const g = parseFloat(document.getElementById('edit-google').value) || 0;
+  adsBudget.tiktok = t; adsBudget.meta = m; adsBudget.google = g;
+  adsBudget.total = t + m + g;
+  closeModal('modal-edit-budget');
+  updateAdsBudgetUI();
+  const lang = document.documentElement.lang || 'fr';
+  toast('✅', lang === 'fr' ? 'Répartition mise à jour !' : 'Budget allocation updated!', 'vio');
+}
+
+// Live preview total in edit modal
+document.addEventListener('input', e => {
+  if (['edit-tiktok','edit-meta','edit-google'].includes(e.target.id)) {
+    const t = parseFloat(document.getElementById('edit-tiktok').value) || 0;
+    const m = parseFloat(document.getElementById('edit-meta').value) || 0;
+    const g = parseFloat(document.getElementById('edit-google').value) || 0;
+    const preview = document.getElementById('edit-total-preview');
+    if (preview) preview.textContent = '$' + (t + m + g).toLocaleString('fr-FR');
+  }
+});
+
+// Init bars when navigating to ads-budget
+const _origNavigate = navigate;
+navigate = function(page) {
+  _origNavigate(page);
+  if (page === 'ads-budget') setTimeout(updateAdsBudgetUI, 80);
+};
 
 /* ── ADD PRODUCT ── */
 function addProduct() {
