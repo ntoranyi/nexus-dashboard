@@ -25,6 +25,7 @@ html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);
 
 /* ── LANG SWITCHER ── */
 .lang-sw{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;align-items:center;gap:2px;background:rgba(9,9,26,.95);backdrop-filter:blur(20px);border:1px solid var(--bd2);border-radius:100px;padding:4px;box-shadow:0 4px 24px rgba(0,0,0,.5)}
+.lang-sw-dm{display:none;justify-content:center;align-items:center;gap:2px;background:rgba(9,9,26,.88);backdrop-filter:blur(16px);border:1px solid var(--bd2);border-radius:100px;padding:4px;width:fit-content;margin:14px auto 4px}
 .lang-btn{height:28px;padding:0 16px;border-radius:100px;border:none;font-family:var(--fd);font-size:11.5px;font-weight:700;letter-spacing:.06em;cursor:pointer;transition:all .22s cubic-bezier(.4,0,.2,1);color:var(--m);background:transparent}
 .lang-btn.active{background:var(--v);color:#fff;box-shadow:0 2px 12px rgba(124,58,237,.45)}
 .lang-btn:not(.active):hover{color:var(--vl);background:var(--vd)}
@@ -410,6 +411,11 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
 
   <!-- MAIN CONTENT AREA -->
   <div class="dm">
+    <div class="lang-sw-dm" id="lang-sw-dm">
+      <button class="lang-btn active" id="btn-fr-dm" onclick="setLang('fr')">FR</button>
+      <div class="lang-sep"></div>
+      <button class="lang-btn" id="btn-en-dm" onclick="setLang('en')">EN</button>
+    </div>
 
     <!-- ── PAGE: DASHBOARD ── -->
     <div class="pg active" id="pg-dashboard">
@@ -1834,6 +1840,8 @@ function setLang(lang) {
   currentLang = lang;
   document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
   document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-fr-dm').classList.toggle('active', lang === 'fr');
+  document.getElementById('btn-en-dm').classList.toggle('active', lang === 'en');
   document.documentElement.lang = lang;
   const dict = T[lang];
   document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -1897,6 +1905,8 @@ function goToDashboard() {
   setTimeout(() => {
     s1.classList.remove('active','exit');
     s2.classList.add('active');
+    document.getElementById('lang-sw').style.display = 'none';
+    document.getElementById('lang-sw-dm').style.display = 'flex';
     setTimeout(animateStats, 420);
     setTimeout(animateProgress, 580);
   }, 440);
@@ -1906,6 +1916,8 @@ function goBack() {
   const s1 = document.getElementById('screen-ob');
   const s2 = document.getElementById('screen-db');
   s2.classList.remove('active');
+  document.getElementById('lang-sw').style.display = '';
+  document.getElementById('lang-sw-dm').style.display = 'none';
   setTimeout(() => s1.classList.add('active'), 60);
 }
 
