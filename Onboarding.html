@@ -24,8 +24,7 @@
 html,body{height:100%;background:var(--bg);color:var(--w);font-family:var(--fb);overflow:hidden}
 
 /* ── LANG SWITCHER ── */
-.lang-sw{display:flex;justify-content:center;align-items:center;gap:2px;background:rgba(9,9,26,.95);backdrop-filter:blur(20px);border:1px solid var(--bd2);border-radius:100px;padding:4px;margin:0 auto 20px;width:fit-content}
-.lang-sw-db{position:fixed;top:18px;right:24px;z-index:9999;display:none;flex-direction:row;align-items:center;background:rgba(9,9,26,.95);backdrop-filter:blur(20px);border:1px solid var(--bd2);border-radius:100px;padding:4px;gap:2px;box-shadow:0 4px 24px rgba(0,0,0,.5)}.lang-sw-db.visible{display:flex}
+.lang-sw{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;align-items:center;gap:2px;background:rgba(9,9,26,.95);backdrop-filter:blur(20px);border:1px solid var(--bd2);border-radius:100px;padding:4px;box-shadow:0 4px 24px rgba(0,0,0,.5)}
 .lang-btn{height:28px;padding:0 16px;border-radius:100px;border:none;font-family:var(--fd);font-size:11.5px;font-weight:700;letter-spacing:.06em;cursor:pointer;transition:all .22s cubic-bezier(.4,0,.2,1);color:var(--m);background:transparent}
 .lang-btn.active{background:var(--v);color:#fff;box-shadow:0 2px 12px rgba(124,58,237,.45)}
 .lang-btn:not(.active):hover{color:var(--vl);background:var(--vd)}
@@ -317,16 +316,17 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
 <!-- ═══════════════════════════════
      SCREEN 1 · ONBOARDING
 ═══════════════════════════════ -->
+<div class="lang-sw" id="lang-sw">
+  <button class="lang-btn active" id="btn-fr" onclick="setLang('fr')">FR</button>
+  <div class="lang-sep"></div>
+  <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+</div>
+
 <div id="screen-ob" class="screen active">
   <div class="ob-card">
     <div class="logo-row au">
       <div class="logo-mark">N</div>
       <div class="logo-name"><b>NEXUS</b> AI</div>
-    </div>
-    <div class="lang-sw" id="lang-sw">
-      <button class="lang-btn active" id="btn-fr" onclick="setLang('fr')">FR</button>
-      <div class="lang-sep"></div>
-      <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
     </div>
     <div class="steps au d1">
       <div class="step on"></div><div class="step off"></div><div class="step off"></div>
@@ -374,7 +374,6 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
   </div>
 </div>
 
-<div class="lang-sw-db" id="lang-sw-db"><button class="lang-btn active" id="btn-fr-db" onclick="setLang('fr')">FR</button><div class="lang-sep"></div><button class="lang-btn" id="btn-en-db" onclick="setLang('en')">EN</button></div>
 
 <!-- ═══════════════════════════════
      SCREEN 2 · DASHBOARD APP
@@ -1846,8 +1845,6 @@ function setLang(lang) {
       el.classList.add('lang-flash');
     }
   });
-  document.getElementById('btn-fr-db').classList.toggle('active', lang==='fr');
-  document.getElementById('btn-en-db').classList.toggle('active', lang==='en');
   // Update analytics period select
   const periodSel = document.getElementById('analytics-period-select');
   if (periodSel && periodSel.options.length >= 3) {
@@ -1900,8 +1897,6 @@ function goToDashboard() {
   setTimeout(() => {
     s1.classList.remove('active','exit');
     s2.classList.add('active');
-    document.getElementById('lang-sw-db').classList.add('visible');
-    document.getElementById('lang-sw').style.display='none';
     setTimeout(animateStats, 420);
     setTimeout(animateProgress, 580);
   }, 440);
@@ -1911,8 +1906,6 @@ function goBack() {
   const s1 = document.getElementById('screen-ob');
   const s2 = document.getElementById('screen-db');
   s2.classList.remove('active');
-  document.getElementById('lang-sw-db').classList.remove('visible');
-  document.getElementById('lang-sw').style.display='';
   setTimeout(() => s1.classList.add('active'), 60);
 }
 
