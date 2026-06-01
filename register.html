@@ -600,7 +600,13 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+  // Supabase config
+  const SUPABASE_URL = 'https://pgwwgwchlhmemkitrcxh.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_gPqMnHI4GWUhrVitkZIUwQ_WwRZCgly';
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
   function checkStrength(val) {
     var segs = [document.getElementById('s1'), document.getElementById('s2'), document.getElementById('s3'), document.getElementById('s4')];
     var label = document.getElementById('strengthLabel');
@@ -628,7 +634,7 @@
     inp.type = inp.type === 'password' ? 'text' : 'password';
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     var prenom = document.getElementById('prenom').value.trim();
     var email = document.getElementById('email').value.trim();
     var pwd = document.getElementById('pwd').value;
@@ -656,11 +662,36 @@
     btn.classList.add('loading-state');
     btn.disabled = true;
 
-    setTimeout(function() {
+    try {
+      // 1. Créer le compte dans Supabase Auth
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: pwd,
+        options: {
+          data: { prenom: prenom }
+        }
+      });
+
+      if (error) throw error;
+
+      // 2. Sauvegarder dans la table users
+      await supabase.from('users').insert([{
+        prenom: prenom,
+        email: email,
+        password: '***',
+        created_at: new Date().toISOString()
+      }]);
+
+      // 3. Afficher succès
       document.getElementById('formWrap').style.display = 'none';
       document.getElementById('successCard').classList.add('show');
       document.querySelector('.login-link').style.display = 'none';
-    }, 1800);
+
+    } catch (err) {
+      btn.classList.remove('loading-state');
+      btn.disabled = false;
+      alert('Erreur : ' + (err.message || 'Une erreur est survenue. Réessaye.'));
+    }
   }
 </script>
 </body>
