@@ -605,7 +605,7 @@
   // Supabase config
   const SUPABASE_URL = 'https://pgwwgwchlhmemkitrcxh.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_gPqMnHI4GWUhrVitkZIUwQ_WwRZCgly';
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   function checkStrength(val) {
     var segs = [document.getElementById('s1'), document.getElementById('s2'), document.getElementById('s3'), document.getElementById('s4')];
@@ -664,7 +664,7 @@
 
     try {
       // 1. Créer le compte dans Supabase Auth
-      const { data, error } = await supabase.auth.signUp({
+      const { data, error } = await sbClient.auth.signUp({
         email: email,
         password: pwd,
         options: {
@@ -675,7 +675,7 @@
       if (error) throw error;
 
       // 2. Sauvegarder dans la table users
-      await supabase.from('users').insert([{
+      await sbClient.from('users').insert([{
         prenom: prenom,
         email: email,
         password: '***',
