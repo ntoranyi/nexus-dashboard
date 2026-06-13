@@ -286,7 +286,7 @@ async function handleStripePayment() {
     // Remplace par ton vrai lien Stripe Payment Link
     const successUrl = encodeURIComponent(window.location.href.split('?')[0] + '?success=1');
     const cancelUrl = encodeURIComponent(window.location.href.split('?')[0]);
-    window.location.href = `https://buy.stripe.com/REMPLACE_PAR_TON_LIEN?success_url=${successUrl}&cancel_url=${cancelUrl}`;
+   window.location.href = `https://buy.stripe.com/28E3cu7o3eN1aqCg2easg00?success_url=${successUrl}&cancel_url=${cancelUrl}`;
   } catch(err) {
     activatePro(); btn.disabled = false;
   }
