@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS AI — Dashboard</title>
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --border: #2a2a3a;
+    --accent: #7c5cfc;
+    --accent2: #00d4ff;
+    --gold: #f5c542;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --success: #00c896;
+    --danger: #ff4d6d;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; }
+
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 32px; background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+  .logo { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .badge-free { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+  .badge-pro { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+  .btn-upgrade-nav { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; border: none; padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .lang-toggle { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 6px 14px; border-radius: 8px; font-size: 13px; cursor: pointer; }
+
+  .layout { display: flex; min-height: calc(100vh - 61px); }
+
+  sidebar { width: 220px; background: var(--surface); border-right: 1px solid var(--border); padding: 24px 12px; flex-shrink: 0; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 8px; font-size: 14px; color: var(--muted); cursor: pointer; transition: all 0.15s; margin-bottom: 4px; }
+  .nav-item:hover, .nav-item.active { background: var(--surface2); color: var(--text); font-weight: 500; }
+  .nav-item .lock { margin-left: auto; font-size: 11px; }
+  .nav-section { font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; padding: 16px 14px 8px; }
+
+  main { flex: 1; padding: 32px; overflow-y: auto; }
+
+  .upgrade-banner { background: linear-gradient(135deg, rgba(124,92,252,0.15), rgba(0,212,255,0.1)); border: 1px solid rgba(124,92,252,0.3); border-radius: 16px; padding: 24px 32px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+  .upgrade-banner h2 { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .upgrade-banner p { color: var(--muted); font-size: 14px; }
+  .btn-upgrade-main { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; border: none; padding: 14px 32px; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; white-space: nowrap; font-family: 'Space Grotesk', sans-serif; }
+  .price-tag { display: flex; align-items: baseline; gap: 4px; margin-bottom: 4px; }
+  .price-tag .amount { font-size: 28px; font-weight: 700; color: var(--accent2); font-family: 'Space Grotesk', sans-serif; }
+  .price-tag .period { color: var(--muted); font-size: 14px; }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .stat-label { font-size: 12px; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .stat-value { font-size: 28px; font-weight: 700; font-family: 'Space Grotesk', sans-serif; }
+  .stat-change { font-size: 12px; color: var(--success); margin-top: 4px; }
+
+  .section-title { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+
+  .agents-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+  .agent-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; position: relative; transition: border-color 0.2s; }
+  .agent-card.locked { opacity: 0.6; cursor: not-allowed; }
+  .agent-card.locked::after { content: '🔒 PRO'; position: absolute; top: 12px; right: 12px; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 6px; }
+  .agent-card:not(.locked):hover { border-color: var(--accent); }
+  .agent-icon { font-size: 28px; margin-bottom: 10px; }
+  .agent-name { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  .agent-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .agent-status { display: inline-flex; align-items: center; gap: 5px; margin-top: 12px; font-size: 11px; color: var(--success); }
+  .agent-status::before { content: ''; width: 6px; height: 6px; background: var(--success); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  .locked-section { background: var(--surface); border: 1px dashed var(--border); border-radius: 12px; padding: 40px; text-align: center; margin-bottom: 32px; }
+  .locked-section .lock-icon { font-size: 36px; margin-bottom: 12px; }
+  .locked-section h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+  .locked-section p { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+  .btn-unlock { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; border: none; padding: 10px 24px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
+
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center; }
+  .modal-overlay.active { display: flex; }
+  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 40px; width: 460px; max-width: 90vw; }
+  .modal h2 { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 8px; text-align: center; }
+  .modal .subtitle { color: var(--muted); font-size: 14px; text-align: center; margin-bottom: 28px; }
+  .plan-features { list-style: none; margin-bottom: 28px; }
+  .plan-features li { padding: 8px 0; font-size: 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .plan-features li::before { content: '✓'; color: var(--success); font-weight: 700; }
+  .modal-price { text-align: center; margin-bottom: 24px; }
+  .modal-price .big { font-size: 42px; font-weight: 700; font-family: 'Space Grotesk', sans-serif; }
+  .modal-price .mo { color: var(--muted); font-size: 16px; }
+  #stripe-btn { width: 100%; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; font-family: 'Space Grotesk', sans-serif; }
+  #stripe-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .modal-close { display: block; text-align: center; margin-top: 16px; color: var(--muted); font-size: 13px; cursor: pointer; }
+
+  .success-banner { display: none; background: rgba(0,200,150,0.1); border: 1px solid var(--success); border-radius: 12px; padding: 16px 24px; margin-bottom: 24px; color: var(--success); font-weight: 500; text-align: center; }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  @media (max-width: 768px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .agents-grid { grid-template-columns: 1fr; }
+    sidebar { display: none; }
+    main { padding: 16px; }
+    .upgrade-banner { flex-direction: column; gap: 16px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">⚡ NEXUS AI</div>
+  <div class="nav-right">
+    <span class="badge-free" id="plan-badge">Plan Gratuit</span>
+    <button class="btn-upgrade-nav" id="nav-upgrade-btn" onclick="openModal()" data-fr="🚀 Passer à Pro" data-en="🚀 Upgrade to Pro">🚀 Passer à Pro</button>
+    <button class="lang-toggle" onclick="toggleLang()">EN</button>
+  </div>
+</nav>
+
+<div class="layout">
+<sidebar>
+  <div class="nav-section" data-fr="PRINCIPAL" data-en="MAIN">PRINCIPAL</div>
+  <div class="nav-item active" onclick="showPage('overview', this)">📊 <span data-fr="Vue d'ensemble" data-en="Overview">Vue d'ensemble</span></div>
+  <div class="nav-item" onclick="showPage('agents', this)">🤖 <span data-fr="Agents IA" data-en="AI Agents">Agents IA</span></div>
+  <div class="nav-section" data-fr="AUTOMATISATION" data-en="AUTOMATION">AUTOMATISATION</div>
+  <div class="nav-item" onclick="requirePro()">📧 <span data-fr="Emails" data-en="Emails">Emails</span> <span class="lock" id="lock-email">🔒</span></div>
+  <div class="nav-item" onclick="requirePro()">📱 <span data-fr="Social Media" data-en="Social Media">Social Media</span> <span class="lock" id="lock-social">🔒</span></div>
+  <div class="nav-item" onclick="requirePro()">🎯 <span data-fr="Leads" data-en="Leads">Leads</span> <span class="lock" id="lock-leads">🔒</span></div>
+  <div class="nav-item" onclick="requirePro()">🎨 <span data-fr="Créatifs" data-en="Creatives">Créatifs</span> <span class="lock" id="lock-creatifs">🔒</span></div>
+  <div class="nav-section" data-fr="ANALYSE" data-en="ANALYTICS">ANALYSE</div>
+  <div class="nav-item" onclick="requirePro()">💰 <span data-fr="Finance" data-en="Finance">Finance</span> <span class="lock" id="lock-finance">🔒</span></div>
+  <div class="nav-item" onclick="requirePro()">📈 <span data-fr="Rapports" data-en="Reports">Rapports</span> <span class="lock" id="lock-rapports">🔒</span></div>
+  <div class="nav-section" data-fr="COMPTE" data-en="ACCOUNT">COMPTE</div>
+  <div class="nav-item" onclick="showPage('settings', this)">⚙️ <span data-fr="Paramètres" data-en="Settings">Paramètres</span></div>
+</sidebar>
+
+<main>
+  <div class="success-banner" id="success-banner">🎉 <span data-fr="Bienvenue dans NEXUS AI Pro ! Tous vos agents sont maintenant actifs." data-en="Welcome to NEXUS AI Pro! All your agents are now active.">Bienvenue dans NEXUS AI Pro ! Tous vos agents sont maintenant actifs.</span></div>
+
+  <div class="page active" id="page-overview">
+    <div class="upgrade-banner" id="upgrade-banner">
+      <div>
+        <h2 data-fr="🚀 Passez à NEXUS AI Pro" data-en="🚀 Upgrade to NEXUS AI Pro">🚀 Passez à NEXUS AI Pro</h2>
+        <p data-fr="Débloquez les 10 agents IA, automatisez votre marketing 24h/24" data-en="Unlock all 10 AI agents, automate your marketing 24/7">Débloquez les 10 agents IA, automatisez votre marketing 24h/24</p>
+      </div>
+      <div style="text-align:center">
+        <div class="price-tag"><span class="amount">27€</span><span class="period">/mois</span></div>
+        <button class="btn-upgrade-main" onclick="openModal()" data-fr="Activer Pro maintenant" data-en="Activate Pro now">Activer Pro maintenant</button>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-label" data-fr="Agents actifs" data-en="Active agents">Agents actifs</div><div class="stat-value" id="stat-agents">2</div><div class="stat-change" data-fr="sur 10 disponibles" data-en="of 10 available">sur 10 disponibles</div></div>
+      <div class="stat-card"><div class="stat-label" data-fr="Exécutions aujourd'hui" data-en="Executions today">Exécutions aujourd'hui</div><div class="stat-value">15</div><div class="stat-change">Railway ✅</div></div>
+      <div class="stat-card"><div class="stat-label" data-fr="Leads générés" data-en="Leads generated">Leads générés</div><div class="stat-value">0</div><div class="stat-change" data-fr="ce mois" data-en="this month">ce mois</div></div>
+      <div class="stat-card"><div class="stat-label" data-fr="Emails envoyés" data-en="Emails sent">Emails envoyés</div><div class="stat-value">0</div><div class="stat-change" data-fr="ce mois" data-en="this month">ce mois</div></div>
+    </div>
+
+    <div class="section-title">🤖 <span data-fr="Vos Agents IA" data-en="Your AI Agents">Vos Agents IA</span></div>
+    <div class="agents-grid">
+      <div class="agent-card"><div class="agent-icon">🧠</div><div class="agent-name">Manager Agent</div><div class="agent-desc" data-fr="Orchestre tous vos agents" data-en="Orchestrates all agents">Orchestre tous vos agents</div><div class="agent-status" data-fr="Actif sur Railway" data-en="Active on Railway">Actif sur Railway</div></div>
+      <div class="agent-card"><div class="agent-icon">📊</div><div class="agent-name">Daily Report</div><div class="agent-desc" data-fr="Rapport automatique à 7h00" data-en="Automatic report at 7am">Rapport automatique à 7h00</div><div class="agent-status" data-fr="Actif sur Railway" data-en="Active on Railway">Actif sur Railway</div></div>
+      <div class="agent-card locked"><div class="agent-icon">🎯</div><div class="agent-name">Leads Agent</div><div class="agent-desc" data-fr="Génère des prospects qualifiés" data-en="Generates qualified leads">Génère des prospects qualifiés</div></div>
+      <div class="agent-card locked"><div class="agent-icon">📧</div><div class="agent-name">Email Agent</div><div class="agent-desc" data-fr="Emails personnalisés auto" data-en="Auto personalized emails">Emails personnalisés auto</div></div>
+      <div class="agent-card locked"><div class="agent-icon">📱</div><div class="agent-name">Social Media Agent</div><div class="agent-desc" data-fr="TikTok, Instagram, LinkedIn" data-en="TikTok, Instagram, LinkedIn">TikTok, Instagram, LinkedIn</div></div>
+      <div class="agent-card locked"><div class="agent-icon">🎨</div><div class="agent-name">Créatifs Agent</div><div class="agent-desc" data-fr="Images & vidéos pour vos ads" data-en="Images & videos for your ads">Images & vidéos pour vos ads</div></div>
+    </div>
+
+    <div class="locked-section" id="locked-automation">
+      <div class="lock-icon">🔒</div>
+      <h3 data-fr="Automatisation complète — Plan Pro" data-en="Full Automation — Pro Plan">Automatisation complète — Plan Pro</h3>
+      <p data-fr="Débloquez 8 agents supplémentaires pour automatiser tout votre marketing." data-en="Unlock 8 additional agents to automate all your marketing.">Débloquez 8 agents supplémentaires pour automatiser tout votre marketing.</p>
+      <button class="btn-unlock" onclick="openModal()" data-fr="Débloquer pour 27€/mois" data-en="Unlock for €27/month">Débloquer pour 27€/mois</button>
+    </div>
+  </div>
+
+  <div class="page" id="page-agents">
+    <div class="section-title">🤖 <span data-fr="Tous les Agents IA" data-en="All AI Agents">Tous les Agents IA</span></div>
+    <div class="agents-grid">
+      <div class="agent-card"><div class="agent-icon">🧠</div><div class="agent-name">Manager Agent</div><div class="agent-desc">GPT-4o-mini</div><div class="agent-status">Actif</div></div>
+      <div class="agent-card"><div class="agent-icon">📊</div><div class="agent-name">Daily Report</div><div class="agent-desc">7h00 auto</div><div class="agent-status">Actif</div></div>
+      <div class="agent-card locked"><div class="agent-icon">🎯</div><div class="agent-name">Leads Agent</div><div class="agent-desc">Apollo + Apify</div></div>
+      <div class="agent-card locked"><div class="agent-icon">📧</div><div class="agent-name">Email Agent</div><div class="agent-desc">Gmail OAuth2</div></div>
+      <div class="agent-card locked"><div class="agent-icon">📱</div><div class="agent-name">Social Media Agent</div><div class="agent-desc">Buffer + TikTok</div></div>
+      <div class="agent-card locked"><div class="agent-icon">🛒</div><div class="agent-name">Ads Shopify Agent</div><div class="agent-desc">Shopify + Meta</div></div>
+      <div class="agent-card locked"><div class="agent-icon">🎨</div><div class="agent-name">Créatifs Agent</div><div class="agent-desc">Pollinations + ElevenLabs</div></div>
+      <div class="agent-card locked"><div class="agent-icon">💰</div><div class="agent-name">Finance Agent</div><div class="agent-desc">Supabase Analytics</div></div>
+      <div class="agent-card locked"><div class="agent-icon">📅</div><div class="agent-name">Calendar Agent</div><div class="agent-desc">Google Calendar</div></div>
+      <div class="agent-card locked"><div class="agent-icon">🤖</div><div class="agent-name">Prospect Bot</div><div class="agent-desc" data-fr="Réponse auto aux prospects" data-en="Auto-reply to prospects">Réponse auto aux prospects</div></div>
+    </div>
+    <div class="locked-section">
+      <div class="lock-icon">⚡</div>
+      <h3 data-fr="Débloquez 8 agents supplémentaires" data-en="Unlock 8 additional agents">Débloquez 8 agents supplémentaires</h3>
+      <p data-fr="Pro — agents actifs 24h/24 sur Railway" data-en="Pro — agents active 24/7 on Railway">Pro — agents actifs 24h/24 sur Railway</p>
+      <button class="btn-unlock" onclick="openModal()">🚀 Pro — 27€/mois</button>
+    </div>
+  </div>
+
+  <div class="page" id="page-settings">
+    <div class="section-title">⚙️ <span data-fr="Paramètres" data-en="Settings">Paramètres</span></div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:16px;">
+      <p style="color:var(--muted);font-size:13px;margin-bottom:12px" data-fr="Compte" data-en="Account">Compte</p>
+      <p style="font-size:14px;margin-bottom:8px">📧 <span id="user-email">—</span></p>
+      <p style="font-size:14px;color:var(--muted)" data-fr="Plan : " data-en="Plan: ">Plan : <span id="settings-plan" style="color:var(--accent)">Gratuit</span></p>
+    </div>
+    <button onclick="logout()" style="background:var(--surface);border:1px solid var(--danger);color:var(--danger);padding:10px 20px;border-radius:8px;cursor:pointer;font-size:14px" data-fr="Se déconnecter" data-en="Sign out">Se déconnecter</button>
+  </div>
+</main>
+</div>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h2>🚀 NEXUS AI Pro</h2>
+    <p class="subtitle" data-fr="Automatisez votre marketing avec 10 agents IA" data-en="Automate your marketing with 10 AI agents">Automatisez votre marketing avec 10 agents IA</p>
+    <div class="modal-price"><span class="big">27€</span><span class="mo">/mois</span></div>
+    <ul class="plan-features">
+      <li data-fr="10 agents IA actifs 24h/24 sur Railway" data-en="10 AI agents active 24/7 on Railway">10 agents IA actifs 24h/24 sur Railway</li>
+      <li data-fr="Bot prospect email automatique" data-en="Automatic email prospect bot">Bot prospect email automatique</li>
+      <li data-fr="Génération de leads illimitée" data-en="Unlimited lead generation">Génération de leads illimitée</li>
+      <li data-fr="Posts social media automatisés" data-en="Automated social media posts">Posts social media automatisés</li>
+      <li data-fr="Créatifs IA pour vos ads" data-en="AI creatives for your ads">Créatifs IA pour vos ads</li>
+      <li data-fr="Rapports financiers quotidiens" data-en="Daily financial reports">Rapports financiers quotidiens</li>
+      <li data-fr="Support prioritaire" data-en="Priority support">Support prioritaire</li>
+    </ul>
+    <button id="stripe-btn" onclick="handleStripePayment()" data-fr="💳 Payer 27€/mois" data-en="💳 Pay €27/month">💳 Payer 27€/mois</button>
+    <span class="modal-close" onclick="closeModal()" data-fr="← Pas maintenant" data-en="← Not now">← Pas maintenant</span>
+  </div>
+</div>
+
+<script>
+const STRIPE_KEY = 'pk_test_51T7ffb18IYxYvNsQnPwnCgOUc4rLa79yHOEk8jYtMlwDHEUZiLCC5kTORRiV8GrRgqafSeCOhuy495H0VqUB63BX00UxbnmweG';
+let isPro = localStorage.getItem('nexus_pro') === 'true';
+let lang = localStorage.getItem('nexus_lang') || 'fr';
+
+window.onload = () => {
+  applyLang();
+  applyProState();
+  const email = localStorage.getItem('nexus_email');
+  if (email) document.getElementById('user-email').textContent = email;
+  if (new URLSearchParams(window.location.search).get('success') === '1') activatePro();
+};
+
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  el?.classList.add('active');
+}
+
+function applyProState() {
+  if (!isPro) return;
+  document.getElementById('plan-badge').textContent = '⚡ Pro';
+  document.getElementById('plan-badge').className = 'badge-pro';
+  document.getElementById('nav-upgrade-btn').style.display = 'none';
+  document.getElementById('upgrade-banner').style.display = 'none';
+  document.getElementById('locked-automation').style.display = 'none';
+  document.getElementById('settings-plan').textContent = 'Pro ⚡';
+  document.getElementById('stat-agents').textContent = '10';
+  ['lock-email','lock-social','lock-leads','lock-creatifs','lock-finance','lock-rapports'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.remove();
+  });
+  document.querySelectorAll('.agent-card.locked').forEach(el => {
+    el.classList.remove('locked');
+    const s = document.createElement('div'); s.className = 'agent-status'; s.textContent = 'Actif'; el.appendChild(s);
+  });
+}
+
+function activatePro() {
+  isPro = true;
+  localStorage.setItem('nexus_pro', 'true');
+  document.getElementById('success-banner').style.display = 'block';
+  applyProState(); closeModal();
+  window.history.replaceState({}, '', window.location.pathname);
+}
+
+function requirePro() { if (!isPro) openModal(); }
+function openModal() { document.getElementById('modal').classList.add('active'); }
+function closeModal() { document.getElementById('modal').classList.remove('active'); }
+document.getElementById('modal').addEventListener('click', e => { if (e.target.id === 'modal') closeModal(); });
+
+async function handleStripePayment() {
+  const btn = document.getElementById('stripe-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Redirection...';
+  try {
+    // Remplace par ton vrai lien Stripe Payment Link
+    const successUrl = encodeURIComponent(window.location.href.split('?')[0] + '?success=1');
+    const cancelUrl = encodeURIComponent(window.location.href.split('?')[0]);
+    window.location.href = `https://buy.stripe.com/REMPLACE_PAR_TON_LIEN?success_url=${successUrl}&cancel_url=${cancelUrl}`;
+  } catch(err) {
+    activatePro(); btn.disabled = false;
+  }
+}
+
+function toggleLang() {
+  lang = lang === 'fr' ? 'en' : 'fr';
+  localStorage.setItem('nexus_lang', lang);
+  applyLang();
+}
+
+function applyLang() {
+  document.querySelector('.lang-toggle').textContent = lang === 'en' ? 'FR' : 'EN';
+  document.querySelectorAll('[data-fr]').forEach(el => {
+    el.textContent = lang === 'en' ? el.dataset.en : el.dataset.fr;
+  });
+}
+
+function logout() { localStorage.clear(); window.location.href = 'login.html'; }
+</script>
+</body>
+</html>
