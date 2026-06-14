@@ -208,22 +208,25 @@
 </main>
 </div>
 
-<div class="modal-overlay" id="modal">
+selectPlan
   <div class="modal">
-    <h2>🚀 NEXUS AI Pro</h2>
-    <p class="subtitle" data-fr="Automatisez votre marketing avec 10 agents IA" data-en="Automate your marketing with 10 AI agents">Automatisez votre marketing avec 10 agents IA</p>
-    <div class="modal-price"><span class="big">27€</span><span class="mo">/mois</span></div>
-    <ul class="plan-features">
-      <li data-fr="10 agents IA actifs 24h/24 sur Railway" data-en="10 AI agents active 24/7 on Railway">10 agents IA actifs 24h/24 sur Railway</li>
-      <li data-fr="Bot prospect email automatique" data-en="Automatic email prospect bot">Bot prospect email automatique</li>
-      <li data-fr="Génération de leads illimitée" data-en="Unlimited lead generation">Génération de leads illimitée</li>
-      <li data-fr="Posts social media automatisés" data-en="Automated social media posts">Posts social media automatisés</li>
-      <li data-fr="Créatifs IA pour vos ads" data-en="AI creatives for your ads">Créatifs IA pour vos ads</li>
-      <li data-fr="Rapports financiers quotidiens" data-en="Daily financial reports">Rapports financiers quotidiens</li>
-      <li data-fr="Support prioritaire" data-en="Priority support">Support prioritaire</li>
+    <!-- Plan selector -->
+    <div style="display:flex;gap:8px;margin-bottom:24px;justify-content:center;">
+      <button onclick="selectPlan('starter')" id="btn-starter" style="flex:1;padding:10px;border-radius:8px;border:2px solid var(--accent);background:var(--accent);color:white;font-weight:600;cursor:pointer;font-size:13px;">Starter</button>
+      <button onclick="selectPlan('pro')" id="btn-pro" style="flex:1;padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-weight:600;cursor:pointer;font-size:13px;">Pro</button>
+      <button onclick="selectPlan('agency')" id="btn-agency" style="flex:1;padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-weight:600;cursor:pointer;font-size:13px;">Agency</button>
+    </div>
+    <h2 id="modal-title">🚀 NEXUS AI Starter</h2>
+    <p class="subtitle" id="modal-subtitle">Lancez votre automatisation marketing</p>
+    <div class="modal-price"><span class="big" id="modal-price">27€</span><span class="mo">/mois</span></div>
+    <ul class="plan-features" id="modal-features">
+      <li>3 agents IA actifs 24h/24</li>
+      <li>Bot prospect email automatique</li>
+      <li>Posts social media automatisés</li>
+      <li>Support standard</li>
     </ul>
-    <button id="stripe-btn" onclick="handleStripePayment()" data-fr="💳 Payer 27€/mois" data-en="💳 Pay €27/month">💳 Payer 27€/mois</button>
-    <span class="modal-close" onclick="closeModal()" data-fr="← Pas maintenant" data-en="← Not now">← Pas maintenant</span>
+    <button id="stripe-btn" onclick="handleStripePayment(currentPlan || 'starter')">💳 Payer 27€/mois</button>
+    <span class="modal-close" onclick="closeModal()">← Pas maintenant</span>
   </div>
 </div>
 
@@ -231,7 +234,44 @@
 const STRIPE_KEY = 'pk_test_51T7ffb18IYxYvNsQnPwnCgOUc4rLa79yHOEk8jYtMlwDHEUZiLCC5kTORRiV8GrRgqafSeCOhuy495H0VqUB63BX00UxbnmweG';
 let isPro = localStorage.getItem('nexus_pro') === 'true';
 let lang = localStorage.getItem('nexus_lang') || 'fr';
+let currentPlan = 'starter';
 
+  const plans = {
+  starter: {
+    title: '🚀 NEXUS AI Starter',
+    subtitle: 'Lancez votre automatisation marketing',
+    price: '27€',
+    features: ['3 agents IA actifs 24h/24','Bot prospect email automatique','Posts social media automatisés','Support standard']
+  },
+  pro: {
+    title: '⚡ NEXUS AI Pro',
+    subtitle: 'Automatisation complète 10 agents',
+    price: '67€',
+    features: ['10 agents IA actifs 24h/24','Bot prospect + Instagram DM','Leads illimités + créatifs IA','Rapports financiers','Support prioritaire']
+  },
+  agency: {
+    title: '🏆 NEXUS AI Agency',
+    subtitle: 'White-label pour vos clients',
+    price: '147€',
+    features: ['Tout le plan Pro','White-label dashboard','Clients illimités','Onboarding dédié','Support VIP 24h/24']
+  }
+};
+
+function selectPlan(plan) {
+  currentPlan = plan;
+  const p = plans[plan];
+  document.getElementById('modal-title').textContent = p.title;
+  document.getElementById('modal-subtitle').textContent = p.subtitle;
+  document.getElementById('modal-price').textContent = p.price;
+  document.getElementById('modal-features').innerHTML = p.features.map(f => `<li>${f}</li>`).join('');
+  document.getElementById('stripe-btn').textContent = `💳 Payer ${p.price}/mois`;
+  ['starter','pro','agency'].forEach(pl => {
+    const btn = document.getElementById('btn-' + pl);
+    btn.style.background = pl === plan ? 'var(--accent)' : 'var(--surface2)';
+    btn.style.color = pl === plan ? 'white' : 'var(--muted)';
+    btn.style.border = pl === plan ? '2px solid var(--accent)' : '1px solid var(--border)';
+  });
+}
 window.onload = () => {
   applyLang();
   applyProState();
@@ -278,15 +318,19 @@ function openModal() { document.getElementById('modal').classList.add('active');
 function closeModal() { document.getElementById('modal').classList.remove('active'); }
 document.getElementById('modal').addEventListener('click', e => { if (e.target.id === 'modal') closeModal(); });
 
-async function handleStripePayment() {
+async function handleStripePayment(plan) {
   const btn = document.getElementById('stripe-btn');
   btn.disabled = true;
   btn.textContent = '⏳ Redirection...';
+  const links = {
+    starter: 'https://buy.stripe.com/28E3cu7o3eN1aqCg2easg00',
+    pro: 'https://buy.stripe.com/28E3cu7o3eN1aqCg2easg00',
+    agency: 'https://buy.stripe.com/28E3cu7o3eN1aqCg2easg00'
+  };
   try {
-    // Remplace par ton vrai lien Stripe Payment Link
     const successUrl = encodeURIComponent(window.location.href.split('?')[0] + '?success=1');
     const cancelUrl = encodeURIComponent(window.location.href.split('?')[0]);
-   window.location.href = `https://buy.stripe.com/28E3cu7o3eN1aqCg2easg00?success_url=${successUrl}&cancel_url=${cancelUrl}`;
+    window.location.href = `${links[plan] || links.starter}?success_url=${successUrl}&cancel_url=${cancelUrl}`;
   } catch(err) {
     activatePro(); btn.disabled = false;
   }
