@@ -112,7 +112,7 @@
   <div class="logo">⚡ NEXUS AI</div>
   <div class="nav-right">
     <span class="badge-free" id="plan-badge">Plan Gratuit</span>
-    <button class="btn-upgrade-nav" id="nav-upgrade-btn" onclick="openModal()" data-fr="🚀 Passer à Pro" data-en="🚀 Upgrade to Pro">🚀 Passer à Pro</button>
+    <button class="btn-upgrade-nav" id="nav-upgrade-btn" onclick="openModal('pro')" data-fr="🚀 Passer à Pro" data-en="🚀 Upgrade to Pro">🚀 Passer à Pro</button>
     <button class="lang-toggle" onclick="toggleLang()">EN</button>
   </div>
 </nav>
@@ -144,8 +144,8 @@
         <p data-fr="Débloquez les 10 agents IA, automatisez votre marketing 24h/24" data-en="Unlock all 10 AI agents, automate your marketing 24/7">Débloquez les 10 agents IA, automatisez votre marketing 24h/24</p>
       </div>
       <div style="text-align:center">
-        <div class="price-tag"><span class="amount">27€</span><span class="period">/mois</span></div>
-        <button class="btn-upgrade-main" onclick="openModal()" data-fr="Activer Pro maintenant" data-en="Activate Pro now">Activer Pro maintenant</button>
+        <div class="price-tag"><span class="amount">67€</span><span class="period">/mois</span></div>
+        <button class="btn-upgrade-main" onclick="openModal('pro')" data-fr="Activer Pro maintenant" data-en="Activate Pro now">Activer Pro maintenant</button>
       </div>
     </div>
 
@@ -170,7 +170,7 @@
       <div class="lock-icon">🔒</div>
       <h3 data-fr="Automatisation complète — Plan Pro" data-en="Full Automation — Pro Plan">Automatisation complète — Plan Pro</h3>
       <p data-fr="Débloquez 8 agents supplémentaires pour automatiser tout votre marketing." data-en="Unlock 8 additional agents to automate all your marketing.">Débloquez 8 agents supplémentaires pour automatiser tout votre marketing.</p>
-      <button class="btn-unlock" onclick="openModal()" data-fr="Débloquer pour 27€/mois" data-en="Unlock for €27/month">Débloquer pour 27€/mois</button>
+      <button class="btn-unlock" onclick="openModal('pro')" data-fr="Débloquer pour 67€/mois" data-en="Unlock for €67/month">Débloquer pour 67€/mois</button>
     </div>
   </div>
 
@@ -192,7 +192,7 @@
       <div class="lock-icon">⚡</div>
       <h3 data-fr="Débloquez 8 agents supplémentaires" data-en="Unlock 8 additional agents">Débloquez 8 agents supplémentaires</h3>
       <p data-fr="Pro — agents actifs 24h/24 sur Railway" data-en="Pro — agents active 24/7 on Railway">Pro — agents actifs 24h/24 sur Railway</p>
-      <button class="btn-unlock" onclick="openModal()">🚀 Pro — 27€/mois</button>
+      <button class="btn-unlock" onclick="openModal('pro')">🚀 Pro — 67€/mois</button>
     </div>
   </div>
 
@@ -313,8 +313,16 @@ function activatePro() {
   window.history.replaceState({}, '', window.location.pathname);
 }
 
-function requirePro() { if (!isPro) openModal(); }
-function openModal() { document.getElementById('modal').classList.add('active'); }
+window.addEventListener('pageshow', () => {
+  const btn = document.getElementById('stripe-btn');
+  if (btn && plans[currentPlan]) {
+    btn.disabled = false;
+    btn.textContent = `💳 Payer ${plans[currentPlan].price}/mois`;
+  }
+});
+
+function requirePro() { if (!isPro) openModal('pro'); }
+function openModal(plan) { selectPlan(plan || 'pro'); document.getElementById('modal').classList.add('active'); }
 function closeModal() { document.getElementById('modal').classList.remove('active'); }
 document.getElementById('modal').addEventListener('click', e => { if (e.target.id === 'modal') closeModal(); });
 
@@ -324,8 +332,8 @@ async function handleStripePayment(plan) {
   btn.textContent = '⏳ Redirection...';
   const links = {
     starter: 'https://buy.stripe.com/28E3cu7o3eN1aqCg2easg00',
-    pro: 'https://buy.stripe.com/28E3cu7o3eN1aqCg2easg00',
-    agency: 'https://buy.stripe.com/28E3cu7o3eN1aqCg2easg00'
+    pro: 'https://buy.stripe.com/8x24gy37N8oD9my3fsasg01',
+    agency: 'https://buy.stripe.com/5kQ14m7o348ndCO5nAasg02'
   };
   try {
     const successUrl = encodeURIComponent(window.location.href.split('?')[0] + '?success=1');
