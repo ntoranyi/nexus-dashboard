@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NEXUS AI — Dashboard</title>
 <script src="https://js.stripe.com/v3/"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap');
 
@@ -152,8 +153,8 @@
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-label" data-fr="Agents actifs" data-en="Active agents">Agents actifs</div><div class="stat-value" id="stat-agents">2</div><div class="stat-change" data-fr="sur 10 disponibles" data-en="of 10 available">sur 10 disponibles</div></div>
       <div class="stat-card"><div class="stat-label" data-fr="Exécutions aujourd'hui" data-en="Executions today">Exécutions aujourd'hui</div><div class="stat-value">15</div><div class="stat-change">Railway ✅</div></div>
-      <div class="stat-card"><div class="stat-label" data-fr="Leads générés" data-en="Leads generated">Leads générés</div><div class="stat-value">0</div><div class="stat-change" data-fr="ce mois" data-en="this month">ce mois</div></div>
-      <div class="stat-card"><div class="stat-label" data-fr="Emails envoyés" data-en="Emails sent">Emails envoyés</div><div class="stat-value">0</div><div class="stat-change" data-fr="ce mois" data-en="this month">ce mois</div></div>
+      <div class="stat-card"><div class="stat-label" data-fr="Leads générés" data-en="Leads generated">Leads générés</div><div class="stat-value" id="stat-leads">0</div><div class="stat-change" data-fr="ce mois" data-en="this month">ce mois</div></div>
+      <div class="stat-card"><div class="stat-label" data-fr="Emails envoyés" data-en="Emails sent">Emails envoyés</div><div class="stat-value" id="stat-emails">0</div><div class="stat-change" data-fr="ce mois" data-en="this month">ce mois</div></div>
     </div>
 
     <div class="section-title">🤖 <span data-fr="Vos Agents IA" data-en="Your AI Agents">Vos Agents IA</span></div>
@@ -232,6 +233,36 @@
 
 <script>
 const STRIPE_KEY = 'pk_test_51T7ffb18IYxYvNsQnPwnCgOUc4rLa79yHOEk8jYtMlwDHEUZiLCC5kTORRiV8GrRgqafSeCOhuy495H0VqUB63BX00UxbnmweG';
+const SUPABASE_URL = 'https://pgwwgwchlhmemkitrcxh.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_gPqMnHI4GWUhrVitkZIUwQ_WwRZCgly';
+const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function loadDashboardStats() {
+  const startOfMonth = new Date();
+  startOfMonth.setDate(1);
+  startOfMonth.setHours(0, 0, 0, 0);
+  const isoStart = startOfMonth.toISOString();
+
+  try {
+    const { count: leadsCount, error: leadsErr } = await sbClient
+      .from('leads')
+      .select('*', { count: 'exact', head: true })
+      .gte('created_at', isoStart);
+    if (!leadsErr && leadsCount !== null) {
+      document.getElementById('stat-leads').textContent = leadsCount;
+    }
+  } catch (e) { console.error('Erreur chargement leads:', e); }
+
+  try {
+    const { count: emailsCount, error: emailsErr } = await sbClient
+      .from('email_logs')
+      .select('*', { count: 'exact', head: true })
+      .gte('sent_at', isoStart);
+    if (!emailsErr && emailsCount !== null) {
+      document.getElementById('stat-emails').textContent = emailsCount;
+    }
+  } catch (e) { console.error('Erreur chargement emails:', e); }
+}
 let isPro = localStorage.getItem('nexus_pro') === 'true';
 let lang = localStorage.getItem('nexus_lang') || 'fr';
 let currentPlan = 'starter';
@@ -275,6 +306,7 @@ function selectPlan(plan) {
 window.onload = () => {
   applyLang();
   applyProState();
+  loadDashboardStats();
   const email = localStorage.getItem('nexus_email');
   if (email) document.getElementById('user-email').textContent = email;
   if (new URLSearchParams(window.location.search).get('success') === '1') activatePro();
