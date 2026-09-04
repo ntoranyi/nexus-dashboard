@@ -438,6 +438,7 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
         <div class="banner-pct" id="banner-pct">0%</div>
         <button class="btn-sm" onclick="advanceSetup()"><span data-i18n="banner_btn">Continuer</span> <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6H10M10 6L7 3M10 6L7 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </div>
+      <div style="font-size:11px;color:var(--m);margin-bottom:8px;letter-spacing:.02em" data-i18n="demo_data_note">📊 Aperçu — données de démonstration</div>
       <div class="stats au d2">
         <div class="sc" data-c="gold"><div class="sc-lbl"><div class="sc-dot" style="background:var(--g)"></div><span data-i18n="stat1_lbl">Revenu Total</span></div><div class="sc-val" id="s-rev">$0</div><div class="sc-chg up" data-i18n="stat1_chg">↑ +23% ce mois</div></div>
         <div class="sc" data-c="vio"><div class="sc-lbl"><div class="sc-dot" style="background:var(--v)"></div><span data-i18n="stat2_lbl">Leads Générés</span></div><div class="sc-val" id="s-leads">0</div><div class="sc-chg up" data-i18n="stat2_chg">↑ +18% cette semaine</div></div>
@@ -468,7 +469,7 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
       <!-- ── CARD: BUDGET PUBLICITAIRE ── -->
       <div class="dc full au d4" style="margin-top:14px">
         <div class="dc-head">
-          <div class="dc-title" data-i18n="db_budget_title">💰 Budget Publicitaire</div>
+          <div class="dc-title" data-i18n="db_budget_title">💰 Budget Publicitaire</div><span style="font-size:10.5px;color:var(--m);margin-left:8px;font-weight:400" data-i18n="demo_tag">(démo)</span>
           <button class="btn-sm" style="background:linear-gradient(135deg,var(--v),#5B21B6);height:30px;padding:0 14px;font-size:11.5px" onclick="openModal('db-fund-budget')" data-i18n="db_fund_btn">💳 Alimenter le budget</button>
         </div>
 
@@ -892,7 +893,7 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
           <div class="set-row"><div class="set-info"><strong data-i18n="set_n4">Mises à jour produit</strong><span data-i18n="notif_updates_desc">Nouvelles fonctionnalités NEXUS AI</span></div><label class="sw"><input type="checkbox"><div class="sw-track"></div></label></div>
         </div>
         <div class="dc">
-          <div class="dc-head"><div class="dc-title" data-i18n="set_sub_title">💳 Abonnement</div></div>
+          <div class="dc-head"><div class="dc-title" data-i18n="set_sub_title">💳 Abonnement</div><span style="font-size:10.5px;color:var(--m);margin-left:8px;font-weight:400" data-i18n="demo_tag">(démo)</span></div>
           <div style="background:linear-gradient(135deg,var(--vd),var(--gd));border:1px solid var(--vb);border-radius:12px;padding:16px;margin-bottom:14px">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><div style="font-family:var(--fd);font-size:15px;font-weight:800" data-i18n="plan_name">✦ Pro Plan</div><div style="font-family:var(--fs);font-size:24px;color:var(--gl)">67€<span style="font-family:var(--fb);font-size:11px;color:var(--m)">/mois</span></div></div>
             <div style="font-size:11.5px;color:var(--m)" data-i18n="sub_next_payment">Prochain paiement: 22 Juin 2026 · Stripe ···4242</div>
@@ -1570,7 +1571,7 @@ const T = {
     // Automations extra
     auto_operational:'↑ Opérationnel',
     // Dashboard budget
-    db_budget_title:'💰 Budget Publicitaire',db_fund_btn:'💳 Alimenter le budget',
+    db_budget_title:'💰 Budget Publicitaire',db_fund_btn:'💳 Alimenter le budget',demo_data_note:'📊 Aperçu — données de démonstration',demo_tag:'(démo)',
     db_budget_alloc:'Budget total alloué',db_budget_month:'/mois',
     db_budget_remaining:'Budget restant',db_budget_spent_lbl:'Dépensé : $1,900',db_budget_used_pct:'79% utilisé',
     tiktok_spent_label:'$680 dépensé',meta_spent_label:'$420 dépensé',google_spent_label:'$200 dépensé',
@@ -1748,7 +1749,7 @@ const T = {
     // Automations extra
     auto_operational:'↑ Operational',
     // Dashboard budget
-    db_budget_title:'💰 Ad Budget',db_fund_btn:'💳 Fund budget',
+    db_budget_title:'💰 Ad Budget',db_fund_btn:'💳 Fund budget',demo_data_note:'📊 Overview — demo data',demo_tag:'(demo)',
     db_budget_alloc:'Total allocated budget',db_budget_month:'/month',
     db_budget_remaining:'Remaining budget',db_budget_spent_lbl:'Spent: $1,900',db_budget_used_pct:'79% used',
     tiktok_spent_label:'$680 spent',meta_spent_label:'$420 spent',google_spent_label:'$200 spent',
