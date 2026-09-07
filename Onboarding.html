@@ -246,6 +246,23 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
 .auto-info strong{display:block;font-family:var(--fd);font-size:13px;font-weight:700;margin-bottom:3px}
 .auto-info span{font-size:11.5px;color:var(--m)}
 .auto-meta{display:flex;align-items:center;gap:8px;flex-shrink:0}
+/* Agents IA */
+.ag-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:32px}
+.ag-card{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:16px;display:flex;align-items:flex-start;gap:13px;transition:all .2s}
+.ag-card:hover{border-color:var(--bd2);background:var(--s2)}
+.ag-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.ag-info{flex:1;min-width:0}
+.ag-info strong{display:block;font-family:var(--fd);font-size:13px;font-weight:700;margin-bottom:3px}
+.ag-info p{font-size:11.5px;color:var(--m);line-height:1.5;margin-bottom:7px}
+.ag-tag{display:inline-block;font-size:9.5px;color:var(--dim);background:var(--s2);border:1px solid var(--bd);border-radius:5px;padding:2px 7px;letter-spacing:.02em}
+.flow-wrap{background:var(--s1);border:1px solid var(--bd);border-radius:16px;padding:28px 20px;text-align:center}
+.flow-node{display:inline-flex;align-items:center;gap:8px;background:var(--s2);border:1px solid var(--bd2);border-radius:10px;padding:9px 18px;font-family:var(--fd);font-size:12.5px;font-weight:700}
+.flow-node.hl-v{border-color:var(--vb);background:var(--vd);color:var(--vl)}
+.flow-node.hl-teal{border-color:var(--tlb);background:var(--tld);color:var(--teal)}
+.flow-line{width:1px;height:22px;background:var(--bd2);margin:0 auto}
+.flow-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:18px auto;max-width:640px}
+.flow-chip{display:flex;align-items:center;gap:6px;background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:6px 11px;font-size:11px;color:var(--m)}
+@media(max-width:720px){.ag-grid{grid-template-columns:1fr}}
 /* Chart bar */
 .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .bar-lbl{font-size:11.5px;color:var(--m);width:100px;flex-shrink:0;text-align:right}
@@ -395,6 +412,7 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
       <div class="sb-item" data-page="analytics" onclick="navigate('analytics')"><span class="sb-ico">📈</span><span data-i18n="nav_analytics">Analytics</span></div>
       <div class="sb-item" data-page="campaigns" onclick="navigate('campaigns')"><span class="sb-ico">🎯</span><span data-i18n="nav_camps">Campagnes</span></div>
       <div class="sb-lbl" data-i18n="nav_ai_tools">Outils IA</div>
+      <div class="sb-item" data-page="agents-ia" onclick="navigate('agents-ia')"><span class="sb-ico">🤖</span><span>Agents IA</span></div>
       <div class="sb-item" data-page="content" onclick="navigate('content')"><span class="sb-ico">✍️</span><span data-i18n="nav_content">Contenu</span></div>
       <div class="sb-item" data-page="ecommerce" onclick="navigate('ecommerce')"><span class="sb-ico">🛒</span><span>E-commerce</span></div>
       <div class="sb-item" data-page="affiliation" onclick="navigate('affiliation')"><span class="sb-ico">🤝</span><span data-i18n="nav_affil">Affiliation</span></div>
@@ -557,6 +575,67 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
         <div class="auto-ico" style="background:var(--rsd);border:1px solid var(--rsb)">📊</div>
         <div class="auto-info"><strong data-i18n="auto5_name">Rapport Hebdomadaire IA</strong><span data-i18n="auto5_desc">Synthèse performances · Email chaque lundi 8h · Config requise</span></div>
         <div class="auto-meta"><span class="auto-tag tag tag-r" data-i18n="auto_off">Inactif</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" onchange="toggleAuto(this)"><div class="sw-track"></div></label></div>
+      </div>
+    </div>
+
+    <!-- ── PAGE: AGENTS IA ── -->
+    <div class="pg" id="pg-agents-ia">
+      <div class="pg-head">
+        <div class="pg-title-wrap"><h1>🤖 <span class="hl">Agents IA</span></h1><p>8 agents spécialisés orchestrés par un Manager IA · Propulsé par n8n, auto-hébergé</p></div>
+      </div>
+
+      <div class="ag-grid">
+        <div class="ag-card">
+          <div class="ag-ico" style="background:var(--vd);border:1px solid var(--vb)">🎯</div>
+          <div class="ag-info"><strong>Leads</strong><p>Identifie et qualifie des prospects B2B (titre, secteur, email vérifié) puis les enregistre en base.</p><span class="ag-tag">GPT-4o mini · Apify</span></div>
+        </div>
+        <div class="ag-card">
+          <div class="ag-ico" style="background:var(--tld);border:1px solid var(--tlb)">📧</div>
+          <div class="ag-info"><strong>Email</strong><p>Rédige et envoie des emails de prospection personnalisés, puis journalise chaque envoi.</p><span class="ag-tag">GPT-4o mini · Gmail</span></div>
+        </div>
+        <div class="ag-card">
+          <div class="ag-ico" style="background:var(--gd);border:1px solid var(--gb)">🛒</div>
+          <div class="ag-info"><strong>Ads / Shopify</strong><p>Génère des créas publicitaires (titre, description, ciblage) prêtes pour Meta &amp; TikTok Ads.</p><span class="ag-tag">GPT-4o mini</span></div>
+        </div>
+        <div class="ag-card">
+          <div class="ag-ico" style="background:var(--rsd);border:1px solid var(--rsb)">📱</div>
+          <div class="ag-info"><strong>Social Media</strong><p>Produit des posts viraux (hook, points clés, CTA, hashtags) et planifie leur publication.</p><span class="ag-tag">GPT-4o mini · Buffer</span></div>
+        </div>
+        <div class="ag-card">
+          <div class="ag-ico" style="background:var(--bld);border:1px solid var(--blb)">💰</div>
+          <div class="ag-info"><strong>Finance</strong><p>Résume la performance (revenu, ROI) à partir des données réelles de leads et d'emails.</p><span class="ag-tag">GPT-4o mini · Supabase</span></div>
+        </div>
+        <div class="ag-card">
+          <div class="ag-ico" style="background:var(--vd);border:1px solid var(--vb)">📅</div>
+          <div class="ag-info"><strong>Calendar</strong><p>Consulte l'agenda et planifie automatiquement les tâches marketing de la semaine.</p><span class="ag-tag">GPT-4o mini · Google Calendar</span></div>
+        </div>
+        <div class="ag-card">
+          <div class="ag-ico" style="background:var(--tld);border:1px solid var(--tlb)">🎨</div>
+          <div class="ag-info"><strong>Creative</strong><p>Génère concepts visuels, images, voix et musique pour habiller les campagnes.</p><span class="ag-tag">GPT-4o mini · ElevenLabs</span></div>
+        </div>
+        <div class="ag-card">
+          <div class="ag-ico" style="background:var(--gd);border:1px solid var(--gb)">📊</div>
+          <div class="ag-info"><strong>Daily Report</strong><p>Envoie un briefing quotidien par email résumant l'activité du système.</p><span class="ag-tag">GPT-4o mini · Gmail</span></div>
+        </div>
+      </div>
+
+      <div class="sect-hd" style="margin-bottom:14px"><div class="sect-hd-txt"><h3 style="font-family:var(--fd);font-size:15px;font-weight:700">Architecture d'orchestration</h3><p>Comment une tâche circule entre les agents</p></div></div>
+      <div class="flow-wrap">
+        <div class="flow-node hl-v">🤖 Manager IA</div>
+        <div class="flow-line"></div>
+        <div class="flow-node hl-teal">🔀 Agent Router</div>
+        <div class="flow-row">
+          <div class="flow-chip">🎯 Leads</div>
+          <div class="flow-chip">📧 Email</div>
+          <div class="flow-chip">🛒 Ads/Shopify</div>
+          <div class="flow-chip">📱 Social</div>
+          <div class="flow-chip">💰 Finance</div>
+          <div class="flow-chip">📅 Calendar</div>
+          <div class="flow-chip">🎨 Creative</div>
+          <div class="flow-chip">📊 Daily Report</div>
+        </div>
+        <div class="flow-line"></div>
+        <div class="flow-node">✅ Résultats consolidés</div>
       </div>
     </div>
 
