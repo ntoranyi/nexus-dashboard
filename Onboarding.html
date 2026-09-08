@@ -248,7 +248,7 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
 .auto-meta{display:flex;align-items:center;gap:8px;flex-shrink:0}
 /* Agents IA */
 .ag-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:32px}
-.ag-card{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:16px;display:flex;align-items:flex-start;gap:13px;transition:all .2s}
+.ag-card{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:16px;display:flex;align-items:flex-start;gap:13px;transition:all .2s;cursor:pointer}
 .ag-card:hover{border-color:var(--bd2);background:var(--s2)}
 .ag-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
 .ag-ico svg{width:18px;height:18px}
@@ -587,35 +587,35 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
       </div>
 
       <div class="ag-grid">
-        <div class="ag-card">
+        <div class="ag-card" onclick="openModal('agent-lea')">
           <div class="ag-ico" style="background:var(--vd);border:1px solid var(--vb);color:var(--v)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><line x1="12" y1="8" x2="12" y2="4"/><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none"/><line x1="1" y1="13" x2="4" y2="13"/><line x1="20" y1="13" x2="23" y2="13"/><circle cx="9" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><path d="M9 17.5h6"/></svg></div>
           <div class="ag-info"><strong>Léa</strong><span class="ag-role">Agent Leads</span><p>Identifie et qualifie des prospects B2B (titre, secteur, email vérifié) puis les enregistre en base.</p><span class="ag-tag">GPT-4o mini · Apify</span></div>
         </div>
-        <div class="ag-card">
+        <div class="ag-card" onclick="openModal('agent-max')">
           <div class="ag-ico" style="background:var(--tld);border:1px solid var(--tlb);color:var(--teal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><line x1="12" y1="8" x2="12" y2="4"/><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none"/><line x1="1" y1="13" x2="4" y2="13"/><line x1="20" y1="13" x2="23" y2="13"/><circle cx="9" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><path d="M9 17.5h6"/></svg></div>
           <div class="ag-info"><strong>Max</strong><span class="ag-role">Agent Email</span><p>Rédige et envoie des emails de prospection personnalisés, puis journalise chaque envoi.</p><span class="ag-tag">GPT-4o mini · Gmail</span></div>
         </div>
-        <div class="ag-card">
+        <div class="ag-card" onclick="openModal('agent-nova')">
           <div class="ag-ico" style="background:var(--gd);border:1px solid var(--gb);color:var(--g)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><line x1="12" y1="8" x2="12" y2="4"/><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none"/><line x1="1" y1="13" x2="4" y2="13"/><line x1="20" y1="13" x2="23" y2="13"/><circle cx="9" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><path d="M9 17.5h6"/></svg></div>
           <div class="ag-info"><strong>Nova</strong><span class="ag-role">Agent Ads / Shopify</span><p>Génère des créas publicitaires (titre, description, ciblage) prêtes pour Meta &amp; TikTok Ads.</p><span class="ag-tag">GPT-4o mini</span></div>
         </div>
-        <div class="ag-card">
+        <div class="ag-card" onclick="openModal('agent-zoe')">
           <div class="ag-ico" style="background:var(--rsd);border:1px solid var(--rsb);color:var(--rose)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><line x1="12" y1="8" x2="12" y2="4"/><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none"/><line x1="1" y1="13" x2="4" y2="13"/><line x1="20" y1="13" x2="23" y2="13"/><circle cx="9" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><path d="M9 17.5h6"/></svg></div>
           <div class="ag-info"><strong>Zoé</strong><span class="ag-role">Agent Social Media</span><p>Produit des posts viraux (hook, points clés, CTA, hashtags) et planifie leur publication.</p><span class="ag-tag">GPT-4o mini · Buffer</span></div>
         </div>
-        <div class="ag-card">
+        <div class="ag-card" onclick="openModal('agent-theo')">
           <div class="ag-ico" style="background:var(--bld);border:1px solid var(--blb);color:var(--blue)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><line x1="12" y1="8" x2="12" y2="4"/><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none"/><line x1="1" y1="13" x2="4" y2="13"/><line x1="20" y1="13" x2="23" y2="13"/><circle cx="9" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><path d="M9 17.5h6"/></svg></div>
           <div class="ag-info"><strong>Théo</strong><span class="ag-role">Agent Finance</span><p>Résume la performance (revenu, ROI) à partir des données réelles de leads et d'emails.</p><span class="ag-tag">GPT-4o mini · Supabase</span></div>
         </div>
-        <div class="ag-card">
+        <div class="ag-card" onclick="openModal('agent-iris')">
           <div class="ag-ico" style="background:var(--vd);border:1px solid var(--vb);color:var(--v)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><line x1="12" y1="8" x2="12" y2="4"/><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none"/><line x1="1" y1="13" x2="4" y2="13"/><line x1="20" y1="13" x2="23" y2="13"/><circle cx="9" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><path d="M9 17.5h6"/></svg></div>
           <div class="ag-info"><strong>Iris</strong><span class="ag-role">Agent Calendar</span><p>Consulte l'agenda et planifie automatiquement les tâches marketing de la semaine.</p><span class="ag-tag">GPT-4o mini · Google Calendar</span></div>
         </div>
-        <div class="ag-card">
+        <div class="ag-card" onclick="openModal('agent-kai')">
           <div class="ag-ico" style="background:var(--tld);border:1px solid var(--tlb);color:var(--teal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><line x1="12" y1="8" x2="12" y2="4"/><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none"/><line x1="1" y1="13" x2="4" y2="13"/><line x1="20" y1="13" x2="23" y2="13"/><circle cx="9" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><path d="M9 17.5h6"/></svg></div>
           <div class="ag-info"><strong>Kai</strong><span class="ag-role">Agent Creative</span><p>Génère concepts visuels, images, voix et musique pour habiller les campagnes.</p><span class="ag-tag">GPT-4o mini · ElevenLabs</span></div>
         </div>
-        <div class="ag-card">
+        <div class="ag-card" onclick="openModal('agent-ana')">
           <div class="ag-ico" style="background:var(--gd);border:1px solid var(--gb);color:var(--g)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><line x1="12" y1="8" x2="12" y2="4"/><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none"/><line x1="1" y1="13" x2="4" y2="13"/><line x1="20" y1="13" x2="23" y2="13"/><circle cx="9" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><path d="M9 17.5h6"/></svg></div>
           <div class="ag-info"><strong>Ana</strong><span class="ag-role">Agent Daily Report</span><p>Envoie un briefing quotidien par email résumant l'activité du système.</p><span class="ag-tag">GPT-4o mini · Gmail</span></div>
         </div>
@@ -1551,6 +1551,119 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
       <button class="btn-ghost" onclick="closeModal('modal-campaign')" data-i18n="btn_cancel">Annuler</button>
       <button class="btn-sm gold" style="justify-content:center;color:#0A0A1A" onclick="createCampaign()" data-i18n="btn_launch_camp">Lancer la campagne →</button>
     </div>
+  </div>
+</div>
+
+<!-- ── MODALS: AGENTS IA ── -->
+<div class="modal-ov" id="modal-agent-lea" onclick="closeModalOnBg(event,'modal-agent-lea')">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-hd"><h3><span class="hl">Léa</span></h3><button class="modal-cls" onclick="closeModal('modal-agent-lea')">✕</button></div>
+    <div style="font-size:11px;color:var(--dim);margin-bottom:14px">Agent Leads · GPT-4o mini · Apify</div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:10px">Comment elle travaille</div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Cherche des profils correspondant aux critères (poste, secteur, pays)</span></div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Vérifie et enrichit chaque email trouvé</span></div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Enregistre les leads qualifiés dans Supabase</span></div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:16px 0 8px">Exemple de sortie</div>
+    <div style="background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:12px;font-size:11.5px;color:var(--m);line-height:1.6">« Marie Dubois — CEO @ Atelier Nova — marie@atelier-nova.fr — France »</div>
+    <div class="modal-foot"><button class="btn-sm" style="justify-content:center" onclick="closeModal('modal-agent-lea')">Fermer</button></div>
+  </div>
+</div>
+
+<div class="modal-ov" id="modal-agent-max" onclick="closeModalOnBg(event,'modal-agent-max')">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-hd"><h3><span class="hl">Max</span></h3><button class="modal-cls" onclick="closeModal('modal-agent-max')">✕</button></div>
+    <div style="font-size:11px;color:var(--dim);margin-bottom:14px">Agent Email · GPT-4o mini · Gmail</div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:10px">Comment il travaille</div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Analyse le profil du lead à contacter</span></div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Rédige un email de prospection personnalisé</span></div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">L'envoie via Gmail et journalise l'envoi</span></div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:16px 0 8px">Exemple de sortie</div>
+    <div style="background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:12px;font-size:11.5px;color:var(--m);line-height:1.6">« Objet : Marie, une idée pour Atelier Nova — Bonjour Marie, j'ai vu que... »</div>
+    <div class="modal-foot"><button class="btn-sm" style="justify-content:center" onclick="closeModal('modal-agent-max')">Fermer</button></div>
+  </div>
+</div>
+
+<div class="modal-ov" id="modal-agent-nova" onclick="closeModalOnBg(event,'modal-agent-nova')">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-hd"><h3><span class="hl">Nova</span></h3><button class="modal-cls" onclick="closeModal('modal-agent-nova')">✕</button></div>
+    <div style="font-size:11px;color:var(--dim);margin-bottom:14px">Agent Ads / Shopify · GPT-4o mini</div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:10px">Comment elle travaille</div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Analyse le produit ou l'offre à promouvoir</span></div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Génère titre, description et ciblage pour Meta &amp; TikTok Ads</span></div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Prépare la créa prête à publier</span></div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:16px 0 8px">Exemple de sortie</div>
+    <div style="background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:12px;font-size:11.5px;color:var(--m);line-height:1.6">« Hook TikTok : Arrête de perdre du temps sur ça — Titre Meta : Automatise ton business avec l'IA »</div>
+    <div class="modal-foot"><button class="btn-sm" style="justify-content:center" onclick="closeModal('modal-agent-nova')">Fermer</button></div>
+  </div>
+</div>
+
+<div class="modal-ov" id="modal-agent-zoe" onclick="closeModalOnBg(event,'modal-agent-zoe')">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-hd"><h3><span class="hl">Zoé</span></h3><button class="modal-cls" onclick="closeModal('modal-agent-zoe')">✕</button></div>
+    <div style="font-size:11px;color:var(--dim);margin-bottom:14px">Agent Social Media · GPT-4o mini · Buffer</div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:10px">Comment elle travaille</div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Génère un post (hook, message, CTA, hashtags)</span></div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Choisit le meilleur créneau de publication</span></div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Planifie l'envoi via Buffer sur Instagram/Facebook</span></div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:16px 0 8px">Exemple de sortie</div>
+    <div style="background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:12px;font-size:11.5px;color:var(--m);line-height:1.6">« 🚀 3 façons dont l'IA fait gagner 10h/semaine aux solo-founders... #IA #Entrepreneuriat »</div>
+    <div class="modal-foot"><button class="btn-sm" style="justify-content:center" onclick="closeModal('modal-agent-zoe')">Fermer</button></div>
+  </div>
+</div>
+
+<div class="modal-ov" id="modal-agent-theo" onclick="closeModalOnBg(event,'modal-agent-theo')">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-hd"><h3><span class="hl">Théo</span></h3><button class="modal-cls" onclick="closeModal('modal-agent-theo')">✕</button></div>
+    <div style="font-size:11px;color:var(--dim);margin-bottom:14px">Agent Finance · GPT-4o mini · Supabase</div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:10px">Comment il travaille</div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Récupère les données réelles de leads et d'emails envoyés</span></div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Calcule le ROI et la performance du mois</span></div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Génère un résumé et des recommandations</span></div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:16px 0 8px">Exemple de sortie</div>
+    <div style="background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:12px;font-size:11.5px;color:var(--m);line-height:1.6">« ROI du mois : +18% vs mois précédent — Recommandation : augmenter le budget Ads de 15% »</div>
+    <div class="modal-foot"><button class="btn-sm" style="justify-content:center" onclick="closeModal('modal-agent-theo')">Fermer</button></div>
+  </div>
+</div>
+
+<div class="modal-ov" id="modal-agent-iris" onclick="closeModalOnBg(event,'modal-agent-iris')">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-hd"><h3><span class="hl">Iris</span></h3><button class="modal-cls" onclick="closeModal('modal-agent-iris')">✕</button></div>
+    <div style="font-size:11px;color:var(--dim);margin-bottom:14px">Agent Calendar · GPT-4o mini · Google Calendar</div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:10px">Comment elle travaille</div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Consulte l'agenda Google Calendar</span></div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Identifie les créneaux disponibles</span></div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Planifie automatiquement les tâches marketing de la semaine</span></div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:16px 0 8px">Exemple de sortie</div>
+    <div style="background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:12px;font-size:11.5px;color:var(--m);line-height:1.6">« Lundi 10h — Génération contenu Instagram · Mercredi 14h — Relance leads chauds »</div>
+    <div class="modal-foot"><button class="btn-sm" style="justify-content:center" onclick="closeModal('modal-agent-iris')">Fermer</button></div>
+  </div>
+</div>
+
+<div class="modal-ov" id="modal-agent-kai" onclick="closeModalOnBg(event,'modal-agent-kai')">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-hd"><h3><span class="hl">Kai</span></h3><button class="modal-cls" onclick="closeModal('modal-agent-kai')">✕</button></div>
+    <div style="font-size:11px;color:var(--dim);margin-bottom:14px">Agent Creative · GPT-4o mini · ElevenLabs</div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:10px">Comment il travaille</div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Génère un concept visuel ou une image pour la campagne</span></div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Crée une voix off ou une musique avec ElevenLabs</span></div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Prépare l'asset final pour publication</span></div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:16px 0 8px">Exemple de sortie</div>
+    <div style="background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:12px;font-size:11.5px;color:var(--m);line-height:1.6">« Image générée : dashboard futuriste violet/cyan — Voix off : ton dynamique, 15 secondes »</div>
+    <div class="modal-foot"><button class="btn-sm" style="justify-content:center" onclick="closeModal('modal-agent-kai')">Fermer</button></div>
+  </div>
+</div>
+
+<div class="modal-ov" id="modal-agent-ana" onclick="closeModalOnBg(event,'modal-agent-ana')">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-hd"><h3><span class="hl">Ana</span></h3><button class="modal-cls" onclick="closeModal('modal-agent-ana')">✕</button></div>
+    <div style="font-size:11px;color:var(--dim);margin-bottom:14px">Agent Daily Report · GPT-4o mini · Gmail</div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:10px">Comment elle travaille</div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Compile l'activité de tous les agents de la journée</span></div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Résume les résultats clés (leads, emails, contenu publié)</span></div>
+    <div class="cl-item"><div class="cl-box done">✓</div><span style="color:var(--w)">Envoie un briefing par email chaque matin</span></div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:16px 0 8px">Exemple de sortie</div>
+    <div style="background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:12px;font-size:11.5px;color:var(--m);line-height:1.6">« Rapport du 8 sept. : 12 leads qualifiés, 8 emails envoyés, 2 posts publiés »</div>
+    <div class="modal-foot"><button class="btn-sm" style="justify-content:center" onclick="closeModal('modal-agent-ana')">Fermer</button></div>
   </div>
 </div>
 
