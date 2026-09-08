@@ -674,15 +674,10 @@
 
       if (error) throw error;
 
-      // 2. Sauvegarder dans la table users
-      await sbClient.from('users').insert([{
-        prenom: prenom,
-        email: email,
-        password: '***',
-        created_at: new Date().toISOString()
-      }]);
+      // Le profil (profiles: id, email, prenom, plan) est créé automatiquement
+      // par un trigger Postgres sur auth.users — voir migration create_profile_on_signup
 
-      // 3. Afficher succès
+      // Afficher succès
       document.getElementById('formWrap').style.display = 'none';
       document.getElementById('successCard').classList.add('show');
       document.querySelector('.login-link').style.display = 'none';
