@@ -251,8 +251,10 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
 .ag-card{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:16px;display:flex;align-items:flex-start;gap:13px;transition:all .2s}
 .ag-card:hover{border-color:var(--bd2);background:var(--s2)}
 .ag-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.ag-ico svg{width:18px;height:18px}
 .ag-info{flex:1;min-width:0}
-.ag-info strong{display:block;font-family:var(--fd);font-size:13px;font-weight:700;margin-bottom:3px}
+.ag-info strong{display:block;font-family:var(--fd);font-size:13px;font-weight:700;margin-bottom:2px}
+.ag-role{display:block;font-size:10px;color:var(--dim);font-weight:500;letter-spacing:.02em;margin-bottom:6px}
 .ag-info p{font-size:11.5px;color:var(--m);line-height:1.5;margin-bottom:7px}
 .ag-tag{display:inline-block;font-size:9.5px;color:var(--dim);background:var(--s2);border:1px solid var(--bd);border-radius:5px;padding:2px 7px;letter-spacing:.02em}
 .flow-wrap{background:var(--s1);border:1px solid var(--bd);border-radius:16px;padding:28px 20px;text-align:center}
@@ -586,36 +588,36 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
 
       <div class="ag-grid">
         <div class="ag-card">
-          <div class="ag-ico" style="background:var(--vd);border:1px solid var(--vb)">🎯</div>
-          <div class="ag-info"><strong>Leads</strong><p>Identifie et qualifie des prospects B2B (titre, secteur, email vérifié) puis les enregistre en base.</p><span class="ag-tag">GPT-4o mini · Apify</span></div>
+          <div class="ag-ico" style="background:var(--vd);border:1px solid var(--vb);color:var(--v)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><line x1="12" y1="8" x2="12" y2="4"/><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none"/><line x1="1" y1="13" x2="4" y2="13"/><line x1="20" y1="13" x2="23" y2="13"/><circle cx="9" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><path d="M9 17.5h6"/></svg></div>
+          <div class="ag-info"><strong>Léa</strong><span class="ag-role">Agent Leads</span><p>Identifie et qualifie des prospects B2B (titre, secteur, email vérifié) puis les enregistre en base.</p><span class="ag-tag">GPT-4o mini · Apify</span></div>
         </div>
         <div class="ag-card">
-          <div class="ag-ico" style="background:var(--tld);border:1px solid var(--tlb)">📧</div>
-          <div class="ag-info"><strong>Email</strong><p>Rédige et envoie des emails de prospection personnalisés, puis journalise chaque envoi.</p><span class="ag-tag">GPT-4o mini · Gmail</span></div>
+          <div class="ag-ico" style="background:var(--tld);border:1px solid var(--tlb);color:var(--teal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><line x1="12" y1="8" x2="12" y2="4"/><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none"/><line x1="1" y1="13" x2="4" y2="13"/><line x1="20" y1="13" x2="23" y2="13"/><circle cx="9" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><path d="M9 17.5h6"/></svg></div>
+          <div class="ag-info"><strong>Max</strong><span class="ag-role">Agent Email</span><p>Rédige et envoie des emails de prospection personnalisés, puis journalise chaque envoi.</p><span class="ag-tag">GPT-4o mini · Gmail</span></div>
         </div>
         <div class="ag-card">
-          <div class="ag-ico" style="background:var(--gd);border:1px solid var(--gb)">🛒</div>
-          <div class="ag-info"><strong>Ads / Shopify</strong><p>Génère des créas publicitaires (titre, description, ciblage) prêtes pour Meta &amp; TikTok Ads.</p><span class="ag-tag">GPT-4o mini</span></div>
+          <div class="ag-ico" style="background:var(--gd);border:1px solid var(--gb);color:var(--g)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><line x1="12" y1="8" x2="12" y2="4"/><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none"/><line x1="1" y1="13" x2="4" y2="13"/><line x1="20" y1="13" x2="23" y2="13"/><circle cx="9" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><path d="M9 17.5h6"/></svg></div>
+          <div class="ag-info"><strong>Nova</strong><span class="ag-role">Agent Ads / Shopify</span><p>Génère des créas publicitaires (titre, description, ciblage) prêtes pour Meta &amp; TikTok Ads.</p><span class="ag-tag">GPT-4o mini</span></div>
         </div>
         <div class="ag-card">
-          <div class="ag-ico" style="background:var(--rsd);border:1px solid var(--rsb)">📱</div>
-          <div class="ag-info"><strong>Social Media</strong><p>Produit des posts viraux (hook, points clés, CTA, hashtags) et planifie leur publication.</p><span class="ag-tag">GPT-4o mini · Buffer</span></div>
+          <div class="ag-ico" style="background:var(--rsd);border:1px solid var(--rsb);color:var(--rose)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><line x1="12" y1="8" x2="12" y2="4"/><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none"/><line x1="1" y1="13" x2="4" y2="13"/><line x1="20" y1="13" x2="23" y2="13"/><circle cx="9" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><path d="M9 17.5h6"/></svg></div>
+          <div class="ag-info"><strong>Zoé</strong><span class="ag-role">Agent Social Media</span><p>Produit des posts viraux (hook, points clés, CTA, hashtags) et planifie leur publication.</p><span class="ag-tag">GPT-4o mini · Buffer</span></div>
         </div>
         <div class="ag-card">
-          <div class="ag-ico" style="background:var(--bld);border:1px solid var(--blb)">💰</div>
-          <div class="ag-info"><strong>Finance</strong><p>Résume la performance (revenu, ROI) à partir des données réelles de leads et d'emails.</p><span class="ag-tag">GPT-4o mini · Supabase</span></div>
+          <div class="ag-ico" style="background:var(--bld);border:1px solid var(--blb);color:var(--blue)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><line x1="12" y1="8" x2="12" y2="4"/><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none"/><line x1="1" y1="13" x2="4" y2="13"/><line x1="20" y1="13" x2="23" y2="13"/><circle cx="9" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><path d="M9 17.5h6"/></svg></div>
+          <div class="ag-info"><strong>Théo</strong><span class="ag-role">Agent Finance</span><p>Résume la performance (revenu, ROI) à partir des données réelles de leads et d'emails.</p><span class="ag-tag">GPT-4o mini · Supabase</span></div>
         </div>
         <div class="ag-card">
-          <div class="ag-ico" style="background:var(--vd);border:1px solid var(--vb)">📅</div>
-          <div class="ag-info"><strong>Calendar</strong><p>Consulte l'agenda et planifie automatiquement les tâches marketing de la semaine.</p><span class="ag-tag">GPT-4o mini · Google Calendar</span></div>
+          <div class="ag-ico" style="background:var(--vd);border:1px solid var(--vb);color:var(--v)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><line x1="12" y1="8" x2="12" y2="4"/><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none"/><line x1="1" y1="13" x2="4" y2="13"/><line x1="20" y1="13" x2="23" y2="13"/><circle cx="9" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><path d="M9 17.5h6"/></svg></div>
+          <div class="ag-info"><strong>Iris</strong><span class="ag-role">Agent Calendar</span><p>Consulte l'agenda et planifie automatiquement les tâches marketing de la semaine.</p><span class="ag-tag">GPT-4o mini · Google Calendar</span></div>
         </div>
         <div class="ag-card">
-          <div class="ag-ico" style="background:var(--tld);border:1px solid var(--tlb)">🎨</div>
-          <div class="ag-info"><strong>Creative</strong><p>Génère concepts visuels, images, voix et musique pour habiller les campagnes.</p><span class="ag-tag">GPT-4o mini · ElevenLabs</span></div>
+          <div class="ag-ico" style="background:var(--tld);border:1px solid var(--tlb);color:var(--teal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><line x1="12" y1="8" x2="12" y2="4"/><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none"/><line x1="1" y1="13" x2="4" y2="13"/><line x1="20" y1="13" x2="23" y2="13"/><circle cx="9" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><path d="M9 17.5h6"/></svg></div>
+          <div class="ag-info"><strong>Kai</strong><span class="ag-role">Agent Creative</span><p>Génère concepts visuels, images, voix et musique pour habiller les campagnes.</p><span class="ag-tag">GPT-4o mini · ElevenLabs</span></div>
         </div>
         <div class="ag-card">
-          <div class="ag-ico" style="background:var(--gd);border:1px solid var(--gb)">📊</div>
-          <div class="ag-info"><strong>Daily Report</strong><p>Envoie un briefing quotidien par email résumant l'activité du système.</p><span class="ag-tag">GPT-4o mini · Gmail</span></div>
+          <div class="ag-ico" style="background:var(--gd);border:1px solid var(--gb);color:var(--g)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><line x1="12" y1="8" x2="12" y2="4"/><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none"/><line x1="1" y1="13" x2="4" y2="13"/><line x1="20" y1="13" x2="23" y2="13"/><circle cx="9" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><path d="M9 17.5h6"/></svg></div>
+          <div class="ag-info"><strong>Ana</strong><span class="ag-role">Agent Daily Report</span><p>Envoie un briefing quotidien par email résumant l'activité du système.</p><span class="ag-tag">GPT-4o mini · Gmail</span></div>
         </div>
       </div>
 
