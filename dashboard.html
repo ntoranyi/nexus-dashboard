@@ -266,8 +266,8 @@ async function loadDashboardStats() {
     }
   } catch (e) { console.error('Erreur chargement emails:', e); }
 }
-const PLAN_BADGE = { starter: 'Starter', pro: '⚡ Pro', agency: '🏆 Agency' };
-let currentUser = { email: '', plan: 'starter' };
+const PLAN_BADGE = { free: 'Plan Gratuit', starter: 'Starter', pro: '⚡ Pro', agency: '🏆 Agency' };
+let currentUser = { email: '', plan: 'free' };
 let isPro = false;
 let lang = localStorage.getItem('nexus_lang') || 'fr';
 let currentPlan = 'starter';
@@ -283,7 +283,7 @@ async function loadUserProfile() {
     .single();
 
   currentUser.email = profile?.email || user.email || '';
-  currentUser.plan = profile?.plan || 'starter';
+  currentUser.plan = profile?.plan || 'free';
   isPro = currentUser.plan === 'pro' || currentUser.plan === 'agency';
   return user;
 }
@@ -356,7 +356,7 @@ function showPage(id, el) {
 }
 
 function applyProState() {
-  const badgeLabel = PLAN_BADGE[currentUser.plan] || 'Starter';
+  const badgeLabel = PLAN_BADGE[currentUser.plan] || 'Plan Gratuit';
   document.getElementById('plan-badge').textContent = badgeLabel;
   document.getElementById('plan-badge').className = isPro ? 'badge-pro' : 'badge-free';
   document.getElementById('settings-plan').textContent = badgeLabel;

@@ -1677,9 +1677,9 @@ const SUPABASE_URL = 'https://pgwwgwchlhmemkitrcxh.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_gPqMnHI4GWUhrVitkZIUwQ_WwRZCgly';
 const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const PLAN_LABELS = { starter: '✦ Starter Plan', pro: '✦ Pro Plan', agency: '✦ Agency Plan' };
-const PLAN_PRICE = { starter: '27€', pro: '67€', agency: '147€' };
-let currentUser = { name: 'Jeff', email: '', plan: 'starter' };
+const PLAN_LABELS = { free: '✦ Free Plan', starter: '✦ Starter Plan', pro: '✦ Pro Plan', agency: '✦ Agency Plan' };
+const PLAN_PRICE = { free: '0€', starter: '27€', pro: '67€', agency: '147€' };
+let currentUser = { name: 'Jeff', email: '', plan: 'free' };
 
 async function initAuth() {
   const { data: { user } } = await sbClient.auth.getUser();
@@ -1694,15 +1694,15 @@ async function initAuth() {
   currentUser = {
     name: profile?.prenom || user.user_metadata?.prenom || (user.email ? user.email.split('@')[0] : 'Utilisateur'),
     email: profile?.email || user.email || '',
-    plan: profile?.plan || 'starter'
+    plan: profile?.plan || 'free'
   };
   applyUserData();
 }
 
 function applyUserData() {
   const lang2 = currentLang || 'fr';
-  const planLabel = PLAN_LABELS[currentUser.plan] || PLAN_LABELS.starter;
-  const price = PLAN_PRICE[currentUser.plan] || PLAN_PRICE.starter;
+  const planLabel = PLAN_LABELS[currentUser.plan] || PLAN_LABELS.free;
+  const price = PLAN_PRICE[currentUser.plan] || PLAN_PRICE.free;
 
   document.querySelectorAll('[data-i18n="ob_title"]').forEach(el => {
     el.innerHTML = (lang2 === 'fr' ? 'Bienvenue, ' : 'Welcome, ') + `<span class="hl">${currentUser.name}</span> 👋`;
