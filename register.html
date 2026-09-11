@@ -592,7 +592,7 @@
         <div class="success-icon">✓</div>
         <div class="success-title" id="successTitle">Compte créé !</div>
         <p class="success-sub" id="successSub">Parfait, ton compte est prêt. On va maintenant personnaliser ton expérience NEXUS AI.</p>
-        <a href="/Onboarding.html" class="btn-goto" id="successBtn">Continuer vers l'onboarding →</a>
+        <a href="/dashboard.html" class="btn-goto" id="successBtn">Continuer vers le dashboard →</a>
       </div>
 
       <p class="login-link">Déjà un compte ? <a href="/login">Se connecter</a></p>
@@ -683,8 +683,8 @@
 
       if (data.session) {
         // Confirmation email désactivée : l'utilisateur est déjà connecté
-        document.getElementById('successBtn').href = '/Onboarding.html';
-        document.getElementById('successBtn').textContent = "Continuer vers l'onboarding →";
+        document.getElementById('successBtn').href = '/dashboard.html';
+        document.getElementById('successBtn').textContent = "Continuer vers le dashboard →";
       } else {
         // Confirmation email requise avant de pouvoir se connecter
         document.getElementById('successTitle').textContent = 'Vérifie ta boîte mail !';

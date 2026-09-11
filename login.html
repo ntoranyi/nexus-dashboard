@@ -193,7 +193,7 @@
       <div class="success-icon">✓</div>
       <div class="success-title">Connecté !</div>
       <div class="success-sub">Bienvenue sur NEXUS AI.<br>Redirection vers ton dashboard...</div>
-      <a href="/Onboarding.html" class="btn-dashboard">Accéder au dashboard →</a>
+      <a href="/dashboard.html" class="btn-dashboard">Accéder au dashboard →</a>
     </div>
 
     <div class="register-link" id="registerLink">
@@ -231,7 +231,7 @@
         document.getElementById('registerLink').style.display = 'none';
         document.getElementById('successCard').classList.add('show');
 
-        setTimeout(() => { window.location.href = '/Onboarding.html'; }, 2000);
+        setTimeout(() => { window.location.href = '/dashboard.html'; }, 2000);
       } catch (err) {
         btn.disabled = false;
         btn.textContent = 'Se connecter →';
