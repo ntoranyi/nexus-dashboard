@@ -110,7 +110,10 @@
 <body>
 
 <nav>
-  <div class="logo">⚡ NEXUS AI</div>
+  <div style="display:flex;align-items:center;gap:18px">
+    <div class="logo">⚡ NEXUS AI</div>
+    <a href="/Onboarding.html" style="color:var(--muted);font-size:13px;text-decoration:none" data-fr="← Retour au dashboard" data-en="← Back to dashboard">← Retour au dashboard</a>
+  </div>
   <div class="nav-right">
     <span class="badge-free" id="plan-badge">Plan Gratuit</span>
     <button class="btn-upgrade-nav" id="nav-upgrade-btn" onclick="openModal('pro')" data-fr="🚀 Passer à Pro" data-en="🚀 Upgrade to Pro">🚀 Passer à Pro</button>
@@ -263,9 +266,41 @@ async function loadDashboardStats() {
     }
   } catch (e) { console.error('Erreur chargement emails:', e); }
 }
-let isPro = localStorage.getItem('nexus_pro') === 'true';
+const PLAN_BADGE = { free: 'Plan Gratuit', starter: 'Starter', pro: '⚡ Pro', agency: '🏆 Agency' };
+let currentUser = { email: '', plan: 'free' };
+let isPro = false;
 let lang = localStorage.getItem('nexus_lang') || 'fr';
 let currentPlan = 'starter';
+
+async function loadUserProfile() {
+  const { data: { user } } = await sbClient.auth.getUser();
+  if (!user) { window.location.href = '/login.html'; return null; }
+
+  const { data: profile } = await sbClient
+    .from('profiles')
+    .select('plan, email')
+    .eq('id', user.id)
+    .single();
+
+  currentUser.email = profile?.email || user.email || '';
+  currentUser.plan = profile?.plan || 'free';
+  isPro = currentUser.plan === 'pro' || currentUser.plan === 'agency';
+  return user;
+}
+
+async function waitForPlanUpgrade(retries = 5) {
+  const previousPlan = currentUser.plan;
+  for (let i = 0; i < retries; i++) {
+    await new Promise(r => setTimeout(r, 1500));
+    const user = await loadUserProfile();
+    if (!user) return;
+    if (currentUser.plan !== previousPlan) break;
+  }
+  document.getElementById('success-banner').style.display = 'block';
+  applyProState();
+  closeModal();
+  window.history.replaceState({}, '', window.location.pathname);
+}
 
   const plans = {
   starter: {
@@ -303,13 +338,14 @@ function selectPlan(plan) {
     btn.style.border = pl === plan ? '2px solid var(--accent)' : '1px solid var(--border)';
   });
 }
-window.onload = () => {
+window.onload = async () => {
   applyLang();
+  const user = await loadUserProfile();
+  if (!user) return;
   applyProState();
   loadDashboardStats();
-  const email = localStorage.getItem('nexus_email');
-  if (email) document.getElementById('user-email').textContent = email;
-  if (new URLSearchParams(window.location.search).get('success') === '1') activatePro();
+  document.getElementById('user-email').textContent = currentUser.email;
+  if (new URLSearchParams(window.location.search).get('success') === '1') waitForPlanUpgrade();
 };
 
 function showPage(id, el) {
@@ -320,13 +356,14 @@ function showPage(id, el) {
 }
 
 function applyProState() {
+  const badgeLabel = PLAN_BADGE[currentUser.plan] || 'Plan Gratuit';
+  document.getElementById('plan-badge').textContent = badgeLabel;
+  document.getElementById('plan-badge').className = isPro ? 'badge-pro' : 'badge-free';
+  document.getElementById('settings-plan').textContent = badgeLabel;
   if (!isPro) return;
-  document.getElementById('plan-badge').textContent = '⚡ Pro';
-  document.getElementById('plan-badge').className = 'badge-pro';
   document.getElementById('nav-upgrade-btn').style.display = 'none';
   document.getElementById('upgrade-banner').style.display = 'none';
   document.getElementById('locked-automation').style.display = 'none';
-  document.getElementById('settings-plan').textContent = 'Pro ⚡';
   document.getElementById('stat-agents').textContent = '10';
   ['lock-email','lock-social','lock-leads','lock-creatifs','lock-finance','lock-rapports'].forEach(id => {
     const el = document.getElementById(id); if(el) el.remove();
@@ -335,14 +372,6 @@ function applyProState() {
     el.classList.remove('locked');
     const s = document.createElement('div'); s.className = 'agent-status'; s.textContent = 'Actif'; el.appendChild(s);
   });
-}
-
-function activatePro() {
-  isPro = true;
-  localStorage.setItem('nexus_pro', 'true');
-  document.getElementById('success-banner').style.display = 'block';
-  applyProState(); closeModal();
-  window.history.replaceState({}, '', window.location.pathname);
 }
 
 window.addEventListener('pageshow', () => {
@@ -372,7 +401,8 @@ async function handleStripePayment(plan) {
     const cancelUrl = encodeURIComponent(window.location.href.split('?')[0]);
     window.location.href = `${links[plan] || links.starter}?success_url=${successUrl}&cancel_url=${cancelUrl}`;
   } catch(err) {
-    activatePro(); btn.disabled = false;
+    btn.disabled = false;
+    btn.textContent = `💳 Payer ${plans[plan]?.price || plans.starter.price}/mois`;
   }
 }
 
@@ -389,7 +419,11 @@ function applyLang() {
   });
 }
 
-function logout() { localStorage.clear(); window.location.href = 'login.html'; }
+async function logout() {
+  try { await sbClient.auth.signOut(); } catch (e) {}
+  localStorage.removeItem('nexus_lang');
+  window.location.href = '/login.html';
+}
 </script>
 </body>
 </html>
