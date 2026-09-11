@@ -235,7 +235,11 @@
       } catch (err) {
         btn.disabled = false;
         btn.textContent = 'Se connecter →';
-        errorMsg.textContent = 'Email ou mot de passe incorrect. Réessaye.';
+        if (err.message && err.message.toLowerCase().includes('email not confirmed')) {
+          errorMsg.textContent = "Ton adresse email n'est pas encore confirmée. Vérifie ta boîte mail (et tes spams) pour le lien de confirmation reçu à l'inscription.";
+        } else {
+          errorMsg.textContent = 'Email ou mot de passe incorrect. Réessaye.';
+        }
         errorMsg.style.display = 'block';
       }
     }
