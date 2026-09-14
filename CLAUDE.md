@@ -11,6 +11,10 @@ Contexte projet pour Claude Code / Claude — à lire avant toute modification d
 - Base de données : Supabase (project `pgwwgwchlhmemkitrcxh`, bucket `nexus-content`)
 - Paiements : Stripe (mode live)
 
+## Mémoire de travail
+
+Le repo [ntoranyi/nexus-ai-knowledge](https://github.com/ntoranyi/nexus-ai-knowledge) (privé) sert de vault Obsidian + journal de travail pour l'ensemble du projet NEXUS AI (dashboard, n8n, formation NAIOM...). Voir `MEMOIRE.md` à sa racine avant de redémarrer une tâche déjà entamée, pour éviter de répéter du travail ou de re-découvrir un contexte déjà établi.
+
 ## Structure du repo
 
 | Fichier | Rôle |
