@@ -759,6 +759,7 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
           <div class="act-item"><div class="act-ico" style="background:var(--gd);border:1px solid var(--gb)">🎬</div><div class="act-txt"><strong data-i18n="post2_title">«&nbsp;Ce SaaS m'a fait $12K en 30 jours&nbsp;»</strong><span><span data-i18n="post2_stats">TikTok · 89K vues · </span><span style="color:#6EE7B7">+890 leads</span></span></div></div>
           <div class="act-item"><div class="act-ico" style="background:var(--tld);border:1px solid var(--tlb)">✉️</div><div class="act-txt"><strong data-i18n="post3_title">Newsletter #47 — Automation IA</strong><span data-i18n="post3_stats">Email · 3 847 envois · 42% open rate</span></div></div>
           <div class="act-item"><div class="act-ico" style="background:var(--bld);border:1px solid var(--blb)">🐦</div><div class="act-txt"><strong data-i18n="post4_title">Thread: 10 outils IA en 2026</strong><span>X/Twitter · 28K impressions</span></div></div>
+          <div class="act-item"><div class="act-ico" style="background:var(--rsd);border:1px solid var(--rsb)">🛍️</div><div class="act-txt"><strong data-i18n="post5_title">« Ta peau mérite 5 minutes par jour »</strong><span data-i18n="post5_stats">Agent Ads/Shopify · Rouleau de Jade &amp; Gua Sha · 24,99€ · Publié</span></div></div>
         </div>
       </div>
     </div>
@@ -1022,6 +1023,11 @@ select.form-inp option{background:#0C0C1E;color:var(--w)}
       <div class="act-ico" style="background:var(--bld);border:1px solid var(--blb)">🐦</div>
       <div class="act-txt"><strong data-i18n="lib_post4_title">Thread: 10 outils IA en 2026</strong><span>X/Twitter · 28K impressions · <span style="color:var(--g)">15 Mai 2026</span></span></div>
       <div style="color:var(--vl);font-size:11px;flex-shrink:0;cursor:pointer" onclick="toast('📋','Thread copié !','vio')" data-i18n="btn_copy">Copier →</div>
+    </div>
+    <div class="act-item" style="cursor:pointer;border-radius:10px;padding:10px" onmouseover="this.style.background='var(--s1)'" onmouseout="this.style.background=''">
+      <div class="act-ico" style="background:var(--rsd);border:1px solid var(--rsb)">🛍️</div>
+      <div class="act-txt"><strong data-i18n="lib_post5_title">« Ta peau mérite 5 minutes par jour »</strong><span><span data-i18n="lib_post5_stats">Agent Ads/Shopify · Rouleau de Jade &amp; Gua Sha · 24,99€ · </span><span style="color:var(--g)">17 Sept 2026</span></span></div>
+      <div style="color:var(--vl);font-size:11px;flex-shrink:0;cursor:pointer" onclick="toast('📋','Créa copiée dans le presse-papier !','vio')" data-i18n="btn_copy">Copier →</div>
     </div>
     <div class="modal-foot"><button class="btn-sm" style="justify-content:center" onclick="closeModal('modal-library')" data-i18n="btn_close">Fermer</button></div>
   </div>
@@ -1797,6 +1803,7 @@ const T = {
     post2_title:'« Ce SaaS m\'a fait $12K en 30 jours »',post2_stats:'TikTok · 89K vues · ',
     post3_title:'Newsletter #47 — Automation IA',post3_stats:'Email · 3 847 envois · 42% open rate',
     post4_title:'Thread: 10 outils IA en 2026',
+    post5_title:'« Ta peau mérite 5 minutes par jour »',post5_stats:'Agent Ads/Shopify · Rouleau de Jade & Gua Sha · 24,99€ · Publié',
     // E-commerce
     nav_ecom:'E-commerce',eco_ca:'CA boutique',eco_orders:'Commandes',eco_avg_basket:'Panier moyen',
     stable_lbl:'Stable',eco_abandon:'Abandon panier',
@@ -1836,6 +1843,7 @@ const T = {
     lib_post2_title:'« Ce SaaS m\'a fait $12K en 30 jours »',lib_post2_stats:'TikTok · 89K vues · +890 leads · ',
     lib_post3_title:'Newsletter #47 — Automation IA',lib_post3_stats:'Email · 3 847 envois · 42% open rate · ',
     lib_post4_title:'Thread: 10 outils IA en 2026',
+    lib_post5_title:'« Ta peau mérite 5 minutes par jour »',lib_post5_stats:'Agent Ads/Shopify · Rouleau de Jade & Gua Sha · 24,99€ · ',
     // Modal - add product
     modal_new_product:'Nouveau produit',lbl_prod_name:'Nom du produit',lbl_price:'Prix ($)',
     lbl_type:'Type',lbl_short_desc:'Description courte',lbl_sale_platform:'Plateforme de vente',
@@ -2040,6 +2048,7 @@ const T = {
     post2_title:'"This SaaS made me $12K in 30 days"',post2_stats:'TikTok · 89K views · ',
     post3_title:'Newsletter #47 — AI Automation',post3_stats:'Email · 3,847 sends · 42% open rate',
     post4_title:'Thread: 10 AI tools in 2026',
+    post5_title:'"Your skin deserves 5 minutes a day"',post5_stats:'Ads/Shopify Agent · Jade Roller &amp; Gua Sha · €24.99 · Published',
     // E-commerce
     nav_ecom:'E-commerce',eco_ca:'Store revenue',eco_orders:'Orders',eco_avg_basket:'Average cart',
     stable_lbl:'Stable',eco_abandon:'Cart abandonment',
@@ -2079,6 +2088,7 @@ const T = {
     lib_post2_title:'"This SaaS made me $12K in 30 days"',lib_post2_stats:'TikTok · 89K views · +890 leads · ',
     lib_post3_title:'Newsletter #47 — AI Automation',lib_post3_stats:'Email · 3,847 sends · 42% open rate · ',
     lib_post4_title:'Thread: 10 AI tools in 2026',
+    lib_post5_title:'"Your skin deserves 5 minutes a day"',lib_post5_stats:'Ads/Shopify Agent · Jade Roller &amp; Gua Sha · €24.99 · ',
     // Modal - add product
     modal_new_product:'New product',lbl_prod_name:'Product name',lbl_price:'Price ($)',
     lbl_type:'Type',lbl_short_desc:'Short description',lbl_sale_platform:'Sales platform',
