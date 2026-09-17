@@ -1,0 +1,14 @@
+name: Consistency checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Vérifier index/landing et cohérence des tarifs
+        run: bash scripts/check-consistency.sh
