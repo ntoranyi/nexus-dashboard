@@ -185,8 +185,25 @@
         <label>Mot de passe</label>
         <input type="password" id="pwd" placeholder="••••••••">
       </div>
-      <div class="forgot"><a href="#">Mot de passe oublié ?</a></div>
+      <div class="forgot"><a href="#" onclick="showForgot(); return false;">Mot de passe oublié ?</a></div>
       <button class="btn" id="submitBtn" onclick="handleLogin()">Se connecter →</button>
+    </div>
+
+    <div id="forgotWrap" style="display:none">
+      <div class="error-msg" id="forgotErrorMsg"></div>
+      <div class="field" id="forgotFieldEmail">
+        <label>Adresse email</label>
+        <input type="email" id="forgotEmail" placeholder="ton@email.com">
+      </div>
+      <button class="btn" id="forgotSubmitBtn" onclick="handleForgotPassword()">Envoyer le lien de réinitialisation →</button>
+      <div class="forgot"><a href="#" onclick="showLogin(); return false;">← Retour à la connexion</a></div>
+    </div>
+
+    <div class="success-card" id="forgotSuccessCard">
+      <div class="success-icon">✓</div>
+      <div class="success-title">Email envoyé !</div>
+      <div class="success-sub" id="forgotSuccessSub"></div>
+      <a href="#" class="btn-dashboard" onclick="showLogin(); return false;">Retour à la connexion →</a>
     </div>
 
     <div class="success-card" id="successCard">
@@ -244,8 +261,58 @@
       }
     }
 
+    function showForgot() {
+      document.getElementById('formWrap').style.display = 'none';
+      document.getElementById('registerLink').style.display = 'none';
+      document.getElementById('forgotWrap').style.display = 'block';
+      document.getElementById('forgotSuccessCard').classList.remove('show');
+    }
+
+    function showLogin() {
+      document.getElementById('forgotWrap').style.display = 'none';
+      document.getElementById('forgotSuccessCard').classList.remove('show');
+      document.getElementById('formWrap').style.display = 'block';
+      document.getElementById('registerLink').style.display = 'block';
+    }
+
+    async function handleForgotPassword() {
+      const email = document.getElementById('forgotEmail').value.trim();
+      const errorMsg = document.getElementById('forgotErrorMsg');
+      const btn = document.getElementById('forgotSubmitBtn');
+
+      errorMsg.style.display = 'none';
+
+      if (!email) {
+        errorMsg.textContent = 'Merci d\'entrer ton adresse email.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Envoi en cours...';
+
+      const { error } = await sbClient.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + '/reset-password.html'
+      });
+
+      btn.disabled = false;
+      btn.textContent = 'Envoyer le lien de réinitialisation →';
+
+      // Toujours afficher un succès générique, même en cas d'erreur, pour ne pas
+      // révéler si l'email existe ou non dans la base (énumération de comptes).
+      if (error) console.error('Erreur reset password:', error);
+
+      document.getElementById('forgotWrap').style.display = 'none';
+      document.getElementById('forgotSuccessSub').textContent =
+        `Si un compte existe pour ${email}, un lien de réinitialisation vient de lui être envoyé. Vérifie ta boîte mail (et tes spams).`;
+      document.getElementById('forgotSuccessCard').classList.add('show');
+    }
+
     document.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') handleLogin();
+      if (e.key === 'Enter') {
+        if (document.getElementById('forgotWrap').style.display !== 'none') handleForgotPassword();
+        else handleLogin();
+      }
     });
   </script>
 </body>
