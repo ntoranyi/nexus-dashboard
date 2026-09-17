@@ -595,7 +595,7 @@
         <a href="/dashboard.html" class="btn-goto" id="successBtn">Continuer vers le dashboard →</a>
       </div>
 
-      <p class="login-link">Déjà un compte ? <a href="/login">Se connecter</a></p>
+      <p class="login-link">Déjà un compte ? <a href="/login.html">Se connecter</a></p>
     </div>
   </div>
 </div>
@@ -688,7 +688,12 @@
       } else {
         // Confirmation email requise avant de pouvoir se connecter
         document.getElementById('successTitle').textContent = 'Vérifie ta boîte mail !';
-        document.getElementById('successSub').innerHTML = `On vient d'envoyer un email de confirmation à <strong>${email}</strong>. Clique sur le lien qu'il contient, puis reviens te connecter ici.`;
+        const successSub = document.getElementById('successSub');
+        successSub.textContent = "On vient d'envoyer un email de confirmation à ";
+        const emailStrong = document.createElement('strong');
+        emailStrong.textContent = email;
+        successSub.appendChild(emailStrong);
+        successSub.appendChild(document.createTextNode('. Clique sur le lien qu\'il contient, puis reviens te connecter ici.'));
         document.getElementById('successBtn').href = '/login.html';
         document.getElementById('successBtn').textContent = 'Aller à la connexion →';
       }

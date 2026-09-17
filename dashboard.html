@@ -290,12 +290,14 @@ async function loadUserProfile() {
 
 async function waitForPlanUpgrade(retries = 5) {
   const previousPlan = currentUser.plan;
+  let upgraded = false;
   for (let i = 0; i < retries; i++) {
     await new Promise(r => setTimeout(r, 1500));
     const user = await loadUserProfile();
     if (!user) return;
-    if (currentUser.plan !== previousPlan) break;
+    if (currentUser.plan !== previousPlan) { upgraded = true; break; }
   }
+  if (!upgraded) return;
   document.getElementById('success-banner').style.display = 'block';
   applyProState();
   closeModal();
@@ -397,6 +399,9 @@ async function handleStripePayment(plan) {
     agency: 'https://buy.stripe.com/5kQ14m7o348ndCO5nAasg02'
   };
   try {
+    // Stripe Payment Links (buy.stripe.com) ignorent ces query params — contrairement à une
+    // Checkout Session, la redirection après paiement dépend de la config "After payment" faite
+    // dans le Dashboard Stripe pour CE lien. Vérifier qu'elle pointe vers dashboard.html?success=1.
     const successUrl = encodeURIComponent(window.location.href.split('?')[0] + '?success=1');
     const cancelUrl = encodeURIComponent(window.location.href.split('?')[0]);
     window.location.href = `${links[plan] || links.starter}?success_url=${successUrl}&cancel_url=${cancelUrl}`;
