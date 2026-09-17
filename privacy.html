@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Politique de confidentialité — NEXUS AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#1A3A5C;--blue-mid:#1E4B78;--blue-light:#2563A8;
+  --accent:#4FC3F7;--accent2:#00D4FF;
+  --black:#020610;--surface:#060F1C;--surface2:#0A1628;
+  --border:rgba(79,195,247,0.15);--border2:rgba(79,195,247,0.3);
+  --text:#E8F4FF;--muted:rgba(232,244,255,0.55);
+  --warn:#F0B429;--warn-bg:rgba(240,180,41,0.08);--warn-border:rgba(240,180,41,0.35);
+  --font-head:'Syne',sans-serif;--font-body:'Space Grotesk',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--text);font-family:var(--font-body);line-height:1.7}
+
+.banner{position:sticky;top:0;z-index:200;background:var(--warn-bg);border-bottom:1px solid var(--warn-border);color:var(--warn);padding:12px 5%;font-size:13px;display:flex;gap:10px;align-items:flex-start}
+.banner strong{color:#fff}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:72px;background:rgba(2,6,16,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--font-head);font-size:22px;font-weight:800;color:#fff;letter-spacing:-1px;text-decoration:none}
+.nav-logo .nx{color:var(--accent2)}
+.nav-back{color:var(--muted);text-decoration:none;font-size:14px}
+.nav-back:hover{color:var(--accent)}
+
+.wrap{max-width:760px;margin:0 auto;padding:64px 5% 100px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent2);margin-bottom:14px}
+h1{font-family:var(--font-head);font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-1px;color:#fff;margin-bottom:16px}
+.meta{display:flex;gap:20px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-bottom:48px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.meta b{color:var(--text)}
+
+article{margin-bottom:34px;scroll-margin-top:90px}
+article h2{font-family:var(--font-head);font-size:18px;font-weight:700;color:#fff;margin-bottom:10px;display:flex;gap:10px;align-items:baseline}
+article h2 .num{font-size:13px;font-weight:500;color:var(--accent2)}
+article p{font-size:15px;color:var(--text);margin-bottom:12px}
+article p:last-child{margin-bottom:0}
+
+.fill{background:rgba(240,180,41,0.1);border:1px dashed var(--warn-border);border-radius:4px;padding:1px 6px;font-size:0.92em;color:var(--warn)}
+
+.tbl-wrap{overflow-x:auto;margin:4px 0 16px}
+table{width:100%;border-collapse:collapse;background:var(--surface2);border:1px solid var(--border);border-radius:12px;overflow:hidden;font-size:13.5px}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--border)}
+th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;font-weight:600}
+td.svc{font-weight:600;color:#fff;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+
+footer{border-top:1px solid var(--border);padding:32px 5%;text-align:center;color:var(--muted);font-size:13px}
+footer a{color:var(--accent2);text-decoration:none}
+footer a:hover{text-decoration:underline}
+
+@media (max-width:600px){.wrap{padding-top:40px}}
+</style>
+</head>
+<body>
+
+<div class="banner">🚧 <span><strong>Brouillon de travail</strong> — ce document n'a pas encore de valeur légale. Il doit être complété (champs <span class="fill" style="padding:0 4px">entre crochets</span>) et validé par un professionnel du droit avant d'être considéré comme définitif.</span></div>
+
+<nav>
+  <a href="/" class="nav-logo">NEXUS<span class="nx">AI</span></a>
+  <a href="/" class="nav-back">← Retour à l'accueil</a>
+</nav>
+
+<div class="wrap">
+  <div class="eyebrow">Document légal · Brouillon v0.1</div>
+  <h1>Politique de confidentialité</h1>
+  <div class="meta">
+    <span>DERNIÈRE MISE À JOUR&nbsp;<b>17/09/2026</b></span>
+    <span>PORTÉE&nbsp;<b>France · Belgique · Suisse romande</b></span>
+  </div>
+
+  <article id="responsable">
+    <h2><span class="num">Art. 1</span> Responsable de traitement</h2>
+    <p>Le responsable du traitement des données à caractère personnel collectées via le Service est <span class="fill">[raison sociale]</span>, <span class="fill">[adresse]</span>, joignable à <span class="fill">[email de contact / DPO]</span>.</p>
+  </article>
+
+  <article id="donnees">
+    <h2><span class="num">Art. 2</span> Données collectées</h2>
+    <p>Nous collectons : les données de compte (prénom, email, mot de passe chiffré), le plan d'abonnement souscrit, les données de facturation traitées par Stripe (NEXUS AI ne voit jamais le numéro de carte complet), ainsi que les données d'usage du Service (contenus générés, statistiques de campagnes, journaux techniques).</p>
+  </article>
+
+  <article id="finalites">
+    <h2><span class="num">Art. 3</span> Finalités &amp; bases légales</h2>
+    <p>Ces données sont traitées pour : l'exécution du contrat d'abonnement (fourniture du Service, facturation), le respect d'obligations légales (comptabilité, lutte anti-fraude), et, avec le consentement de l'utilisateur ou sur la base de l'intérêt légitime de NEXUS AI, l'amélioration du Service et la communication relative au compte.</p>
+  </article>
+
+  <article id="sous-traitants">
+    <h2><span class="num">Art. 4</span> Sous-traitants</h2>
+    <p>Les prestataires suivants traitent tout ou partie des données pour le compte de NEXUS AI, dans le cadre strict des finalités décrites ci-dessus :</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Prestataire</th><th>Rôle</th><th>Données concernées</th></tr></thead>
+        <tbody>
+          <tr><td class="svc">Supabase</td><td>Authentification &amp; base de données</td><td>Compte, profil, plan d'abonnement</td></tr>
+          <tr><td class="svc">Stripe</td><td>Paiement &amp; facturation</td><td>Données de paiement, email de facturation</td></tr>
+          <tr><td class="svc">Vercel</td><td>Hébergement du site &amp; des fonctions serveur</td><td>Requêtes techniques, journaux d'accès</td></tr>
+          <tr><td class="svc">Railway (agents n8n)</td><td>Automatisations marketing (emails, leads, réseaux sociaux, publicité)</td><td>Contenus générés, données de campagne</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><span class="fill">[à vérifier avant publication : localisation exacte des serveurs de chaque prestataire, et existence de clauses contractuelles types pour les transferts hors UE]</span></p>
+  </article>
+
+  <article id="conservation">
+    <h2><span class="num">Art. 5</span> Durée de conservation</h2>
+    <p>Les données de compte sont conservées pendant toute la durée de la relation contractuelle, puis archivées ou supprimées conformément aux obligations légales de conservation (notamment comptables). Un compte inactif peut faire l'objet d'une suppression après <span class="fill">[durée à définir]</span> d'inactivité, après notification préalable.</p>
+  </article>
+
+  <article id="transferts">
+    <h2><span class="num">Art. 6</span> Transferts hors Union européenne</h2>
+    <p>Certains prestataires listés à l'Art. 4 peuvent traiter des données sur des infrastructures situées hors de l'Union européenne. Dans ce cas, NEXUS AI s'assure de la mise en place de garanties appropriées (clauses contractuelles types de la Commission européenne ou mécanisme équivalent).</p>
+  </article>
+
+  <article id="cookies">
+    <h2><span class="num">Art. 7</span> Cookies &amp; traceurs</h2>
+    <p>À la date de rédaction de ce document, le Service n'utilise ni cookie de mesure d'audience ni cookie publicitaire tiers. Seules des données techniques sont conservées localement dans le navigateur (préférence de langue, session de connexion sécurisée) via le stockage local du navigateur, nécessaires au fonctionnement du Service.</p>
+    <p><span class="fill">[à mettre à jour si un outil d'analytics, un pixel publicitaire (Meta/TikTok) ou un traceur tiers est ajouté ultérieurement — un bandeau de consentement cookies deviendrait alors obligatoire]</span></p>
+  </article>
+
+  <article id="droits">
+    <h2><span class="num">Art. 8</span> Tes droits</h2>
+    <p>Conformément au RGPD (et, pour les résidents suisses, à la LPD), tu disposes d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité de tes données, ainsi que du droit de définir des directives relatives à leur sort après ton décès.</p>
+    <p>Pour exercer ces droits, contacte-nous à <span class="fill">[email de contact]</span>. Une réponse te sera apportée dans un délai maximal d'un mois.</p>
+  </article>
+
+  <article id="securite">
+    <h2><span class="num">Art. 9</span> Sécurité</h2>
+    <p>Les mots de passe sont stockés de façon chiffrée par Supabase. L'accès aux données de paiement est délégué à Stripe, certifié PCI-DSS. Des mesures raisonnables sont mises en œuvre pour protéger les données contre l'accès non autorisé, la perte ou la divulgation.</p>
+  </article>
+
+  <article id="reclamation">
+    <h2><span class="num">Art. 10</span> Réclamation</h2>
+    <p>En cas de désaccord sur le traitement de tes données, tu peux introduire une réclamation auprès de l'autorité de contrôle compétente : la CNIL en France, l'Autorité de protection des données (APD) en Belgique, ou le Préposé fédéral à la protection des données (PFPDT) en Suisse.</p>
+  </article>
+</div>
+
+<footer>
+  © 2026 NEXUS AI — <a href="/privacy.html">Politique de confidentialité</a> · <a href="/terms.html">CGU/CGV</a>
+</footer>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CGU/CGV — NEXUS AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#1A3A5C;--blue-mid:#1E4B78;--blue-light:#2563A8;
+  --accent:#4FC3F7;--accent2:#00D4FF;
+  --black:#020610;--surface:#060F1C;--surface2:#0A1628;
+  --border:rgba(79,195,247,0.15);--border2:rgba(79,195,247,0.3);
+  --text:#E8F4FF;--muted:rgba(232,244,255,0.55);
+  --warn:#F0B429;--warn-bg:rgba(240,180,41,0.08);--warn-border:rgba(240,180,41,0.35);
+  --font-head:'Syne',sans-serif;--font-body:'Space Grotesk',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--text);font-family:var(--font-body);line-height:1.7}
+
+.banner{position:sticky;top:0;z-index:200;background:var(--warn-bg);border-bottom:1px solid var(--warn-border);color:var(--warn);padding:12px 5%;font-size:13px;display:flex;gap:10px;align-items:flex-start}
+.banner strong{color:#fff}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:72px;background:rgba(2,6,16,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--font-head);font-size:22px;font-weight:800;color:#fff;letter-spacing:-1px;text-decoration:none}
+.nav-logo .nx{color:var(--accent2)}
+.nav-back{color:var(--muted);text-decoration:none;font-size:14px}
+.nav-back:hover{color:var(--accent)}
+
+.wrap{max-width:760px;margin:0 auto;padding:64px 5% 100px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent2);margin-bottom:14px}
+h1{font-family:var(--font-head);font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-1px;color:#fff;margin-bottom:16px}
+.meta{display:flex;gap:20px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-bottom:48px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.meta b{color:var(--text)}
+
+article{margin-bottom:34px}
+article h2{font-family:var(--font-head);font-size:18px;font-weight:700;color:#fff;margin-bottom:10px;display:flex;gap:10px;align-items:baseline}
+article h2 .num{font-size:13px;font-weight:500;color:var(--accent2)}
+article p{font-size:15px;color:var(--text);margin-bottom:12px}
+article p:last-child{margin-bottom:0}
+article ul{margin:0 0 12px;padding-left:20px}
+article li{font-size:15px;margin-bottom:6px}
+
+.fill{background:rgba(240,180,41,0.1);border:1px dashed var(--warn-border);border-radius:4px;padding:1px 6px;font-size:0.92em;color:var(--warn)}
+
+footer{border-top:1px solid var(--border);padding:32px 5%;text-align:center;color:var(--muted);font-size:13px}
+footer a{color:var(--accent2);text-decoration:none}
+footer a:hover{text-decoration:underline}
+
+@media (max-width:600px){.wrap{padding-top:40px}}
+</style>
+</head>
+<body>
+
+<div class="banner">🚧 <span><strong>Brouillon de travail</strong> — ce document n'a pas encore de valeur légale. Il doit être complété (champs <span class="fill" style="padding:0 4px">entre crochets</span>) et validé par un professionnel du droit avant d'être considéré comme définitif.</span></div>
+
+<nav>
+  <a href="/" class="nav-logo">NEXUS<span class="nx">AI</span></a>
+  <a href="/" class="nav-back">← Retour à l'accueil</a>
+</nav>
+
+<div class="wrap">
+  <div class="eyebrow">Document légal · Brouillon v0.1</div>
+  <h1>Conditions Générales d'Utilisation et de Vente</h1>
+  <div class="meta">
+    <span>DERNIÈRE MISE À JOUR&nbsp;<b>17/09/2026</b></span>
+    <span>PORTÉE&nbsp;<b>France · Belgique · Suisse romande</b></span>
+  </div>
+
+  <article>
+    <h2><span class="num">Art. 1</span> Objet &amp; éditeur</h2>
+    <p>Les présentes Conditions Générales d'Utilisation et de Vente (les « CGU/CGV ») régissent l'accès et l'utilisation du service NEXUS AI, accessible à l'adresse app-nexusai.com (le « Service »), ainsi que les conditions de vente des abonnements proposés.</p>
+    <p>Le Service est édité par <span class="fill">[raison sociale à compléter]</span>, <span class="fill">[forme juridique]</span> au capital de <span class="fill">[montant]</span>, immatriculée au <span class="fill">[RCS / BCE + numéro]</span>, dont le siège social est situé <span class="fill">[adresse complète]</span>, numéro de TVA intracommunautaire <span class="fill">[FR/BE...]</span> (« NEXUS AI », « nous »).</p>
+    <p>Toute inscription ou utilisation du Service implique l'acceptation pleine et entière des présentes CGU/CGV.</p>
+  </article>
+
+  <article>
+    <h2><span class="num">Art. 2</span> Description du service</h2>
+    <p>NEXUS AI est une plateforme SaaS d'automatisation marketing assistée par intelligence artificielle, destinée aux entrepreneurs, solo-founders et petites équipes. Elle propose notamment : génération de contenu (posts, scripts, emails), gestion de campagnes publicitaires, suivi de leads, automatisations e-commerce et d'affiliation, au moyen d'agents logiciels opérant pour le compte de l'utilisateur.</p>
+    <p>Certaines statistiques et données affichées dans les espaces de démonstration du tableau de bord sont fictives et clairement identifiées comme telles ; elles ne reflètent pas de résultats garantis.</p>
+  </article>
+
+  <article>
+    <h2><span class="num">Art. 3</span> Compte &amp; accès</h2>
+    <p>L'accès au Service nécessite la création d'un compte (email, prénom, mot de passe). L'utilisateur s'engage à fournir des informations exactes et à préserver la confidentialité de ses identifiants. Toute activité réalisée depuis un compte est réputée effectuée par son titulaire.</p>
+    <p>Un plan gratuit (« Free ») donne accès à un périmètre limité du Service sans obligation de paiement.</p>
+  </article>
+
+  <article>
+    <h2><span class="num">Art. 4</span> Abonnements &amp; tarifs</h2>
+    <p>Le Service est proposé, à la date des présentes, selon trois formules payantes sans engagement de durée, résiliables à tout moment :</p>
+    <ul>
+      <li><strong>Starter</strong> — 27&nbsp;€ / mois</li>
+      <li><strong>Pro</strong> — 67&nbsp;€ / mois</li>
+      <li><strong>Agency</strong> — 147&nbsp;€ / mois</li>
+    </ul>
+    <p>Les tarifs sont exprimés en euros, toutes taxes comprises le cas échéant. NEXUS AI se réserve le droit de faire évoluer ses tarifs et le périmètre de chaque formule ; toute modification substantielle sera notifiée aux abonnés actifs avant son entrée en vigueur.</p>
+  </article>
+
+  <article>
+    <h2><span class="num">Art. 5</span> Paiement &amp; facturation</h2>
+    <p>Les paiements sont traités par Stripe Payments Europe, Ltd., prestataire de paiement tiers. NEXUS AI ne stocke ni ne traite directement les données de carte bancaire. Les abonnements sont facturés par avance, sur une base mensuelle, avec reconduction automatique jusqu'à résiliation.</p>
+    <p>Tout défaut de paiement peut entraîner la suspension immédiate de l'accès aux fonctionnalités payantes du Service.</p>
+  </article>
+
+  <article>
+    <h2><span class="num">Art. 6</span> Droit de rétractation</h2>
+    <p>Conformément au droit de la consommation applicable dans l'Union européenne, tout consommateur dispose d'un délai de 14 jours à compter de la souscription pour exercer son droit de rétractation, sauf s'il a expressément demandé l'exécution immédiate du service et reconnu perdre ce droit une fois celle-ci commencée.</p>
+    <p><span class="fill">[à faire valider : formulation exacte de la renonciation au droit de rétractation lors du paiement, et procédure de remboursement]</span></p>
+  </article>
+
+  <article>
+    <h2><span class="num">Art. 7</span> Résiliation</h2>
+    <p>L'utilisateur peut résilier son abonnement à tout moment depuis son tableau de bord ou en contactant <span class="fill">[email de support]</span>. La résiliation prend effet à la fin de la période de facturation en cours ; aucun remboursement au prorata n'est effectué sauf disposition légale contraire.</p>
+    <p>NEXUS AI se réserve le droit de suspendre ou résilier un compte en cas de violation des présentes CGU/CGV, notamment en cas d'usage frauduleux, abusif ou contraire à la loi.</p>
+  </article>
+
+  <article>
+    <h2><span class="num">Art. 8</span> Responsabilités &amp; garanties</h2>
+    <p>Le Service est fourni « en l'état ». NEXUS AI met en œuvre des moyens raisonnables pour assurer la disponibilité et la sécurité du Service, sans garantir l'absence totale d'interruption ou d'erreur.</p>
+    <p>L'utilisateur reste seul responsable du contenu qu'il génère, publie ou diffuse au moyen du Service, ainsi que du respect des conditions d'utilisation des plateformes tierces (Meta, TikTok, Google, Shopify, etc.) vers lesquelles ce contenu est publié.</p>
+    <p><span class="fill">[à compléter : limitation de responsabilité chiffrée, exclusions de garantie, cas de force majeure — clauses à faire rédiger/valider par un juriste]</span></p>
+  </article>
+
+  <article>
+    <h2><span class="num">Art. 9</span> Propriété intellectuelle</h2>
+    <p>Le Service, sa structure, son design et les technologies qui le composent sont la propriété exclusive de NEXUS AI. L'utilisateur conserve la propriété des contenus qu'il crée à l'aide du Service, dans les limites des droits des tiers (fournisseurs de modèles d'IA, bibliothèques de médias, etc.) applicables à sa génération.</p>
+  </article>
+
+  <article>
+    <h2><span class="num">Art. 10</span> Droit applicable &amp; juridiction</h2>
+    <p>Les présentes CGU/CGV sont soumises au droit <span class="fill">[français / belge — à trancher]</span>. Tout litige sera soumis, à défaut de résolution amiable, aux tribunaux compétents <span class="fill">[ressort à préciser]</span>, sous réserve des dispositions impératives protectrices du consommateur applicables dans son pays de résidence (France, Belgique, Suisse).</p>
+  </article>
+</div>
+
+<footer>
+  © 2026 NEXUS AI — <a href="/privacy.html">Politique de confidentialité</a> · <a href="/terms.html">CGU/CGV</a>
+</footer>
+</body>
+</html>
