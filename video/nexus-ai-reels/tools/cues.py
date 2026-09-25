@@ -5,12 +5,15 @@ Usage :
   python3 tools/cues.py <video_ou_audio> <texte.txt> <sortie.js>
 
 - Détecte les passages parlés dans l'audio (pauses < -28 dB pendant >= 100 ms).
-- Si le texte contient des « / », chaque morceau est calé sur un passage parlé (dans l'ordre).
+- Un morceau peut commencer par [début-fin] (en secondes) pour forcer son calage, ex. « [3.38-4.9] tu fais tout ».
+  Si tous les morceaux en ont, ces repères remplacent la détection automatique.
+- Sinon, si le texte contient des « / », chaque morceau est calé sur un passage parlé (dans l'ordre).
   Sinon, les mots sont répartis sur toute la parole, au prorata de leur longueur.
-- Regroupe les mots en cartons de 3 mots / 14 caractères max, sans chevaucher une pause.
+- Regroupe les mots en cartons de 4 mots / 14 caractères max, sans chevaucher une pause.
 Calage approximatif : à affiner à l'œil dans le Studio si besoin (ou refaire avec Whisper quand dispo).
 """
 import json
+import re
 import math
 import struct
 import subprocess
@@ -19,8 +22,10 @@ import sys
 THRESH_DB = -28
 MIN_PAUSE = 0.10
 WIN = 0.02
-MAX_WORDS = 3
+MAX_WORDS = 4
 MAX_CHARS = 14
+HOLD_GAP = 0.35
+LAST_HOLD = 0.6
 
 
 def speech_segments(path):
@@ -55,7 +60,7 @@ def spread(words, a, b):
     t, out = a, []
     for wd, wt in zip(words, weights):
         d = (b - a) * wt / total
-        out.append({"w": wd, "s": round(t, 2), "e": round(t + d, 2)})
+        out.append({"w": wd.rstrip(".,;:"), "s": round(t, 2), "e": round(t + d, 2)})
         t += d
     return out
 
@@ -63,9 +68,13 @@ def spread(words, a, b):
 def main(media, text_path, out_path):
     text = open(text_path, encoding="utf-8").read().strip()
     segs = speech_segments(media)
-    chunks = [c.split() for c in text.split("/")] if "/" in text else None
+    raw_chunks = [c.strip() for c in text.split("/")]
+    anchors = [re.match(r"^\[([\d.]+)-([\d.]+)\]\s*(.*)$", c, re.S) for c in raw_chunks]
+    chunks = [c.split() for c in raw_chunks] if "/" in text else None
     timed = []  # list of phrases, each a list of timed words
-    if chunks and len(chunks) == len(segs):
+    if all(anchors):
+        timed = [spread(m.group(3).split(), float(m.group(1)), float(m.group(2))) for m in anchors]
+    elif chunks and len(chunks) == len(segs):
         timed = [spread(c, a, b) for c, (a, b) in zip(chunks, segs)]
     else:
         words = text.replace("/", " ").split()
@@ -89,6 +98,13 @@ def main(media, text_path, out_path):
         if cur:
             cues.append(cur)
     data = [{"start": c[0]["s"], "end": c[-1]["e"], "words": c} for c in cues]
+    # Lisibilité : un carton reste affiché jusqu'au suivant si l'écart est court (< HOLD_GAP),
+    # et le dernier reste LAST_HOLD s de plus.
+    for cur, nxt in zip(data, data[1:]):
+        if nxt["start"] - cur["end"] < HOLD_GAP:
+            cur["end"] = nxt["start"]
+    if data:
+        data[-1]["end"] = round(data[-1]["end"] + LAST_HOLD, 2)
     with open(out_path, "w", encoding="utf-8") as f:
         f.write("// Généré par tools/cues.py — ne pas éditer à la main (relancer le script).\n")
         f.write("window.CAPTIONS = " + json.dumps(data, ensure_ascii=False, indent=1) + ";\n")
