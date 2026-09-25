@@ -6,8 +6,12 @@ Règles de montage définitives, ajoutées au fur et à mesure quand tu dis « g
 À relire avant tout nouveau montage dans ce projet. Une règle = une ligne, datée.
 
 ## Sous-titres
+- 2026-09-25 — Sous-titres en CAPITALES (Archivo Black, ~84 px, texte crème #f2ede4 contouré noir).
+- 2026-09-25 — Mot actif surligné : fond orange #ff5a00, texte noir, synchronisé mot à mot sur la voix.
+- 2026-09-25 — 4 mots max par ligne (et 14 caractères max, pour tenir sur une seule ligne). Voir `tools/cues.py` et `reel-01.html`.
 
 ## Sound design
+- 2026-09-25 — Musique de fond discrète, ~15 dB sous la voix (voix ≈ -14 LUFS, musique ≈ -30 LUFS). Voir `tools/bgm_synth.py`.
 
 ## Règles de coupe
 
