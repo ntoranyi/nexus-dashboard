@@ -100,6 +100,40 @@
         border: 6px solid var(--black);
         box-shadow: 10px 10px 0 var(--black);
       }
+
+      /* Carton texte : voile noir + flou sur la vidéo, lignes centrées entre y 700 et 1350 */
+      #card-veil {
+        position: absolute;
+        inset: 0;
+        background: rgba(11, 11, 11, 0.8);
+        backdrop-filter: blur(28px);
+      }
+      #card-text {
+        position: absolute;
+        top: 700px;
+        left: 60px;
+        width: 960px;
+        height: 650px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 18px;
+      }
+      .card-line {
+        display: block;
+        font-family: "Archivo Black", sans-serif;
+        font-size: 104px;
+        line-height: 1;
+        color: var(--paper);
+        text-align: center;
+      }
+      .card-hl {
+        display: inline-block;
+        padding: 8px 22px 14px;
+        background: var(--orange);
+        color: var(--black);
+      }
     </style>
   </head>
   <body>
@@ -107,7 +141,7 @@
       id="root"
       data-composition-id="reel-02"
       data-start="0"
-      data-duration="8"
+      data-duration="6.5"
       data-width="1080"
       data-height="1920"
     >
@@ -116,7 +150,7 @@
         class="clip"
         src="assets/footage/reel-02-vertical-1080x1920.mp4"
         data-start="0"
-        data-duration="8"
+        data-duration="6.5"
         data-track-index="0"
         muted
         playsinline
@@ -125,28 +159,36 @@
         id="voice"
         src="assets/footage/reel-02-vertical-1080x1920.mp4"
         data-start="0"
-        data-duration="8"
+        data-duration="3.3"
         data-track-index="10"
         data-volume="1"
       ></audio>
-      <!-- Fond musical original (tools/bgm_synth.py), normalisé à -30 LUFS, soit ~16 dB sous la voix -->
+      <!-- Fond musical original (tools/bgm_synth.py) : -30 LUFS sous la voix, remonté d'environ 7 dB après 3,3 s (plus de voix) -->
       <audio
         id="bgm"
         src="assets/audio/bgm-reel-02.wav"
         data-start="0"
-        data-duration="8"
+        data-duration="6.5"
         data-track-index="11"
         data-volume="1"
       ></audio>
-      <!-- Effets sonores discrets (whoosh Pixabay, -11 dB) juste avant chaque changement de phrase -->
-      <audio id="sfx-1" src="assets/audio/sfx-whoosh-soft.wav" data-start="2.5" data-duration="0.57" data-track-index="12" data-volume="1"></audio>
-      <audio id="sfx-2" src="assets/audio/sfx-whoosh-soft.wav" data-start="4.8" data-duration="0.57" data-track-index="12" data-volume="1"></audio>
-      <audio id="sfx-3" src="assets/audio/sfx-whoosh-soft.wav" data-start="5.93" data-duration="0.57" data-track-index="12" data-volume="1"></audio>
+      <!-- Whoosh discret (Pixabay, -11 dB) sur le passage au carton texte -->
+      <audio id="sfx-1" src="assets/audio/sfx-whoosh-soft.wav" data-start="3.15" data-duration="0.57" data-track-index="12" data-volume="1"></audio>
+      <div id="captions" class="clip" data-start="0" data-duration="3.3" data-track-index="1"></div>
+      <!-- Carton texte (remplace la 2e phrase coupée) : footage flouté et assombri, message en capitales -->
+      <div id="card" class="clip" data-start="3.3" data-duration="3.2" data-track-index="3">
+        <div id="card-veil"></div>
+        <div id="card-text">
+          <span class="card-line" id="cl-1"><span class="card-hl">NEXUS AI</span></span>
+          <span class="card-line" id="cl-2">RUNS YOUR</span>
+          <span class="card-line" id="cl-3">MARKETING ON</span>
+          <span class="card-line" id="cl-4"><span class="card-hl">AUTOPILOT</span></span>
+        </div>
+      </div>
       <!-- CTA final (2 dernières secondes) -->
-      <div id="cta" class="clip" data-start="6" data-duration="2" data-track-index="2">
+      <div id="cta" class="clip" data-start="4.5" data-duration="2" data-track-index="2">
         <div id="cta-tag"><span id="cta-text">Link in bio</span></div>
       </div>
-      <div id="captions" class="clip" data-start="0" data-duration="8" data-track-index="1"></div>
     </div>
     <script>
       const tl = gsap.timeline({ paused: true });
@@ -177,9 +219,13 @@
         });
       });
 
+      // Carton texte : voile en fondu rapide, lignes qui claquent une à une
+      tl.fromTo("#card-veil", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" }, 3.3);
+      tl.fromTo(".card-line", { opacity: 0, scale: 1.3, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.14, stagger: 0.28, ease: "power4.out" }, 3.4);
+
       // CTA : claque comme un tampon (zoom + légère rotation), puis reste fixe
-      tl.fromTo("#cta-text", { opacity: 0, scale: 1.6, rotation: -6 }, { opacity: 1, scale: 1, rotation: -2, duration: 0.22, ease: "power4.in" }, 6.0);
-      tl.fromTo("#cta-tag", { y: 0 }, { y: 6, duration: 0.05, repeat: 3, yoyo: true, ease: "none", immediateRender: false }, 6.22);
+      tl.fromTo("#cta-text", { opacity: 0, scale: 1.6, rotation: -6 }, { opacity: 1, scale: 1, rotation: -2, duration: 0.22, ease: "power4.in" }, 4.5);
+      tl.fromTo("#cta-tag", { y: 0 }, { y: 6, duration: 0.05, repeat: 3, yoyo: true, ease: "none", immediateRender: false }, 4.72);
 
       window.__timelines["reel-02"] = tl;
     </script>
