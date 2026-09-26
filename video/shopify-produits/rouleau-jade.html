@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <title>NextGen AI Make — Rouleau de Jade Naturel & Gua Sha</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      /* Style épuré (modèle de départ du projet) : fond crème, Fraunces, mouvements lents, peu de texte.
+         Photos produit en diaporama Ken Burns (zoom lent + léger glissement, fondus enchaînés). */
+      @font-face {
+        font-family: "Fraunces";
+        src: url("assets/fonts/fraunces-400.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: "Fraunces";
+        src: url("assets/fonts/fraunces-400-italic.woff2") format("woff2");
+        font-weight: 400;
+        font-style: italic;
+      }
+      @font-face {
+        font-family: "DM Sans";
+        src: url("assets/fonts/dm-sans-500.woff2") format("woff2");
+        font-weight: 500;
+      }
+      :root {
+        --cream: #f5efe8;
+        --sand: #e8dccf;
+        --ink: #2b2522;
+        --muted: #6f6259;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: var(--cream);
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: var(--cream);
+        color: var(--ink);
+        font-family: "DM Sans", sans-serif;
+      }
+      .clip {
+        position: absolute;
+        inset: 0;
+      }
+
+      /* Cadre photo : 960x960 entre y 420 et 1380, hors des zones UI (0-250 et 1670-1920) */
+      .photo {
+        position: absolute;
+        top: 420px;
+        left: 60px;
+        width: 960px;
+        height: 960px;
+        border-radius: 32px;
+        overflow: hidden;
+        background: var(--sand);
+        box-shadow: 0 50px 80px -40px rgba(43, 37, 34, 0.35);
+        opacity: 0;
+      }
+      .photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      /* Texte : nom en haut (y 270-400), bénéfice puis CTA sous la photo (y 1430-1600) */
+      #t-name {
+        position: absolute;
+        top: 262px;
+        left: 0;
+        width: 1080px;
+        text-align: center;
+        font-family: "Fraunces", serif;
+        font-size: 64px;
+        line-height: 1.05;
+      }
+      #t-benefit {
+        position: absolute;
+        top: 1450px;
+        left: 0;
+        width: 1080px;
+        text-align: center;
+        font-family: "Fraunces", serif;
+        font-style: italic;
+        font-size: 60px;
+        color: var(--muted);
+      }
+      #t-brand {
+        position: absolute;
+        top: 1432px;
+        left: 0;
+        width: 1080px;
+        text-align: center;
+        font-size: 28px;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      #t-cta {
+        position: absolute;
+        top: 1500px;
+        left: 340px;
+        width: 400px;
+        padding: 26px 0;
+        border-radius: 999px;
+        text-align: center;
+        background: var(--ink);
+        color: var(--cream);
+        font-size: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="rouleau-jade" data-start="0" data-duration="8" data-width="1080" data-height="1920">
+      <!-- Photos produit (fiche Shopify « Rouleau de Jade Naturel & Gua Sha »), fondus enchaînés de 0,5 s -->
+      <div id="ph-1" class="clip" data-start="0" data-duration="2.4" data-track-index="0">
+        <div class="photo" data-layout-allow-overflow id="f-1"><img id="i-1" src="assets/photos/p1.jpg" alt=""></div>
+      </div>
+      <div id="ph-2" class="clip" data-start="1.9" data-duration="2.4" data-track-index="1">
+        <div class="photo" data-layout-allow-overflow id="f-2"><img id="i-2" src="assets/photos/p2.jpg" alt=""></div>
+      </div>
+      <div id="ph-3" class="clip" data-start="3.8" data-duration="2.4" data-track-index="0">
+        <div class="photo" data-layout-allow-overflow id="f-3"><img id="i-3" src="assets/photos/p3.jpg" alt=""></div>
+      </div>
+      <div id="ph-4" class="clip" data-start="5.7" data-duration="2.3" data-track-index="1">
+        <div class="photo" data-layout-allow-overflow id="f-4"><img id="i-4" src="assets/photos/p4.jpg" alt=""></div>
+      </div>
+
+      <section id="name" class="clip" data-start="0" data-duration="8" data-track-index="2">
+        <h1 id="t-name">Rouleau de Jade Naturel<br>&amp; Gua Sha</h1>
+      </section>
+      <section id="benefit" class="clip" data-start="1.6" data-duration="4.1" data-track-index="3">
+        <p id="t-benefit">Un rituel frais pour ta peau</p>
+      </section>
+      <section id="cta" class="clip" data-start="5.8" data-duration="2.2" data-track-index="4">
+        <p id="t-brand">NextGen AI Make</p>
+        <p id="t-cta">Lien en bio</p>
+      </section>
+
+      <!-- Musique originale (tools/bgm_soft.py, -18 LUFS) + carillon discret à l'apparition du CTA (-26 LUFS) -->
+      <audio id="bgm" src="assets/audio/bgm-rouleau-jade.wav" data-start="0" data-duration="8" data-track-index="10" data-volume="1"></audio>
+      <audio id="sfx-cta" src="assets/audio/sfx-chime.wav" data-start="5.8" data-duration="1.6" data-track-index="11" data-volume="1"></audio>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const slots = [
+        // Échelle mini 1.04 : le glissement (≤ 12 px) ne découvre jamais les bords du cadre
+        { s: 0, d: 2.4, from: { scale: 1.04, x: -10 }, to: { scale: 1.12, x: 10 } },
+        { s: 1.9, d: 2.4, from: { scale: 1.12, x: 12 }, to: { scale: 1.04, x: -12 } },
+        { s: 3.8, d: 2.4, from: { scale: 1.04, y: 10 }, to: { scale: 1.12, y: -10 } },
+        { s: 5.7, d: 2.3, from: { scale: 1.1, x: -8 }, to: { scale: 1.04, x: 0 } },
+      ];
+      slots.forEach((p, k) => {
+        const n = k + 1;
+        // Fondu d'entrée (sauf la 1re photo, qui monte doucement) et fondu de sortie sous la suivante
+        if (k === 0) {
+          tl.fromTo("#f-1", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" }, 0);
+        } else {
+          tl.fromTo("#f-" + n, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "sine.inOut" }, p.s);
+        }
+        // Ken Burns : zoom/glissement lent sur toute la durée du plan
+        tl.fromTo("#i-" + n, p.from, { ...p.to, duration: p.d, ease: "none" }, p.s);
+      });
+
+      // Texte : fondus lents, une seule ligne de message à la fois
+      tl.fromTo("#t-name", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" }, 0.3);
+      tl.fromTo("#t-benefit", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 1.6);
+      tl.to("#t-benefit", { opacity: 0, duration: 0.5, ease: "power1.in" }, 5.2);
+      tl.fromTo("#t-brand", { opacity: 0 }, { opacity: 1, duration: 0.7 }, 5.8);
+      tl.fromTo("#t-cta", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, 5.9);
+
+      window.__timelines["rouleau-jade"] = tl;
+    </script>
+  </body>
+</html>
