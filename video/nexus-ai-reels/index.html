@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="fr" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <title>NEXUS AI — Reel template (Bureaucratic Alert)</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      /* Style "Bureaucratic Alert" : noir + orange signal, typo massive, tampons, bandes d'alerte. */
+      @font-face {
+        font-family: "Archivo Black";
+        src: url("assets/fonts/archivo-black-400.woff2") format("woff2");
+        font-weight: 400;
+      }
+      @font-face {
+        font-family: "JetBrains Mono";
+        src: url("assets/fonts/jetbrains-mono-700.woff2") format("woff2");
+        font-weight: 700;
+      }
+      :root {
+        --black: #0b0b0b;
+        --ink: #161616;
+        --orange: #ff5a00;
+        --orange-soft: #ff8a3d;
+        --paper: #f2ede4;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: var(--black);
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: var(--black);
+        color: var(--paper);
+        font-family: "Archivo Black", sans-serif;
+      }
+      .clip {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+      .mono {
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .tape {
+        position: absolute;
+        left: -200px;
+        width: 1480px;
+        height: 120px;
+        background: repeating-linear-gradient(-45deg, var(--orange) 0 60px, var(--black) 60px 120px);
+      }
+
+      /* Scène 1 — Alerte */
+      #s1-tape-top {
+        top: 150px;
+      }
+      #s1-tape-bottom {
+        bottom: 150px;
+      }
+      #s1-label {
+        position: absolute;
+        top: 380px;
+        left: 90px;
+        font-size: 40px;
+        color: var(--orange);
+      }
+      #s1-headline {
+        position: absolute;
+        top: 520px;
+        left: 90px;
+        width: 900px;
+        font-size: 150px;
+        line-height: 0.95;
+        text-transform: uppercase;
+      }
+      #s1-stamp {
+        position: absolute;
+        top: 1180px;
+        left: 110px;
+        padding: 24px 44px;
+        border: 10px solid var(--orange);
+        color: var(--orange);
+        font-size: 80px;
+        white-space: nowrap;
+        text-transform: uppercase;
+      }
+
+      /* Scène 2 — 10 agents */
+      #s2 {
+        background: var(--orange);
+        color: var(--black);
+      }
+      #s2-count {
+        position: absolute;
+        top: 220px;
+        left: 80px;
+        font-size: 420px;
+        line-height: 1;
+      }
+      #s2-title {
+        position: absolute;
+        top: 690px;
+        left: 90px;
+        width: 900px;
+        font-size: 96px;
+        line-height: 1;
+        text-transform: uppercase;
+      }
+      #s2-list {
+        position: absolute;
+        top: 1010px;
+        left: 90px;
+        width: 900px;
+        list-style: none;
+        font-size: 44px;
+      }
+      #s2-list li {
+        display: block;
+        padding: 14px 0;
+        border-bottom: 4px solid var(--black);
+      }
+
+      /* Scène 3 — Punchline */
+      #s3-line1,
+      #s3-line2 {
+        position: absolute;
+        left: 90px;
+        width: 900px;
+        text-transform: uppercase;
+        line-height: 0.95;
+      }
+      #s3-line1 {
+        top: 620px;
+        font-size: 120px;
+      }
+      #s3-line2 {
+        top: 900px;
+        font-size: 150px;
+        color: var(--orange);
+      }
+      #s3-bar {
+        position: absolute;
+        top: 1300px;
+        left: 90px;
+        width: 900px;
+        height: 16px;
+        background: var(--orange);
+        transform-origin: left center;
+      }
+
+      /* Scène 4 — CTA */
+      #s4-tape {
+        top: 0;
+      }
+      #s4-brand {
+        position: absolute;
+        top: 560px;
+        left: 0;
+        width: 1080px;
+        text-align: center;
+        font-size: 160px;
+        line-height: 1;
+      }
+      #s4-brand span {
+        color: var(--orange);
+      }
+      #s4-url {
+        position: absolute;
+        top: 860px;
+        left: 0;
+        width: 1080px;
+        text-align: center;
+        font-size: 48px;
+        color: var(--paper);
+      }
+      #s4-price {
+        position: absolute;
+        top: 1100px;
+        left: 240px;
+        width: 600px;
+        padding: 30px 0;
+        text-align: center;
+        background: var(--orange);
+        color: var(--black);
+        font-size: 64px;
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-umm9" id="root" data-composition-id="main" data-start="0" data-duration="12" data-width="1080" data-height="1920">
+      <section data-hf-id="hf-cp1n" id="s1" class="clip" data-start="0" data-duration="3" data-track-index="0">
+        <div data-hf-id="hf-1tnu" id="s1-tape-top" class="tape" data-layout-allow-overflow=""></div>
+        <p data-hf-id="hf-ml0g" id="s1-label" class="mono">Avis n°27 — Service marketing</p>
+        <h1 data-hf-id="hf-xa9a" id="s1-headline">Tu perds 20h par semaine.</h1>
+        <div data-hf-id="hf-ywbx" id="s1-stamp">Dossier urgent</div>
+        <div data-hf-id="hf-3r7c" id="s1-tape-bottom" class="tape" data-layout-allow-overflow=""></div>
+      </section>
+
+      <section data-hf-id="hf-ezqi" id="s2" class="clip" data-start="3" data-duration="3.5" data-track-index="0">
+        <p data-hf-id="hf-vgz4" id="s2-count">10</p>
+        <h2 data-hf-id="hf-dczo" id="s2-title">agents IA bossent pour toi.</h2>
+        <ul data-hf-id="hf-cwxt" id="s2-list" class="mono">
+          <li data-hf-id="hf-jn4u">01 — Leads</li>
+          <li data-hf-id="hf-njil">02 — Emails</li>
+          <li data-hf-id="hf-65gq">03 — Réseaux sociaux</li>
+          <li data-hf-id="hf-i23k">04 — Ads &amp; Shopify</li>
+        </ul>
+      </section>
+
+      <section data-hf-id="hf-isgc" id="s3" class="clip" data-start="6.5" data-duration="2.5" data-track-index="0">
+        <p data-hf-id="hf-wehi" id="s3-line1">Toi, tu fais</p>
+        <p data-hf-id="hf-sq53" id="s3-line2">du revenu.</p>
+        <div data-hf-id="hf-ib67" id="s3-bar"></div>
+      </section>
+
+      <section data-hf-id="hf-v129" id="s4" class="clip" data-start="9" data-duration="3" data-track-index="0">
+        <div data-hf-id="hf-me63" id="s4-tape" class="tape" data-layout-allow-overflow=""></div>
+        <h2 data-hf-id="hf-xk4k" id="s4-brand">NEXUS <span data-hf-id="hf-ub7v">AI</span></h2>
+        <p data-hf-id="hf-4q53" id="s4-url" class="mono">app-nexusai.com</p>
+        <p data-hf-id="hf-jg8s" id="s4-price">Dès 27€/mois</p>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      // Scène 1 — bandes qui défilent, titre qui claque, tampon + secousse
+      tl.fromTo("#s1-tape-top", { x: -300 }, { x: 0, duration: 3, ease: "none" }, 0);
+      tl.fromTo("#s1-tape-bottom", { x: 0 }, { x: -300, duration: 3, ease: "none" }, 0);
+      tl.fromTo("#s1-label", { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: 0.25, ease: "power3.out" }, 0.1);
+      tl.fromTo("#s1-headline", { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out" }, 0.3);
+      tl.fromTo(
+        "#s1-stamp",
+        { opacity: 0, scale: 2.4, rotation: -4 },
+        { opacity: 1, scale: 1, rotation: -8, duration: 0.18, ease: "power4.in" },
+        1.3,
+      );
+      tl.fromTo("#s1-headline", { x: 0 }, { x: 14, duration: 0.04, repeat: 5, yoyo: true, ease: "none", immediateRender: false }, 1.48);
+
+      // Scène 2 — compteur + liste en cascade rapide
+      tl.fromTo("#s2-count", { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(2)" }, 3.05);
+      tl.fromTo("#s2-title", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.25, ease: "power3.out" }, 3.3);
+      tl.fromTo(
+        "#s2-list li",
+        { opacity: 0, x: -80 },
+        { opacity: 1, x: 0, duration: 0.2, stagger: 0.18, ease: "power3.out" },
+        3.7,
+      );
+
+      // Scène 3 — punchline + barre
+      tl.fromTo("#s3-line1", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.25, ease: "power3.out" }, 6.55);
+      tl.fromTo("#s3-line2", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out" }, 6.9);
+      tl.fromTo("#s3-bar", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, 7.3);
+
+      // Scène 4 — CTA
+      tl.fromTo("#s4-tape", { x: -300 }, { x: 0, duration: 3, ease: "none" }, 9);
+      tl.fromTo("#s4-brand", { opacity: 0, scale: 1.4 }, { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out" }, 9.1);
+      tl.fromTo("#s4-url", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 9.5);
+      tl.fromTo("#s4-price", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(2)" }, 9.8);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <title>NextGen AI Make — Vidéo produit (template épuré)</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      /* Style épuré beauté / bien-être : fond crème, produit héros, très peu de texte, mouvements lents. */
+      @font-face {
+        font-family: "Fraunces";
+        src: url("assets/fonts/fraunces-400.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: "Fraunces";
+        src: url("assets/fonts/fraunces-400-italic.woff2") format("woff2");
+        font-weight: 400;
+        font-style: italic;
+      }
+      @font-face {
+        font-family: "DM Sans";
+        src: url("assets/fonts/dm-sans-500.woff2") format("woff2");
+        font-weight: 500;
+      }
+      :root {
+        --cream: #f5efe8;
+        --sand: #e8dccf;
+        --blush: #d9a79a;
+        --ink: #2b2522;
+        --muted: #6f6259;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: var(--cream);
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: var(--cream);
+        color: var(--ink);
+        font-family: "DM Sans", sans-serif;
+      }
+      .clip {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+
+      /* Scène produit (toute la durée) — remplacer #product par <img src="assets/produit.png"> détouré */
+      #halo {
+        position: absolute;
+        top: 560px;
+        left: 190px;
+        width: 700px;
+        height: 700px;
+        border-radius: 50%;
+        background: radial-gradient(circle, var(--sand) 0%, var(--cream) 70%);
+      }
+      #product {
+        position: absolute;
+        top: 620px;
+        left: 390px;
+        width: 300px;
+        height: 560px;
+      }
+      #product-cap {
+        position: absolute;
+        top: 0;
+        left: 75px;
+        width: 150px;
+        height: 110px;
+        border-radius: 18px 18px 6px 6px;
+        background: var(--ink);
+      }
+      #product-body {
+        position: absolute;
+        top: 100px;
+        left: 0;
+        width: 300px;
+        height: 460px;
+        border-radius: 40px;
+        background: linear-gradient(160deg, #fbf6f1 0%, var(--blush) 100%);
+        box-shadow: 0 60px 80px -30px rgba(43, 37, 34, 0.35);
+      }
+      #product-label {
+        position: absolute;
+        top: 300px;
+        left: 0;
+        width: 300px;
+        text-align: center;
+        font-family: "Fraunces", serif;
+        font-size: 34px;
+        color: var(--ink);
+      }
+      #shadow {
+        position: absolute;
+        top: 1200px;
+        left: 380px;
+        width: 320px;
+        height: 40px;
+        border-radius: 50%;
+        background: radial-gradient(ellipse, rgba(43, 37, 34, 0.25) 0%, rgba(43, 37, 34, 0) 70%);
+      }
+
+      /* Texte minimal : 1 nom, 1 bénéfice, 1 CTA */
+      #t-name {
+        position: absolute;
+        top: 260px;
+        left: 0;
+        width: 1080px;
+        text-align: center;
+        font-family: "Fraunces", serif;
+        font-size: 96px;
+        line-height: 1.05;
+      }
+      #t-benefit {
+        position: absolute;
+        top: 1360px;
+        left: 0;
+        width: 1080px;
+        text-align: center;
+        font-family: "Fraunces", serif;
+        font-style: italic;
+        font-size: 64px;
+        color: var(--muted);
+      }
+      #t-brand {
+        position: absolute;
+        top: 1400px;
+        left: 0;
+        width: 1080px;
+        text-align: center;
+        font-size: 30px;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      #t-cta {
+        position: absolute;
+        top: 1500px;
+        left: 340px;
+        width: 400px;
+        padding: 26px 0;
+        border-radius: 999px;
+        text-align: center;
+        background: var(--ink);
+        color: var(--cream);
+        font-size: 38px;
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-txxr" id="root" data-composition-id="main" data-start="0" data-duration="10" data-width="1080" data-height="1920">
+      <section data-hf-id="hf-ljrj" id="stage" class="clip" data-start="0" data-duration="10" data-track-index="0">
+        <div data-hf-id="hf-tyg7" id="halo"></div>
+        <div data-hf-id="hf-2h4t" id="shadow"></div>
+        <div data-hf-id="hf-kmuq" id="product">
+          <div data-hf-id="hf-l67p" id="product-cap"></div>
+          <div data-hf-id="hf-17az" id="product-body"></div>
+          <p data-hf-id="hf-eegg" id="product-label">Sérum</p>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-vifv" id="name" class="clip" data-start="0.8" data-duration="9.2" data-track-index="1">
+        <h1 data-hf-id="hf-006k" id="t-name">Sérum Éclat</h1>
+      </section>
+
+      <section data-hf-id="hf-u5xg" id="benefit" class="clip" data-start="3" data-duration="3.5" data-track-index="2">
+        <p data-hf-id="hf-2fil" id="t-benefit">Une peau lumineuse en 7 jours</p>
+      </section>
+
+      <section data-hf-id="hf-oqml" id="cta" class="clip" data-start="6.5" data-duration="3.5" data-track-index="2">
+        <p data-hf-id="hf-ulvl" id="t-brand">NextGen AI Make</p>
+        <p data-hf-id="hf-sa38" id="t-cta">Découvrir</p>
+      </section>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      // Produit : entrée douce puis lente rotation/zoom (effet "turntable" léger)
+      tl.fromTo("#halo", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 1.2, ease: "power2.out" }, 0);
+      tl.fromTo("#product", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" }, 0.1);
+      tl.fromTo("#shadow", { opacity: 0 }, { opacity: 1, duration: 1.2 }, 0.3);
+      tl.fromTo("#product", { scale: 1, rotation: -2 }, { scale: 1.12, rotation: 2, duration: 8.7, ease: "sine.inOut", immediateRender: false }, 1.3);
+
+      // Texte : fondus lents, jamais plus d'une ligne de message à la fois
+      tl.fromTo("#t-name", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" }, 0.8);
+      tl.fromTo("#t-benefit", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 3);
+      tl.to("#t-benefit", { opacity: 0, duration: 0.5, ease: "power1.in" }, 6);
+      tl.fromTo("#t-brand", { opacity: 0 }, { opacity: 1, duration: 0.8 }, 6.6);
+      tl.fromTo("#t-cta", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 7);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

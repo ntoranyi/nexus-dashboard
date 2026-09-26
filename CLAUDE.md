@@ -27,6 +27,19 @@ Le repo [ntoranyi/nexus-ai-knowledge](https://github.com/ntoranyi/nexus-ai-knowl
 | `Onboarding.html` | Fonctionnalités avancées (Automations, Campagnes, Analytics, générateur de contenu IA, E-commerce, Affiliation, Ads Budget) — accessible depuis `dashboard.html` mais n'est plus la page d'atterrissage par défaut. Session Supabase réelle (garde d'authentification, nom/plan réels dans la sidebar). Fichier volumineux. Attention : la plupart des stats affichées (revenu, leads, budget pub, API calls) restent des données de démonstration codées en dur, marquées "(démo)" dans l'UI |
 | `vercel.json` | Config de routing Vercel |
 
+## Vidéos (HyperFrames) — dossier `video/`
+
+Projets vidéo verticaux 1080x1920 (Reels/TikTok) réalisés avec HyperFrames (HTML + GSAP → MP4). Exclus du déploiement Vercel via `.vercelignore`.
+
+| Projet | Usage | Règles de montage |
+|---|---|---|
+| `video/nexus-ai-reels/` | Contenu NEXUS AI — style « Bureaucratic Alert » (noir/orange, motion marqué) | `video/nexus-ai-reels/nexus-ai-style.md` |
+| `video/shopify-produits/` | Vidéos produits boutique NextGen AI Make — style épuré, produit héros, peu de texte | `video/shopify-produits/shopify-produits-style.md` |
+
+- Quand l'utilisateur dit **« garde ça en mémoire »** à propos d'un montage, ajouter la règle (datée, une ligne) dans la section adéquate (sous-titres / sound design / règles de coupe / autres) du fichier de style du projet concerné, puis committer. Relire ce fichier avant tout nouveau montage.
+- Setup d'une nouvelle session : `npm i -g hyperframes && hyperframes browser ensure && hyperframes skills update` (+ `ffmpeg` via apt). Prévisualisation : `hyperframes preview --background` dans le dossier du projet. Vérification : `hyperframes check`.
+- Polices et GSAP sont embarqués dans `assets/` (le CDN jsdelivr est bloqué dans les conteneurs Claude Code cloud).
+
 ## Grille tarifaire (source de vérité)
 
 - **Starter** — 27€/mois
