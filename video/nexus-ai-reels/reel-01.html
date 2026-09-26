@@ -78,6 +78,28 @@
         paint-order: stroke fill;
         text-shadow: 0 6px 0 var(--black);
       }
+
+      /* CTA final : bandeau orange façon tampon, dans la zone floue du haut (y 270-390),
+         sous les 250 px réservés à l'UI et au-dessus de la vidéo (qui commence à y 420). */
+      #cta-tag {
+        position: absolute;
+        top: 270px;
+        left: 0;
+        width: 1080px;
+        display: flex;
+        justify-content: center;
+      }
+      #cta-text {
+        display: block;
+        padding: 18px 40px 22px;
+        background: var(--orange);
+        color: var(--black);
+        font-family: "Archivo Black", sans-serif;
+        font-size: 64px;
+        line-height: 1;
+        border: 6px solid var(--black);
+        box-shadow: 10px 10px 0 var(--black);
+      }
     </style>
   </head>
   <body>
@@ -116,6 +138,14 @@
         data-track-index="11"
         data-volume="1"
       ></audio>
+      <!-- Effets sonores discrets (whoosh Pixabay, -11 dB) juste avant chaque changement de phrase -->
+      <audio id="sfx-1" src="assets/audio/sfx-whoosh-soft.wav" data-start="2.5" data-duration="0.57" data-track-index="12" data-volume="1"></audio>
+      <audio id="sfx-2" src="assets/audio/sfx-whoosh-soft.wav" data-start="4.8" data-duration="0.57" data-track-index="12" data-volume="1"></audio>
+      <audio id="sfx-3" src="assets/audio/sfx-whoosh-soft.wav" data-start="5.93" data-duration="0.57" data-track-index="12" data-volume="1"></audio>
+      <!-- CTA final (2 dernières secondes) -->
+      <div id="cta" class="clip" data-start="6" data-duration="2" data-track-index="2">
+        <div id="cta-tag"><span id="cta-text">app-nexusai.com</span></div>
+      </div>
       <div id="captions" class="clip" data-start="0" data-duration="8" data-track-index="1"></div>
     </div>
     <script>
@@ -146,6 +176,10 @@
           tl.to(span, { backgroundColor: "rgba(255, 90, 0, 0)", color: "#f2ede4", duration: 0.05, ease: "none" }, Math.max(w.e - 0.05, w.s + 0.05));
         });
       });
+
+      // CTA : claque comme un tampon (zoom + légère rotation), puis reste fixe
+      tl.fromTo("#cta-text", { opacity: 0, scale: 1.6, rotation: -6 }, { opacity: 1, scale: 1, rotation: -2, duration: 0.22, ease: "power4.in" }, 6.0);
+      tl.fromTo("#cta-tag", { y: 0 }, { y: 6, duration: 0.05, repeat: 3, yoyo: true, ease: "none", immediateRender: false }, 6.22);
 
       window.__timelines["reel-01"] = tl;
     </script>
