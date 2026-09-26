@@ -11,8 +11,10 @@ Règles de montage définitives, ajoutées au fur et à mesure quand tu dis « g
 - 2026-09-25 — 4 mots max par ligne (et 14 caractères max, pour tenir sur une seule ligne). Voir `tools/cues.py` et `reel-01.html`.
 
 ## Sound design
+- 2026-09-26 — Whoosh discret (`assets/audio/sfx-whoosh-soft.wav`, Pixabay, -11 dB) ~0,15 s avant chaque nouvelle phrase, ~13 dB sous la voix (≈ niveau de la musique).
 - 2026-09-25 — Musique de fond discrète, ~15 dB sous la voix (voix ≈ -14 LUFS, musique ≈ -30 LUFS). Voir `tools/bgm_synth.py`.
 
 ## Règles de coupe
 
 ## Autres règles
+- 2026-09-26 — CTA final « app-nexusai.com » sur les 2 dernières secondes : bandeau-tampon orange #ff5a00, texte noir Archivo Black ~64 px, contour noir + ombre portée, entrée en « claque » (zoom + rotation -2°), placé dans la bande floue du haut (y 270-390, hors zone UI et hors visage). Voir `reel-01.html`.
