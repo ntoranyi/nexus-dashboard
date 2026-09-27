@@ -1,0 +1,28 @@
+Script avatar IA — NEXUS AI (anglais, ~30-35 s)
+À jour avec les 10 agents actuels (contrairement à l'ancienne vidéo TikTok @7figuredad, tournée
+avant leur mise en place et qui mentionnait à tort "WordPress publishing" et du "temps réel").
+Squelette visuel repris de l'ancienne vidéo : accroche "Stop wasting time", logo NEXUS AI,
+graphique animé, icônes de fonctions, CTA "Try NEXUS AI Now".
+
+---
+
+Wasting time on manual marketing? Let AI do it for you.
+
+Most entrepreneurs spend hours juggling leads, emails, social media, ads and reports — across a dozen different tools.
+
+NEXUS AI automates all of it: leads, email follow-ups, social media content, ad campaigns, creatives, finance tracking, and a daily report — all in one dashboard.
+
+No more switching between apps. Just one AI team working for your business.
+
+Starting at 27 euros a month — no commitment, cancel anytime.
+
+Try NEXUS AI today. Link in bio.
+
+---
+
+Vérifications (2026-09-27) :
+- Fonctions citées = les 10 agents réels (Leads, Email, Social Media, Ads, Shopify, Creatives,
+  Finance, Calendar, Daily Report, Manager) — pas de fonction inventée (WordPress, affiliation...).
+- Prix "27€/mois, sans engagement, résiliable à tout moment" conforme à landing.html + Stripe.
+- Aucune promesse d'essai gratuit, de délai, ou de revenu.
+- CTA "Link in bio" cohérent avec les Reels 01/02.
