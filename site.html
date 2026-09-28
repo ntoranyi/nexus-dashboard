@@ -22,6 +22,7 @@
   --night-2: #16234F;
   --on-night: #F2F4FA;
   --on-night-2: #A9B4D6;
+  --tint: #E3E8F7;
   --display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
   --body: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
   box-sizing: border-box;
@@ -36,6 +37,7 @@
     --ink-2: #A9B4D6;
     --line: #26346B;
     --gold-ink: #F0BE55;
+    --tint: #101A42;
   }
 }
 :root[data-theme="dark"] {
@@ -45,6 +47,7 @@
   --ink-2: #A9B4D6;
   --line: #26346B;
   --gold-ink: #F0BE55;
+  --tint: #101A42;
 }
 html { scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior: smooth; }
 *, *::before, *::after { box-sizing: border-box; }
@@ -139,6 +142,7 @@ section { padding: 5rem 0; }
 .sec-head h2 { font-size: clamp(1.9rem, 4.2vw, 3rem); font-weight: 800; }
 .sec-head p { margin-top: 1rem; color: var(--ink-2); }
 .alt { background: var(--surface); }
+.tint { background: var(--tint); }
 
 /* Fonctions */
 .fn-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 3rem; margin: 0; padding: 0; list-style: none; }
@@ -193,6 +197,18 @@ section { padding: 5rem 0; }
 @media (max-width: 640px) { .cal-embed { min-height: 780px; } }
 .demo-alt { margin-top: 2rem; padding-top: 1.6rem; border-top: 1px solid var(--line); }
 .demo-alt p { color: var(--ink-2); margin-bottom: 1rem; }
+
+/* Démo : même habillage nuit que l'en-tête, pour s'accorder avec le calendrier Cal.com (thème sombre) */
+#demo.demo-night {
+  background: linear-gradient(180deg, var(--night) 0%, var(--night-2) 100%);
+  color: var(--on-night);
+}
+#demo.demo-night .sec-head p,
+#demo.demo-night .demo-side p,
+#demo.demo-night .cal-block .sub,
+#demo.demo-night .demo-alt p { color: var(--on-night-2); }
+#demo.demo-night .cal-embed { background: var(--night-2); border-color: rgba(255,255,255,0.16); }
+#demo.demo-night .demo-alt { border-top-color: rgba(255,255,255,0.16); }
 
 /* FAQ */
 .faq details { border-bottom: 1px solid var(--line); max-width: 70ch; }
@@ -286,7 +302,7 @@ footer .fine { flex-basis: 100%; font-size: 0.85rem; max-width: 70ch; }
   </div>
 </section>
 
-<section id="tarifs">
+<section id="tarifs" class="tint">
   <div class="wrap">
     <div class="sec-head">
       <h2>Trois formules, sans engagement</h2>
@@ -302,7 +318,7 @@ footer .fine { flex-basis: 100%; font-size: 0.85rem; max-width: 70ch; }
   </div>
 </section>
 
-<section id="demo" class="alt">
+<section id="demo" class="demo-night">
   <div class="wrap">
     <div class="demo-box">
       <div>
@@ -329,7 +345,7 @@ footer .fine { flex-basis: 100%; font-size: 0.85rem; max-width: 70ch; }
   </div>
 </section>
 
-<section id="faq">
+<section id="faq" class="tint">
   <div class="wrap">
     <div class="sec-head"><h2>Questions fréquentes</h2></div>
     <div class="faq">
