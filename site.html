@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="NEXUS AI : l'assistant marketing IA pour les PME et entrepreneurs francophones. Mini-formation gratuite, formules dès 27 €/mois, sans engagement.">
+<title>NEXUS AI – Ton marketing continue de tourner quand tu fermes l'ordinateur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #EEF1F6;
+  --surface: #FFFFFF;
+  --ink: #0E1A3A;
+  --ink-2: #47536F;
+  --line: #D3D9E6;
+  --gold: #E3A72F;
+  --gold-ink: #7A4E00;
+  --night: #0A1330;
+  --night-2: #16234F;
+  --on-night: #F2F4FA;
+  --on-night-2: #A9B4D6;
+  --display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --body: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0B1230;
+    --surface: #111B40;
+    --ink: #EEF1FA;
+    --ink-2: #A9B4D6;
+    --line: #26346B;
+    --gold-ink: #F0BE55;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0B1230;
+  --surface: #111B40;
+  --ink: #EEF1FA;
+  --ink-2: #A9B4D6;
+  --line: #26346B;
+  --gold-ink: #F0BE55;
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+h1, h2, h3, h4 { font-family: var(--display); margin: 0; letter-spacing: -0.02em; line-height: 1.08; }
+p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+.wrap { width: min(1080px, 100% - 2.5rem); margin-inline: auto; }
+.lead { max-width: 60ch; color: var(--ink-2); }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px; padding: 0.7rem 1.4rem;
+  font: 700 1rem var(--body); text-decoration: none; cursor: pointer;
+  border-radius: 999px; border: 2px solid transparent;
+}
+.btn-gold { background: var(--gold); color: #0A1330; }
+.btn-gold:hover { background: #F0B93F; }
+.btn-line { border-color: currentColor; background: transparent; }
+.btn-line:hover { background: rgba(255,255,255,0.08); }
+
+/* Hero (la nuit) */
+.night-zone { background: linear-gradient(180deg, var(--night) 0%, var(--night-2) 100%); color: var(--on-night); }
+.topbar { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 0; gap: 1rem; }
+.brand { font: 800 1.25rem var(--display); letter-spacing: -0.01em; text-decoration: none; }
+.topnav { display: flex; align-items: center; gap: 1.4rem; }
+.topnav a.plain { text-decoration: none; color: var(--on-night-2); font-weight: 500; }
+.topnav a.plain:hover { color: var(--on-night); }
+@media (max-width: 640px) { .topnav a.plain { display: none; } }
+.hero { padding: 3.5rem 0 1rem; }
+.hero h1 { font-size: clamp(2.4rem, 6.4vw, 4.8rem); font-weight: 800; max-width: 16ch; }
+.hero p.lead { color: var(--on-night-2); margin-top: 1.4rem; font-size: 1.15rem; }
+.hero .actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2rem; }
+
+/* La nuit type */
+.nightline { margin-top: 3.5rem; padding-bottom: 4rem; }
+.nightline h2 { font-size: 1.15rem; font-weight: 600; color: var(--on-night-2); }
+.rail { position: relative; height: 96px; margin: 1.5rem 0.5rem 0; }
+.rail::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 34px; height: 4px; border-radius: 4px;
+  background: rgba(255,255,255,0.14);
+}
+.rail-fill {
+  position: absolute; left: 0; top: 34px; height: 4px; border-radius: 4px; width: 0;
+  background: linear-gradient(90deg, #5C6EB5 0%, var(--gold) 100%);
+  animation: sweep 2.6s ease-out 0.3s forwards;
+}
+@keyframes sweep { to { width: 100%; } }
+.node {
+  position: absolute; top: 36px; left: calc(var(--p) * 1%);
+  transform: translate(-50%, -50%);
+  width: 44px; height: 44px; border-radius: 50%; padding: 0;
+  background: var(--night-2); border: 3px solid #5C6EB5; cursor: pointer;
+  opacity: 0.35; animation: wake 0.5s ease-out forwards; animation-delay: calc(0.3s + var(--p) * 0.026s);
+  color: var(--on-night);
+}
+.node::after { content: ""; position: absolute; inset: 11px; border-radius: 50%; background: #5C6EB5; }
+.node .t {
+  position: absolute; top: 52px; left: 50%; transform: translateX(-50%);
+  font-size: 0.85rem; color: var(--on-night-2); white-space: nowrap;
+}
+.node[aria-pressed="true"] { border-color: var(--gold); }
+.node[aria-pressed="true"]::after { background: var(--gold); }
+@keyframes wake { to { opacity: 1; } }
+.ticks { display: flex; justify-content: space-between; margin: 0 0.5rem; color: var(--on-night-2); font-size: 0.8rem; opacity: 0.7; }
+.panel {
+  margin-top: 1.6rem; padding: 1.4rem 1.6rem; max-width: 62ch;
+  border-left: 4px solid var(--gold); background: rgba(255,255,255,0.05);
+}
+.panel .time { color: var(--gold); font-weight: 700; }
+.panel h3 { font-size: 1.5rem; margin: 0.2rem 0 0.5rem; }
+.panel p.txt { color: var(--on-night-2); }
+.note-illus { margin-top: 1.4rem; font-size: 0.9rem; color: var(--on-night-2); max-width: 62ch; }
+@media (prefers-reduced-motion: reduce) {
+  .rail-fill { animation: none; width: 100%; }
+  .node { animation: none; opacity: 1; }
+  html { scroll-behavior: auto; }
+}
+
+/* Sections */
+section { padding: 5rem 0; }
+.sec-head { max-width: 62ch; margin-bottom: 2.5rem; }
+.sec-head h2 { font-size: clamp(1.9rem, 4.2vw, 3rem); font-weight: 800; }
+.sec-head p { margin-top: 1rem; color: var(--ink-2); }
+.alt { background: var(--surface); }
+
+/* Fonctions */
+.fn-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 3rem; margin: 0; padding: 0; list-style: none; }
+@media (max-width: 720px) { .fn-list { grid-template-columns: 1fr; } }
+.fn-list li { display: grid; grid-template-columns: 8.5rem 1fr; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--line); }
+.fn-list b { font-family: var(--display); font-size: 1.1rem; }
+.fn-list span { color: var(--ink-2); }
+@media (max-width: 420px) { .fn-list li { grid-template-columns: 1fr; gap: 0.2rem; } }
+
+/* Formation */
+.progress { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; max-width: 62ch; }
+.bar { flex: 1; height: 10px; border-radius: 10px; background: var(--line); overflow: hidden; }
+.bar > i { display: block; height: 100%; width: 0; background: var(--gold); transition: width 0.35s ease; }
+.progress-txt { font-weight: 700; white-space: nowrap; }
+.modules details { border-bottom: 1px solid var(--line); }
+.modules summary {
+  list-style: none; cursor: pointer; padding: 1.2rem 0; display: flex; justify-content: space-between; gap: 1rem; align-items: center;
+  font: 700 1.25rem var(--display);
+}
+.modules summary::-webkit-details-marker { display: none; }
+.modules summary::after { content: "+"; font-size: 1.6rem; color: var(--gold-ink); transition: transform 0.2s; }
+.modules details[open] summary::after { transform: rotate(45deg); }
+.modules .mod-count { font: 500 0.9rem var(--body); color: var(--ink-2); margin-left: auto; }
+.lesson { padding: 0 0 1.4rem; max-width: 62ch; }
+.lesson h4 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.4rem; }
+.lesson p { color: var(--ink-2); }
+.lesson label { display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 0.8rem; cursor: pointer; font-weight: 500; min-height: 44px; }
+.lesson input { width: 22px; height: 22px; accent-color: var(--gold); }
+.done-msg { display: none; margin-top: 2rem; padding: 1.4rem 1.6rem; border-left: 4px solid var(--gold); background: var(--bg); max-width: 62ch; }
+.done-msg.show { display: block; }
+.done-msg .btn { margin-top: 1rem; }
+
+/* Tarifs */
+.plans { border-top: 2px solid var(--ink); }
+.plan { display: grid; grid-template-columns: 1fr auto; gap: 0.3rem 2rem; padding: 1.6rem 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+.plan h3 { font-size: 1.6rem; }
+.plan .price { font: 800 2.2rem var(--display); text-align: right; }
+.plan .price small { font: 500 0.95rem var(--body); color: var(--ink-2); }
+.plan p { color: var(--ink-2); grid-column: 1; }
+.plans-note { margin-top: 1.4rem; color: var(--ink-2); max-width: 62ch; }
+.plans-cta { margin-top: 1.8rem; }
+
+/* Démo */
+.demo-box { display: grid; grid-template-columns: 1.3fr 1fr; gap: 3rem; align-items: center; }
+@media (max-width: 760px) { .demo-box { grid-template-columns: 1fr; gap: 1.5rem; } }
+.keyword { display: inline-block; font: 800 clamp(2.2rem, 6vw, 3.6rem) var(--display); padding: 0.4rem 1.2rem; border: 3px solid var(--gold); border-radius: 14px; }
+.demo-side p { color: var(--ink-2); margin-bottom: 1.2rem; }
+
+/* FAQ */
+.faq details { border-bottom: 1px solid var(--line); max-width: 70ch; }
+.faq summary { cursor: pointer; padding: 1.1rem 0; font-weight: 700; list-style: none; display: flex; justify-content: space-between; gap: 1rem; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; color: var(--gold-ink); font-size: 1.4rem; line-height: 1; }
+.faq details[open] summary::after { content: "–"; }
+.faq details p { padding: 0 0 1.2rem; color: var(--ink-2); }
+
+footer { background: var(--night); color: var(--on-night-2); padding: 3rem 0 4rem; font-size: 0.95rem; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.5rem; }
+footer a { color: var(--on-night); }
+footer .fine { flex-basis: 100%; font-size: 0.85rem; max-width: 70ch; }
+</style>
+</head>
+<body>
+
+<div class="night-zone">
+  <div class="wrap">
+    <header class="topbar">
+      <a class="brand" href="#top">NEXUS AI</a>
+      <nav class="topnav" aria-label="Navigation principale">
+        <a class="plain" href="#formation">Formation gratuite</a>
+        <a class="plain" href="#tarifs">Tarifs</a>
+        <a class="plain" href="#demo">Démo</a>
+        <a class="btn btn-gold" href="https://app-nexusai.com" rel="noopener">Ouvrir l'app</a>
+      </nav>
+    </header>
+
+    <div class="hero" id="top">
+      <h1>Ton marketing continue de tourner quand tu fermes l'ordinateur.</h1>
+      <p class="lead">NEXUS AI est un assistant marketing IA pour les PME et les entrepreneurs francophones : contenus, emails, prospects et publicités au même endroit, à partir de 27 € par mois, sans engagement.</p>
+      <div class="actions">
+        <a class="btn btn-gold" href="https://app-nexusai.com" rel="noopener">Découvrir NEXUS AI</a>
+        <a class="btn btn-line" href="#formation">Suivre la mini-formation gratuite</a>
+      </div>
+    </div>
+
+    <div class="nightline">
+      <h2>Une nuit type : ce qu'un assistant marketing peut prendre en charge</h2>
+      <div class="rail" id="rail" role="group" aria-label="Exemple d'une nuit type, de 22h à 8h">
+        <div class="rail-fill"></div>
+      </div>
+      <div class="ticks" aria-hidden="true"><span>22h</span><span>0h</span><span>2h</span><span>4h</span><span>6h</span><span>8h</span></div>
+      <div class="panel" aria-live="polite">
+        <p class="time" id="p-time"></p>
+        <h3 id="p-title"></h3>
+        <p class="txt" id="p-text"></p>
+      </div>
+      <p class="note-illus">Illustration du principe. Les fonctions disponibles pour chaque formule sont détaillées sur app-nexusai.com.</p>
+    </div>
+  </div>
+</div>
+
+<section id="fonctions">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Dix modules, un seul tableau de bord</h2>
+      <p>Au lieu de jongler entre dix outils, tu retrouves le marketing d'une petite structure au même endroit.</p>
+    </div>
+    <ul class="fn-list">
+      <li><b>Leads</b><span>Repérer et suivre tes prospects.</span></li>
+      <li><b>Email</b><span>Préparer campagnes et relances.</span></li>
+      <li><b>Social Media</b><span>Préparer et programmer tes posts.</span></li>
+      <li><b>Ads</b><span>Suivre tes campagnes publicitaires.</span></li>
+      <li><b>Shopify</b><span>Relier ta boutique en ligne.</span></li>
+      <li><b>Creatives</b><span>Produire visuels et vidéos.</span></li>
+      <li><b>Finance</b><span>Garder un œil sur les revenus.</span></li>
+      <li><b>Calendar</b><span>Planifier ce qui sort et quand.</span></li>
+      <li><b>Daily Report</b><span>Recevoir un point quotidien.</span></li>
+      <li><b>Manager</b><span>Coordonner l'ensemble.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="formation" class="alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Mini-formation gratuite : automatiser son marketing sans perdre sa voix</h2>
+      <p>Cinq modules, dix leçons courtes, sans inscription. Coche chaque leçon lue : ta progression reste sur cet appareil.</p>
+    </div>
+    <div class="progress">
+      <div class="bar" role="progressbar" aria-label="Progression de la formation" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" id="bar"><i id="bar-fill"></i></div>
+      <span class="progress-txt" id="bar-txt">0 sur 10</span>
+    </div>
+    <div class="modules" id="modules"></div>
+    <div class="done-msg" id="done">
+      <b>Formation terminée.</b> Tu as maintenant une cible, une offre, un calendrier, des relances, une voix et un rituel de mesure. Il reste à mettre tout ça en route.
+      <div><a class="btn btn-gold" href="https://app-nexusai.com" rel="noopener">Passer à NEXUS AI</a></div>
+    </div>
+  </div>
+</section>
+
+<section id="tarifs">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Trois formules, sans engagement</h2>
+      <p>Choisis la taille qui correspond à ton activité. Tu peux arrêter quand tu veux.</p>
+    </div>
+    <div class="plans">
+      <div class="plan"><h3>Starter</h3><div class="price">27 €<small> / mois</small></div><p>Pour démarrer seul.</p></div>
+      <div class="plan"><h3>Pro</h3><div class="price">67 €<small> / mois</small></div><p>Pour une activité qui se développe.</p></div>
+      <div class="plan"><h3>Agency</h3><div class="price">147 €<small> / mois</small></div><p>Pour gérer le marketing de plusieurs clients.</p></div>
+    </div>
+    <p class="plans-note">Le contenu détaillé de chaque formule est affiché sur app-nexusai.com au moment de choisir.</p>
+    <div class="plans-cta"><a class="btn btn-gold" href="https://app-nexusai.com" rel="noopener">Voir les formules</a></div>
+  </div>
+</section>
+
+<section id="demo" class="alt">
+  <div class="wrap demo-box">
+    <div>
+      <div class="sec-head" style="margin-bottom:1.5rem">
+        <h2>Une question avant de te lancer ?</h2>
+      </div>
+      <span class="keyword">DÉMO</span>
+    </div>
+    <div class="demo-side">
+      <p>Écris ce mot en message privé sur Instagram. On te répond pour caler un échange et voir si NEXUS AI correspond à ton activité.</p>
+      <a class="btn btn-gold" href="https://www.instagram.com/jnto.biz/" rel="noopener">Écrire sur @jnto.biz</a>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head"><h2>Questions fréquentes</h2></div>
+    <div class="faq">
+      <details><summary>Pour qui est NEXUS AI ?</summary><p>Pour les PME, indépendants et entrepreneurs francophones qui gèrent eux-mêmes leur marketing et veulent réduire les tâches répétitives.</p></details>
+      <details><summary>La mini-formation est-elle vraiment gratuite ?</summary><p>Oui. Elle est ouverte à tous sur cette page, sans inscription ni carte bancaire.</p></details>
+      <details><summary>Y a-t-il un engagement ?</summary><p>Non. Les formules sont mensuelles et sans engagement.</p></details>
+      <details><summary>Est-ce que des résultats sont garantis ?</summary><p>Non. Aucun outil ne peut garantir un résultat commercial. NEXUS AI est conçu pour prendre en charge des tâches marketing répétitives ; les résultats dépendent de ton offre, de ta cible et de ta régularité.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><b style="color:var(--on-night)">NEXUS AI</b><br>Assistant marketing IA pour entrepreneurs francophones.</div>
+    <div><a href="https://app-nexusai.com" rel="noopener">app-nexusai.com</a><br><a href="https://www.instagram.com/jnto.biz/" rel="noopener">Instagram @jnto.biz</a></div>
+    <p class="fine">Les exemples de cette page illustrent des principes de fonctionnement et ne constituent pas une promesse de résultat.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  /* --- Nuit type --- */
+  var events = [
+    { p: 6.7,  time: "22h40", label: "22h40", title: "Social Media", text: "Le post du lendemain est programmé à l'heure que tu as choisie, sans que tu aies à rouvrir l'application." },
+    { p: 22.5, time: "0h15",  label: "0h15",  title: "Leads", text: "Les prospects ajoutés dans la journée sont triés et prêts à être relancés." },
+    { p: 45,   time: "2h30",  label: "2h30",  title: "Email", text: "Les relances que tu as préparées partent au moment prévu, pendant que tu dors." },
+    { p: 75,   time: "7h30",  label: "7h30",  title: "Daily Report", text: "Un point du matin t'attend pour décider de la suite en quelques minutes." }
+  ];
+  var rail = document.getElementById("rail");
+  var pTime = document.getElementById("p-time");
+  var pTitle = document.getElementById("p-title");
+  var pText = document.getElementById("p-text");
+  var nodes = [];
+  function select(i) {
+    nodes.forEach(function (n, k) { n.setAttribute("aria-pressed", k === i ? "true" : "false"); });
+    pTime.textContent = events[i].time;
+    pTitle.textContent = events[i].title;
+    pText.textContent = events[i].text;
+  }
+  events.forEach(function (e, i) {
+    var b = document.createElement("button");
+    b.className = "node";
+    b.type = "button";
+    b.style.setProperty("--p", e.p);
+    b.setAttribute("aria-label", e.label + ", " + e.title);
+    b.setAttribute("aria-pressed", "false");
+    var t = document.createElement("span");
+    t.className = "t";
+    t.textContent = e.label;
+    b.appendChild(t);
+    b.addEventListener("click", function () { select(i); });
+    rail.appendChild(b);
+    nodes.push(b);
+  });
+  select(0);
+
+  /* --- Mini-formation --- */
+  var modules = [
+    { t: "Module 1 : dire à qui tu parles", l: [
+      ["Une seule cible d'abord", "Choisis un type de client précis, par exemple les restaurateurs de ta ville plutôt que « toutes les PME ». Écris en une phrase son problème du lundi matin. Tout ton contenu part de cette phrase."],
+      ["Une offre qui tient en deux lignes", "Écris ce que tu vends, pour qui, et ce que le client fait ensuite : réserver, s'inscrire, écrire. Si tu n'y arrives pas en deux lignes, l'automatisation ne fera que répéter la confusion plus vite."]
+    ]},
+    { t: "Module 2 : un calendrier qui tient", l: [
+      ["Trois formats, pas dix", "Fixe trois types de publications : une astuce, une preuve concrète, une invitation à agir. Un calendrier réaliste vaut mieux qu'un plan de trente jours abandonné au bout de cinq."],
+      ["Prépare par lots", "Écris ou génère la semaine en une seule session, relis, puis programme. L'outil publie à ta place, mais c'est toi qui valides le fond."]
+    ]},
+    { t: "Module 3 : relancer sans harceler", l: [
+      ["La relance utile", "Une bonne relance apporte quelque chose de nouveau : une réponse à une question, un exemple, une date limite réelle. « Je me permets de relancer » tout seul ne dit rien au lecteur."],
+      ["Un rythme et un point d'arrêt", "Décide à l'avance du nombre de relances, deux ou trois, et de l'écart entre elles. Arrête dès qu'il y a une réponse ou un refus, et respecte les demandes de désinscription. Vérifie les règles de prospection par email de ton pays."]
+    ]},
+    { t: "Module 4 : automatiser sans perdre ta voix", l: [
+      ["Écris ton guide de ton", "Note cinq phrases que tu dirais et cinq que tu ne dirais jamais. Donne-les à l'outil : c'est ce qui rend un texte automatisé reconnaissable comme le tien."],
+      ["Ne promets que ce que tu peux prouver", "Pas de chiffres de résultats sans preuve, pas de « garanti », pas de témoignage inventé. Cette règle protège ta réputation et tes comptes publicitaires."]
+    ]},
+    { t: "Module 5 : mesurer chaque semaine", l: [
+      ["Deux chiffres suffisent", "Choisis une mesure d'attention (vues ou clics) et une mesure d'action (messages ou inscriptions). Tant que ton volume est petit, le reste est du bruit."],
+      ["Un point de dix minutes", "Chaque semaine, garde ce qui a déclenché une action, arrête ce qui n'a rien produit, teste une variante. Puis recommence."]
+    ]}
+  ];
+  var KEY = "nexus-formation-v1";
+  var done = {};
+  try { done = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (err) { done = {}; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (err) { /* stockage indisponible */ } }
+
+  var root = document.getElementById("modules");
+  var barFill = document.getElementById("bar-fill");
+  var bar = document.getElementById("bar");
+  var barTxt = document.getElementById("bar-txt");
+  var doneMsg = document.getElementById("done");
+  var counters = [];
+
+  function refresh() {
+    var total = 0;
+    modules.forEach(function (m, mi) {
+      var c = 0;
+      m.l.forEach(function (_, li) { if (done[mi + "-" + li]) c++; });
+      total += c;
+      counters[mi].textContent = c + " sur " + m.l.length;
+    });
+    barFill.style.width = (total / 10 * 100) + "%";
+    bar.setAttribute("aria-valuenow", total);
+    barTxt.textContent = total + " sur 10";
+    doneMsg.classList.toggle("show", total === 10);
+  }
+
+  modules.forEach(function (m, mi) {
+    var d = document.createElement("details");
+    if (mi === 0) d.open = true;
+    var s = document.createElement("summary");
+    var title = document.createElement("span");
+    title.textContent = m.t;
+    var cnt = document.createElement("span");
+    cnt.className = "mod-count";
+    counters.push(cnt);
+    s.appendChild(title);
+    s.appendChild(cnt);
+    d.appendChild(s);
+    m.l.forEach(function (les, li) {
+      var box = document.createElement("div");
+      box.className = "lesson";
+      var h = document.createElement("h4");
+      h.textContent = les[0];
+      var p = document.createElement("p");
+      p.textContent = les[1];
+      var lab = document.createElement("label");
+      var cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = !!done[mi + "-" + li];
+      cb.addEventListener("change", function () {
+        if (cb.checked) done[mi + "-" + li] = true; else delete done[mi + "-" + li];
+        save();
+        refresh();
+      });
+      lab.appendChild(cb);
+      lab.appendChild(document.createTextNode("J'ai lu cette leçon"));
+      box.appendChild(h);
+      box.appendChild(p);
+      box.appendChild(lab);
+      d.appendChild(box);
+    });
+    root.appendChild(d);
+  });
+  refresh();
+})();
+</script>
+</body>
+</html>
