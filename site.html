@@ -186,6 +186,13 @@ section { padding: 5rem 0; }
 @media (max-width: 760px) { .demo-box { grid-template-columns: 1fr; gap: 1.5rem; } }
 .keyword { display: inline-block; font: 800 clamp(2.2rem, 6vw, 3.6rem) var(--display); padding: 0.4rem 1.2rem; border: 3px solid var(--gold); border-radius: 14px; }
 .demo-side p { color: var(--ink-2); margin-bottom: 1.2rem; }
+.cal-block { margin-top: 3.5rem; }
+.cal-block h3 { font-size: 1.4rem; margin-bottom: 0.5rem; }
+.cal-block .sub { color: var(--ink-2); margin-bottom: 1.4rem; max-width: 62ch; }
+.cal-embed { width: 100%; min-height: 700px; border-radius: 16px; overflow: hidden; border: 1px solid var(--line); background: var(--bg); }
+@media (max-width: 640px) { .cal-embed { min-height: 780px; } }
+.demo-alt { margin-top: 2rem; padding-top: 1.6rem; border-top: 1px solid var(--line); }
+.demo-alt p { color: var(--ink-2); margin-bottom: 1rem; }
 
 /* FAQ */
 .faq details { border-bottom: 1px solid var(--line); max-width: 70ch; }
@@ -296,16 +303,28 @@ footer .fine { flex-basis: 100%; font-size: 0.85rem; max-width: 70ch; }
 </section>
 
 <section id="demo" class="alt">
-  <div class="wrap demo-box">
-    <div>
-      <div class="sec-head" style="margin-bottom:1.5rem">
-        <h2>Une question avant de te lancer ?</h2>
+  <div class="wrap">
+    <div class="demo-box">
+      <div>
+        <div class="sec-head" style="margin-bottom:1.5rem">
+          <h2>Une question avant de te lancer ?</h2>
+        </div>
+        <span class="keyword">DÉMO</span>
       </div>
-      <span class="keyword">DÉMO</span>
+      <div class="demo-side">
+        <p>Réserve un créneau ci-dessous, ou écris-nous directement.</p>
+      </div>
     </div>
-    <div class="demo-side">
-      <p>Écris ce mot en message privé sur Instagram. On te répond pour caler un échange et voir si NEXUS AI correspond à ton activité.</p>
-      <a class="btn btn-gold" href="https://www.instagram.com/jnto.biz/" rel="noopener">Écrire sur @jnto.biz</a>
+
+    <div class="cal-block">
+      <h3>Réserver un échange de 20 minutes</h3>
+      <p class="sub">Choisis un créneau qui t'arrange. On regarde ensemble si NEXUS AI correspond à ton activité — pas de promesse de résultat, juste un échange.</p>
+      <div id="cal-nexus-demo" class="cal-embed"></div>
+    </div>
+
+    <div class="demo-alt">
+      <p>Tu préfères passer par Instagram ? Écris « DÉMO » en message privé, on te répond pour caler un échange.</p>
+      <a class="btn btn-line" href="https://www.instagram.com/jnto.biz/" rel="noopener">Écrire sur @jnto.biz</a>
     </div>
   </div>
 </section>
@@ -455,6 +474,48 @@ footer .fine { flex-basis: 100%; font-size: 0.85rem; max-width: 70ch; }
   });
   refresh();
 })();
+</script>
+
+<!-- Cal.com : widget de prise de rendez-vous intégré (cal.com/jnto-nexusai/demo-nexus-ai) -->
+<script>
+(function (C, A, L) {
+  let p = function (a, ar) { a.q.push(ar); };
+  let d = C.document;
+  C.Cal = C.Cal || function () {
+    let cal = C.Cal;
+    let ar = arguments;
+    if (!cal.loaded) {
+      cal.ns = {};
+      cal.q = cal.q || [];
+      d.head.appendChild(d.createElement("script")).src = A;
+      cal.loaded = true;
+    }
+    if (ar[0] === L) {
+      const api = function () { p(api, arguments); };
+      const namespace = ar[1];
+      api.q = api.q || [];
+      if (typeof namespace === "string") {
+        cal.ns[namespace] = cal.ns[namespace] || api;
+        p(cal.ns[namespace], ar);
+        p(cal, ["initNamespace", namespace]);
+      } else {
+        p(cal, ar);
+      }
+      return;
+    }
+    p(cal, ar);
+  };
+})(window, "https://app.cal.com/embed/embed.js", "init");
+
+Cal("init", "demo-nexus-ai", { origin: "https://cal.com" });
+
+Cal.ns["demo-nexus-ai"]("inline", {
+  elementOrSelector: "#cal-nexus-demo",
+  calLink: "jnto-nexusai/demo-nexus-ai",
+  config: { layout: "month_view" }
+});
+
+Cal.ns["demo-nexus-ai"]("ui", { hideEventTypeDetails: false, layout: "month_view" });
 </script>
 </body>
 </html>
