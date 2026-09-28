@@ -147,10 +147,13 @@ section { padding: 5rem 0; }
 /* Fonctions */
 .fn-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 3rem; margin: 0; padding: 0; list-style: none; }
 @media (max-width: 720px) { .fn-list { grid-template-columns: 1fr; } }
-.fn-list li { display: grid; grid-template-columns: 8.5rem 1fr; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--line); }
-.fn-list b { font-family: var(--display); font-size: 1.1rem; }
-.fn-list span { color: var(--ink-2); }
-@media (max-width: 420px) { .fn-list li { grid-template-columns: 1fr; gap: 0.2rem; } }
+/* Flexbox plutôt que grid sur le <li> : plus sûr sur les moteurs mobiles plus anciens,
+   qui peuvent ne pas mettre <b>/<span> en bloc dans une grille et les afficher côte à côte
+   sans saut de ligne (ex. "LeadsRepérer et suivre tes prospects"). */
+.fn-list li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 1rem; padding: 1rem 0; border-bottom: 1px solid var(--line); }
+.fn-list b { flex: 0 0 8.5rem; display: block; font-family: var(--display); font-size: 1.1rem; }
+.fn-list span { flex: 1 1 14rem; display: block; color: var(--ink-2); }
+@media (max-width: 420px) { .fn-list b, .fn-list span { flex-basis: 100%; } }
 
 /* Formation */
 .progress { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; max-width: 62ch; }
