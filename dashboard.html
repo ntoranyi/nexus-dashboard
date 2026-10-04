@@ -57,6 +57,8 @@
   .stat-label { font-size: 12px; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
   .stat-value { font-size: 28px; font-weight: 700; font-family: 'Space Grotesk', sans-serif; }
   .stat-change { font-size: 12px; color: var(--success); margin-top: 4px; }
+  .stat-change.error { color: var(--danger); }
+  .stat-sources { font-size: 11px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
 
   .section-title { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
 
@@ -156,7 +158,7 @@
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-label" data-fr="Agents actifs" data-en="Active agents">Agents actifs</div><div class="stat-value" id="stat-agents">2</div><div class="stat-change" data-fr="sur 10 disponibles" data-en="of 10 available">sur 10 disponibles</div></div>
       <div class="stat-card"><div class="stat-label" data-fr="Exécutions aujourd'hui" data-en="Executions today">Exécutions aujourd'hui</div><div class="stat-value">15</div><div class="stat-change">Railway ✅</div></div>
-      <div class="stat-card"><div class="stat-label" data-fr="Leads générés" data-en="Leads generated">Leads générés</div><div class="stat-value" id="stat-leads">0</div><div class="stat-change" data-fr="ce mois" data-en="this month">ce mois</div></div>
+      <div class="stat-card" id="leads-card"><div class="stat-label" data-fr="Leads générés" data-en="Leads generated">Leads générés</div><div class="stat-value" id="stat-leads">…</div><div class="stat-change" id="stat-leads-sub">Chargement…</div><div class="stat-sources" id="stat-leads-sources"></div></div>
       <div class="stat-card"><div class="stat-label" data-fr="Emails envoyés" data-en="Emails sent">Emails envoyés</div><div class="stat-value" id="stat-emails">0</div><div class="stat-change" data-fr="ce mois" data-en="this month">ce mois</div></div>
     </div>
 
@@ -240,21 +242,45 @@ const SUPABASE_URL = 'https://pgwwgwchlhmemkitrcxh.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_gPqMnHI4GWUhrVitkZIUwQ_WwRZCgly';
 const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+const T = (fr, en) => (lang === 'fr' ? fr : en);
+
+// Agrégats leads via /api/leads-stats (clé service côté serveur, aucune donnée personnelle).
+async function loadLeadsStats() {
+  const valueEl = document.getElementById('stat-leads');
+  const subEl = document.getElementById('stat-leads-sub');
+  const srcEl = document.getElementById('stat-leads-sources');
+  const fail = (msg) => {
+    valueEl.textContent = '—';
+    subEl.textContent = msg;
+    subEl.classList.add('error');
+    srcEl.textContent = '';
+  };
+  try {
+    const { data: { session } } = await sbClient.auth.getSession();
+    if (!session) return fail(T('Session expirée', 'Session expired'));
+    const r = await fetch('/api/leads-stats', { headers: { Authorization: `Bearer ${session.access_token}` } });
+    if (r.status === 401 || r.status === 403) return fail(T('Accès réservé à l\'administrateur', 'Admin access only'));
+    if (!r.ok) return fail(T('Statistiques indisponibles, réessayez plus tard', 'Stats unavailable, try again later'));
+    const s = await r.json();
+    valueEl.textContent = s.total;
+    subEl.classList.remove('error');
+    subEl.textContent = T('Total', 'Total') + ` · ${s.thisMonth} ` + T('ce mois', 'this month') + ` · ${s.last30Days} ` + T('sur 30 j', 'last 30 d');
+    const last = s.lastLeadAt ? new Date(s.lastLeadAt).toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-GB') : '—';
+    srcEl.textContent = Object.entries(s.bySource).sort((x, y) => y[1] - x[1]).map(([k, v]) => `${k} : ${v}`).join(' · ')
+      + ' — ' + T('dernier lead : ', 'last lead: ') + last;
+  } catch (e) {
+    console.error('Erreur chargement leads:', e);
+    fail(T('Statistiques indisponibles, réessayez plus tard', 'Stats unavailable, try again later'));
+  }
+}
+
 async function loadDashboardStats() {
   const startOfMonth = new Date();
   startOfMonth.setDate(1);
   startOfMonth.setHours(0, 0, 0, 0);
   const isoStart = startOfMonth.toISOString();
 
-  try {
-    const { count: leadsCount, error: leadsErr } = await sbClient
-      .from('leads')
-      .select('*', { count: 'exact', head: true })
-      .gte('created_at', isoStart);
-    if (!leadsErr && leadsCount !== null) {
-      document.getElementById('stat-leads').textContent = leadsCount;
-    }
-  } catch (e) { console.error('Erreur chargement leads:', e); }
+  loadLeadsStats();
 
   try {
     const { count: emailsCount, error: emailsErr } = await sbClient
