@@ -227,7 +227,7 @@
       <li>3 agents IA</li>
       <li>Bot prospect email automatique</li>
       <li>Posts social media automatisés</li>
-      <li>Support standard</li>
+      <li>Support par e-mail</li>
     </ul>
     <button id="stripe-btn" onclick="handleStripePayment(currentPlan || 'starter')">💳 Payer 27€/mois</button>
     <span class="modal-close" onclick="closeModal()">← Pas maintenant</span>
@@ -309,19 +309,19 @@ async function waitForPlanUpgrade(retries = 5) {
     title: '🚀 NEXUS AI Starter',
     subtitle: 'Lancez votre automatisation marketing',
     price: '27€',
-    features: ['3 agents IA','Bot prospect email automatique','Posts social media automatisés','Support standard']
+    features: ['3 agents IA','Bot prospect email automatique','Posts social media automatisés','Support par e-mail']
   },
   pro: {
     title: '⚡ NEXUS AI Pro',
     subtitle: 'Automatisation complète 10 agents',
     price: '67€',
-    features: ['10 agents IA','Bot prospect + Instagram DM','Leads + créatifs IA','Rapports financiers','Support prioritaire']
+    features: ['10 agents IA','Bot prospect + Instagram DM','Leads + créatifs IA','Rapports financiers','Support par e-mail']
   },
   agency: {
     title: '🏆 NEXUS AI Agency',
     subtitle: 'White-label pour vos clients',
     price: '147€',
-    features: ['Tout le plan Pro','White-label dashboard','Gestion de clients','Onboarding dédié','Support VIP']
+    features: ['Tout le plan Pro','White-label dashboard','Gestion de clients','Onboarding dédié','Support par e-mail']
   }
 };
 
