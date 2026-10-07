@@ -154,7 +154,7 @@
     </div>
 
     <div class="stats-grid">
-      <div class="stat-card"><div class="stat-label" data-fr="Agents actifs" data-en="Active agents">Agents actifs</div><div class="stat-value" id="stat-agents">2</div><div class="stat-change" data-fr="sur 10 disponibles" data-en="of 10 available">sur 10 disponibles</div></div>
+      <div class="stat-card"><div class="stat-label" data-fr="Agents actifs" data-en="Active agents">Agents actifs</div><div class="stat-value" id="stat-agents">—</div><div class="stat-change" id="stat-agents-note" data-fr="Exemple" data-en="Example">Exemple</div></div>
       <div class="stat-card"><div class="stat-label" data-fr="Exécutions aujourd'hui" data-en="Executions today">Exécutions aujourd'hui</div><div class="stat-value">—</div><div class="stat-change" data-fr="Exemple" data-en="Example">Exemple</div></div>
       <div class="stat-card"><div class="stat-label" data-fr="Leads générés" data-en="Leads generated">Leads générés</div><div class="stat-value" id="stat-leads">0</div><div class="stat-change" data-fr="ce mois" data-en="this month">ce mois</div></div>
       <div class="stat-card"><div class="stat-label" data-fr="Emails envoyés" data-en="Emails sent">Emails envoyés</div><div class="stat-value" id="stat-emails">0</div><div class="stat-change" data-fr="ce mois" data-en="this month">ce mois</div></div>
@@ -367,6 +367,8 @@ function applyProState() {
   document.getElementById('upgrade-banner').style.display = 'none';
   document.getElementById('locked-automation').style.display = 'none';
   document.getElementById('stat-agents').textContent = '10';
+  const agentsNote = document.getElementById('stat-agents-note');
+  agentsNote.dataset.fr = 'sur 10 disponibles'; agentsNote.dataset.en = 'of 10 available'; agentsNote.textContent = agentsNote.dataset.fr;
   ['lock-email','lock-social','lock-leads','lock-creatifs','lock-finance','lock-rapports'].forEach(id => {
     const el = document.getElementById(id); if(el) el.remove();
   });
