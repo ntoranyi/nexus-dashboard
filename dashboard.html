@@ -145,7 +145,7 @@
     <div class="upgrade-banner" id="upgrade-banner">
       <div>
         <h2 data-fr="🚀 Passez à NEXUS AI Pro" data-en="🚀 Upgrade to NEXUS AI Pro">🚀 Passez à NEXUS AI Pro</h2>
-        <p data-fr="Débloquez les 10 agents IA, automatisez votre marketing 24h/24" data-en="Unlock all 10 AI agents and automate your marketing">Débloquez les 10 agents IA et automatisez votre marketing</p>
+        <p data-fr="Débloquez les 10 agents IA et automatisez votre marketing" data-en="Unlock all 10 AI agents and automate your marketing">Débloquez les 10 agents IA et automatisez votre marketing</p>
       </div>
       <div style="text-align:center">
         <div class="price-tag"><span class="amount">67€</span><span class="period">/mois</span></div>
@@ -195,7 +195,7 @@
     <div class="locked-section">
       <div class="lock-icon">⚡</div>
       <h3 data-fr="Débloquez 8 agents supplémentaires" data-en="Unlock 8 additional agents">Débloquez 8 agents supplémentaires</h3>
-      <p data-fr="Pro — agents actifs 24h/24 sur Railway" data-en="Pro — agents active 24/7 on Railway">Pro — agents actifs 24h/24 sur Railway</p>
+      <p data-fr="Pro — agents hébergés sur Railway" data-en="Pro — agents hosted on Railway">Pro — agents hébergés sur Railway</p>
       <button class="btn-unlock" onclick="openModal('pro')">🚀 Pro — 67€/mois</button>
     </div>
   </div>
@@ -224,7 +224,7 @@
     <p class="subtitle" id="modal-subtitle">Lancez votre automatisation marketing</p>
     <div class="modal-price"><span class="big" id="modal-price">27€</span><span class="mo">/mois</span></div>
     <ul class="plan-features" id="modal-features">
-      <li>3 agents IA actifs 24h/24</li>
+      <li>3 agents IA</li>
       <li>Bot prospect email automatique</li>
       <li>Posts social media automatisés</li>
       <li>Support standard</li>
@@ -309,19 +309,19 @@ async function waitForPlanUpgrade(retries = 5) {
     title: '🚀 NEXUS AI Starter',
     subtitle: 'Lancez votre automatisation marketing',
     price: '27€',
-    features: ['3 agents IA actifs 24h/24','Bot prospect email automatique','Posts social media automatisés','Support standard']
+    features: ['3 agents IA','Bot prospect email automatique','Posts social media automatisés','Support standard']
   },
   pro: {
     title: '⚡ NEXUS AI Pro',
     subtitle: 'Automatisation complète 10 agents',
     price: '67€',
-    features: ['10 agents IA actifs 24h/24','Bot prospect + Instagram DM','Leads illimités + créatifs IA','Rapports financiers','Support prioritaire']
+    features: ['10 agents IA','Bot prospect + Instagram DM','Leads + créatifs IA','Rapports financiers','Support prioritaire']
   },
   agency: {
     title: '🏆 NEXUS AI Agency',
     subtitle: 'White-label pour vos clients',
     price: '147€',
-    features: ['Tout le plan Pro','White-label dashboard','Clients illimités','Onboarding dédié','Support VIP 24h/24']
+    features: ['Tout le plan Pro','White-label dashboard','Gestion de clients','Onboarding dédié','Support VIP']
   }
 };
 
