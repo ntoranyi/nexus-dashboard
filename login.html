@@ -223,6 +223,13 @@
     const SUPABASE_KEY = 'sb_publishable_gPqMnHI4GWUhrVitkZIUwQ_WwRZCgly';
     const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+    // Arrivée depuis un lien de confirmation / récupération expiré ou déjà utilisé
+    if (new URLSearchParams(window.location.search).get('lien') === 'expire') {
+      const m = document.getElementById('errorMsg');
+      m.textContent = "Ce lien a expiré ou a déjà été utilisé. Si tu viens de t'inscrire, ton compte est peut-être déjà confirmé : connecte-toi ci-dessous. Sinon, utilise « Mot de passe oublié » pour recevoir un nouveau lien.";
+      m.style.display = 'block';
+    }
+
     async function handleLogin() {
       const email = document.getElementById('email').value.trim();
       const pwd = document.getElementById('pwd').value;

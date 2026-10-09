@@ -10,6 +10,11 @@
 // en conservant le hash, pour que supabase-js y établisse la session.
 (function () {
   var h = window.location.hash;
+  if (h.indexOf('error_code=') !== -1 && h.indexOf('error=') !== -1) {
+    // Lien expiré ou déjà utilisé : on explique à l'utilisateur au lieu de le laisser sur la landing.
+    window.location.replace('/login.html?lien=expire');
+    return;
+  }
   if (h.indexOf('access_token=') === -1) return;
   var type = new URLSearchParams(h.slice(1)).get('type');
   var target = type === 'recovery' ? '/reset-password.html' : '/dashboard.html';
