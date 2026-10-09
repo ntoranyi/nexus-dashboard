@@ -25,6 +25,7 @@ Le repo [ntoranyi/nexus-ai-knowledge](https://github.com/ntoranyi/nexus-ai-knowl
 | `register.html` | Inscription — redirige vers `/dashboard.html` (ou affiche un message de confirmation email si la confirmation Supabase est requise, voir plus bas) |
 | `dashboard.html` | **Le dashboard principal vu par les utilisateurs** après login/register (décision produit du 2026-09-11). Interface épurée, session Supabase réelle (`profiles.plan`), **Stripe réellement fonctionnel** (3 liens de paiement Starter/Pro/Agency), stats leads/emails branchées sur Supabase. Contient un lien "🚀 Automations & AI content" vers `Onboarding.html` |
 | `Onboarding.html` | Fonctionnalités avancées (Automations, Campagnes, Analytics, générateur de contenu IA, E-commerce, Affiliation, Ads Budget) — accessible depuis `dashboard.html` mais n'est plus la page d'atterrissage par défaut. Session Supabase réelle (garde d'authentification, nom/plan réels dans la sidebar). Fichier volumineux. Attention : la plupart des stats affichées (revenu, leads, budget pub, API calls) restent des données de démonstration codées en dur, marquées "(démo)" dans l'UI |
+| `api/cal-webhook.js` | Webhook Cal.com (`BOOKING_CREATED`) : enregistre le contact d'une démo réservée depuis `site.html` dans `leads` (source `demo-site`). Variables Vercel : `CAL_WEBHOOK_SECRET`, `SUPABASE_SERVICE_ROLE_KEY` |
 | `vercel.json` | Config de routing Vercel |
 
 ## Vidéos (HyperFrames) — dossier `video/`
