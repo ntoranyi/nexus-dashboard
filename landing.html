@@ -4,6 +4,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+// Retour d'un lien Supabase (confirmation d'e-mail, récupération de mot de passe) :
+// le jeton arrive dans le hash de la landing. On renvoie l'utilisateur vers la bonne page
+// en conservant le hash, pour que supabase-js y établisse la session.
+(function () {
+  var h = window.location.hash;
+  if (h.indexOf('access_token=') === -1) return;
+  var type = new URLSearchParams(h.slice(1)).get('type');
+  var target = type === 'recovery' ? '/reset-password.html' : '/dashboard.html';
+  window.location.replace(target + h);
+})();
+</script>
 <title>NEXUS AI — Automatise. Scale. Domine.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
